@@ -144,6 +144,82 @@
             box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin-bottom: 15px;
+            position: relative;
+            cursor: default;
+        }
+
+        .chord-name {
+            pointer-events: none;
+        }
+
+        .chord-variant-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: white;
+            transition: background 0.2s;
+        }
+
+        .chord-variant-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .chord-variant-menu {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1a1a2e;
+            border: 2px solid #e94560;
+            border-radius: 8px;
+            padding: 5px 0;
+            min-width: 140px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.9);
+            margin-bottom: 5px;
+        }
+
+        .chord-variant-menu.show {
+            display: block;
+        }
+
+        .chord-variant-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #fff;
+            transition: background-color 0.2s;
+            background-color: #1a1a2e;
+            text-align: left;
+        }
+
+        .chord-variant-option:hover {
+            background-color: #e94560;
+            color: #fff;
+        }
+
+        .chord-variant-option.active {
+            background-color: #c73e54;
+            color: #fff;
+        }
+
+        .chord-variant-option:first-child {
+            border-radius: 6px 6px 0 0;
+        }
+
+        .chord-variant-option:last-child {
+            border-radius: 0 0 6px 6px;
         }
 
         .chord:hover {
@@ -359,42 +435,128 @@
     <script>
         // Chord fingering data: [E, A, D, G, B, e] strings (low to high)
         // 'x' = muted, '0' = open, number = fret position
+        // Each chord has multiple variations
         const CHORD_DIAGRAMS = {
             // Major chords
-            "C":     {frets: ["x", "3", "2", "0", "1", "0"], fingers: ["", "3", "2", "", "1", ""], position: 1},
-            "D":     {frets: ["x", "x", "0", "2", "3", "2"], fingers: ["", "", "", "1", "3", "2"], position: 1},
-            "E":     {frets: ["0", "2", "2", "1", "0", "0"], fingers: ["", "2", "3", "1", "", ""], position: 1},
-            "F":     {frets: ["1", "3", "3", "2", "1", "1"], fingers: ["1", "3", "4", "2", "1", "1"], position: 1},
-            "G":     {frets: ["3", "2", "0", "0", "0", "3"], fingers: ["2", "1", "", "", "", "3"], position: 1},
-            "A":     {frets: ["x", "0", "2", "2", "2", "0"], fingers: ["", "", "1", "2", "3", ""], position: 1},
-            "B":     {frets: ["x", "2", "4", "4", "4", "2"], fingers: ["", "1", "2", "3", "4", "1"], position: 2},
+            "C": [
+                {name: "Open", frets: ["x", "3", "2", "0", "1", "0"], fingers: ["", "3", "2", "", "1", ""], position: 1},
+                {name: "Barre (8th)", frets: ["8", "10", "10", "9", "8", "8"], fingers: ["1", "3", "4", "2", "1", "1"], position: 8},
+                {name: "Cadd9", frets: ["x", "3", "2", "0", "3", "0"], fingers: ["", "2", "1", "", "3", ""], position: 1},
+            ],
+            "D": [
+                {name: "Open", frets: ["x", "x", "0", "2", "3", "2"], fingers: ["", "", "", "1", "3", "2"], position: 1},
+                {name: "Barre (5th)", frets: ["x", "5", "7", "7", "7", "5"], fingers: ["", "1", "3", "3", "3", "1"], position: 5},
+                {name: "Dsus4", frets: ["x", "x", "0", "2", "3", "3"], fingers: ["", "", "", "1", "2", "3"], position: 1},
+                {name: "Dsus2", frets: ["x", "x", "0", "2", "3", "0"], fingers: ["", "", "", "1", "2", ""], position: 1},
+            ],
+            "E": [
+                {name: "Open", frets: ["0", "2", "2", "1", "0", "0"], fingers: ["", "2", "3", "1", "", ""], position: 1},
+                {name: "Barre (7th)", frets: ["x", "7", "9", "9", "9", "7"], fingers: ["", "1", "3", "3", "3", "1"], position: 7},
+            ],
+            "F": [
+                {name: "Barre", frets: ["1", "3", "3", "2", "1", "1"], fingers: ["1", "3", "4", "2", "1", "1"], position: 1},
+                {name: "Easy F", frets: ["x", "x", "3", "2", "1", "1"], fingers: ["", "", "3", "2", "1", "1"], position: 1},
+                {name: "Fmaj7 (easy)", frets: ["x", "x", "3", "2", "1", "0"], fingers: ["", "", "3", "2", "1", ""], position: 1},
+            ],
+            "G": [
+                {name: "Open", frets: ["3", "2", "0", "0", "0", "3"], fingers: ["2", "1", "", "", "", "3"], position: 1},
+                {name: "Open (alt)", frets: ["3", "2", "0", "0", "3", "3"], fingers: ["2", "1", "", "", "3", "4"], position: 1},
+                {name: "Barre (3rd)", frets: ["3", "5", "5", "4", "3", "3"], fingers: ["1", "3", "4", "2", "1", "1"], position: 3},
+            ],
+            "A": [
+                {name: "Open", frets: ["x", "0", "2", "2", "2", "0"], fingers: ["", "", "1", "2", "3", ""], position: 1},
+                {name: "Barre (5th)", frets: ["5", "7", "7", "6", "5", "5"], fingers: ["1", "3", "4", "2", "1", "1"], position: 5},
+                {name: "Asus4", frets: ["x", "0", "2", "2", "3", "0"], fingers: ["", "", "1", "2", "3", ""], position: 1},
+                {name: "Asus2", frets: ["x", "0", "2", "2", "0", "0"], fingers: ["", "", "1", "2", "", ""], position: 1},
+            ],
+            "B": [
+                {name: "Barre", frets: ["x", "2", "4", "4", "4", "2"], fingers: ["", "1", "2", "3", "4", "1"], position: 2},
+                {name: "Barre (7th)", frets: ["7", "9", "9", "8", "7", "7"], fingers: ["1", "3", "4", "2", "1", "1"], position: 7},
+            ],
             
             // Minor chords
-            "Am":    {frets: ["x", "0", "2", "2", "1", "0"], fingers: ["", "", "2", "3", "1", ""], position: 1},
-            "Bm":    {frets: ["x", "2", "4", "4", "3", "2"], fingers: ["", "1", "3", "4", "2", "1"], position: 2},
-            "Cm":    {frets: ["x", "3", "5", "5", "4", "3"], fingers: ["", "1", "3", "4", "2", "1"], position: 3},
-            "Dm":    {frets: ["x", "x", "0", "2", "3", "1"], fingers: ["", "", "", "2", "3", "1"], position: 1},
-            "Em":    {frets: ["0", "2", "2", "0", "0", "0"], fingers: ["", "2", "3", "", "", ""], position: 1},
-            "F#m":   {frets: ["2", "4", "4", "2", "2", "2"], fingers: ["1", "3", "4", "1", "1", "1"], position: 2},
+            "Am": [
+                {name: "Open", frets: ["x", "0", "2", "2", "1", "0"], fingers: ["", "", "2", "3", "1", ""], position: 1},
+                {name: "Barre (5th)", frets: ["5", "7", "7", "5", "5", "5"], fingers: ["1", "3", "4", "1", "1", "1"], position: 5},
+                {name: "Am7 (open)", frets: ["x", "0", "2", "0", "1", "0"], fingers: ["", "", "2", "", "1", ""], position: 1},
+            ],
+            "Bm": [
+                {name: "Barre", frets: ["x", "2", "4", "4", "3", "2"], fingers: ["", "1", "3", "4", "2", "1"], position: 2},
+                {name: "Easy Bm", frets: ["x", "2", "4", "4", "3", "x"], fingers: ["", "1", "3", "4", "2", ""], position: 2},
+                {name: "Barre (7th)", frets: ["7", "9", "9", "7", "7", "7"], fingers: ["1", "3", "4", "1", "1", "1"], position: 7},
+            ],
+            "Cm": [
+                {name: "Barre", frets: ["x", "3", "5", "5", "4", "3"], fingers: ["", "1", "3", "4", "2", "1"], position: 3},
+                {name: "Barre (8th)", frets: ["8", "10", "10", "8", "8", "8"], fingers: ["1", "3", "4", "1", "1", "1"], position: 8},
+            ],
+            "Dm": [
+                {name: "Open", frets: ["x", "x", "0", "2", "3", "1"], fingers: ["", "", "", "2", "3", "1"], position: 1},
+                {name: "Barre (5th)", frets: ["x", "5", "7", "7", "6", "5"], fingers: ["", "1", "3", "4", "2", "1"], position: 5},
+                {name: "Dm7 (open)", frets: ["x", "x", "0", "2", "1", "1"], fingers: ["", "", "", "2", "1", "1"], position: 1},
+            ],
+            "Em": [
+                {name: "Open", frets: ["0", "2", "2", "0", "0", "0"], fingers: ["", "2", "3", "", "", ""], position: 1},
+                {name: "Barre (7th)", frets: ["x", "7", "9", "9", "8", "7"], fingers: ["", "1", "3", "4", "2", "1"], position: 7},
+                {name: "Em7 (open)", frets: ["0", "2", "0", "0", "0", "0"], fingers: ["", "1", "", "", "", ""], position: 1},
+            ],
+            "F#m": [
+                {name: "Barre", frets: ["2", "4", "4", "2", "2", "2"], fingers: ["1", "3", "4", "1", "1", "1"], position: 2},
+                {name: "Easy F#m", frets: ["x", "x", "4", "2", "2", "2"], fingers: ["", "", "4", "1", "1", "1"], position: 2},
+            ],
             
             // 7th chords
-            "E7":    {frets: ["0", "2", "0", "1", "0", "0"], fingers: ["", "2", "", "1", "", ""], position: 1},
-            "G7":    {frets: ["3", "2", "0", "0", "0", "1"], fingers: ["3", "2", "", "", "", "1"], position: 1},
-            "A7":    {frets: ["x", "0", "2", "0", "2", "0"], fingers: ["", "", "1", "", "2", ""], position: 1},
-            "D7":    {frets: ["x", "x", "0", "2", "1", "2"], fingers: ["", "", "", "2", "1", "3"], position: 1},
-            "B7":    {frets: ["x", "2", "1", "2", "0", "2"], fingers: ["", "2", "1", "3", "", "4"], position: 1},
+            "E7": [
+                {name: "Open", frets: ["0", "2", "0", "1", "0", "0"], fingers: ["", "2", "", "1", "", ""], position: 1},
+                {name: "Open (alt)", frets: ["0", "2", "2", "1", "3", "0"], fingers: ["", "2", "3", "1", "4", ""], position: 1},
+            ],
+            "G7": [
+                {name: "Open", frets: ["3", "2", "0", "0", "0", "1"], fingers: ["3", "2", "", "", "", "1"], position: 1},
+                {name: "Open (alt)", frets: ["1", "2", "0", "0", "0", "0"], fingers: ["1", "2", "", "", "", ""], position: 1},
+            ],
+            "A7": [
+                {name: "Open", frets: ["x", "0", "2", "0", "2", "0"], fingers: ["", "", "1", "", "2", ""], position: 1},
+                {name: "Open (alt)", frets: ["x", "0", "2", "2", "2", "3"], fingers: ["", "", "1", "1", "1", "2"], position: 1},
+            ],
+            "D7": [
+                {name: "Open", frets: ["x", "x", "0", "2", "1", "2"], fingers: ["", "", "", "2", "1", "3"], position: 1},
+                {name: "Open (alt)", frets: ["x", "5", "4", "5", "3", "x"], fingers: ["", "2", "1", "3", "1", ""], position: 3},
+            ],
+            "B7": [
+                {name: "Open", frets: ["x", "2", "1", "2", "0", "2"], fingers: ["", "2", "1", "3", "", "4"], position: 1},
+                {name: "Barre", frets: ["x", "2", "4", "2", "4", "2"], fingers: ["", "1", "3", "1", "4", "1"], position: 2},
+            ],
             
             // Major 7th chords
-            "Cmaj7": {frets: ["x", "3", "2", "0", "0", "0"], fingers: ["", "3", "2", "", "", ""], position: 1},
-            "Dmaj7": {frets: ["x", "x", "0", "2", "2", "2"], fingers: ["", "", "", "1", "1", "1"], position: 1},
-            "Fmaj7": {frets: ["x", "x", "3", "2", "1", "0"], fingers: ["", "", "3", "2", "1", ""], position: 1},
-            "Gmaj7": {frets: ["3", "2", "0", "0", "0", "2"], fingers: ["2", "1", "", "", "", "3"], position: 1},
+            "Cmaj7": [
+                {name: "Open", frets: ["x", "3", "2", "0", "0", "0"], fingers: ["", "3", "2", "", "", ""], position: 1},
+                {name: "Open (alt)", frets: ["x", "3", "5", "4", "5", "3"], fingers: ["", "1", "3", "2", "4", "1"], position: 3},
+            ],
+            "Dmaj7": [
+                {name: "Open", frets: ["x", "x", "0", "2", "2", "2"], fingers: ["", "", "", "1", "1", "1"], position: 1},
+            ],
+            "Fmaj7": [
+                {name: "Open", frets: ["x", "x", "3", "2", "1", "0"], fingers: ["", "", "3", "2", "1", ""], position: 1},
+                {name: "Barre", frets: ["1", "3", "2", "2", "1", "1"], fingers: ["1", "4", "2", "3", "1", "1"], position: 1},
+            ],
+            "Gmaj7": [
+                {name: "Open", frets: ["3", "2", "0", "0", "0", "2"], fingers: ["2", "1", "", "", "", "3"], position: 1},
+            ],
             
             // Minor 7th chords
-            "Dm7":   {frets: ["x", "x", "0", "2", "1", "1"], fingers: ["", "", "", "2", "1", "1"], position: 1},
-            "Am7":   {frets: ["x", "0", "2", "0", "1", "0"], fingers: ["", "", "2", "", "1", ""], position: 1},
-            "Em7":   {frets: ["0", "2", "0", "0", "0", "0"], fingers: ["", "1", "", "", "", ""], position: 1},
+            "Dm7": [
+                {name: "Open", frets: ["x", "x", "0", "2", "1", "1"], fingers: ["", "", "", "2", "1", "1"], position: 1},
+            ],
+            "Am7": [
+                {name: "Open", frets: ["x", "0", "2", "0", "1", "0"], fingers: ["", "", "2", "", "1", ""], position: 1},
+            ],
+            "Em7": [
+                {name: "Open", frets: ["0", "2", "0", "0", "0", "0"], fingers: ["", "1", "", "", "", ""], position: 1},
+                {name: "Open (alt)", frets: ["0", "2", "2", "0", "3", "0"], fingers: ["", "1", "2", "", "3", ""], position: 1},
+            ],
         };
+
+        // Track current chord variants for each position
+        let currentChordVariants = {};
 
         // Common guitar chord progressions
         const PROGRESSIONS = [
@@ -558,8 +720,40 @@
 
         let currentIndex = -1;
 
-        function renderChordDiagram(chordName) {
-            const diagram = CHORD_DIAGRAMS[chordName];
+        function getChordVariants(chordName) {
+            return CHORD_DIAGRAMS[chordName] || [];
+        }
+
+        function getCurrentVariant(chordName, positionIndex) {
+            const key = `${positionIndex}-${chordName}`;
+            const variantIndex = currentChordVariants[key] || 0;
+            const variants = getChordVariants(chordName);
+            return variants[variantIndex] || variants[0] || null;
+        }
+
+        function setChordVariant(positionIndex, chordName, variantIndex) {
+            const key = `${positionIndex}-${chordName}`;
+            currentChordVariants[key] = variantIndex;
+            // Re-render the current progression
+            if (currentIndex >= 0) {
+                displayProgression(currentIndex);
+            }
+        }
+
+        function toggleVariantMenu(positionIndex, chordName, event) {
+            event.stopPropagation();
+            // Close all other menus
+            document.querySelectorAll('.chord-variant-menu').forEach(menu => {
+                menu.classList.remove('show');
+            });
+            // Toggle this menu
+            const menu = document.getElementById(`variant-menu-${positionIndex}`);
+            if (menu) {
+                menu.classList.toggle('show');
+            }
+        }
+
+        function renderChordDiagram(diagram) {
             if (!diagram) {
                 return '';
             }
@@ -632,9 +826,33 @@
                 const wrapper = document.createElement('div');
                 wrapper.className = 'chord-wrapper';
                 
+                const variants = getChordVariants(chord);
+                const key = `${i}-${chord}`;
+                const currentVariantIndex = currentChordVariants[key] || 0;
+                const currentVariant = variants[currentVariantIndex] || variants[0];
+                const hasVariants = variants.length > 1;
+                
+                let variantMenuHtml = '';
+                if (hasVariants) {
+                    variantMenuHtml = `<div class="chord-variant-menu" id="variant-menu-${i}">`;
+                    variants.forEach((v, vi) => {
+                        const activeClass = vi === currentVariantIndex ? 'active' : '';
+                        variantMenuHtml += `<div class="chord-variant-option ${activeClass}" onclick="setChordVariant(${i}, '${chord}', ${vi})">${v.name}</div>`;
+                    });
+                    variantMenuHtml += '</div>';
+                }
+                
+                const variantBtnHtml = hasVariants 
+                    ? `<button class="chord-variant-btn" onclick="toggleVariantMenu(${i}, '${chord}', event)">▼</button>` 
+                    : '';
+                
                 wrapper.innerHTML = `
-                    <div class="chord">${chord}</div>
-                    ${renderChordDiagram(chord)}
+                    <div class="chord">
+                        <span class="chord-name">${chord}</span>
+                        ${variantBtnHtml}
+                        ${variantMenuHtml}
+                    </div>
+                    ${renderChordDiagram(currentVariant)}
                 `;
                 
                 container.appendChild(wrapper);
@@ -649,7 +867,17 @@
             });
         }
 
+        // Close variant menus when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.chord')) {
+                document.querySelectorAll('.chord-variant-menu').forEach(menu => {
+                    menu.classList.remove('show');
+                });
+            }
+        });
+
         function showRandomProgression() {
+            currentChordVariants = {}; // Reset variants for new progression
             const randomIndex = Math.floor(Math.random() * PROGRESSIONS.length);
             displayProgression(randomIndex);
         }
@@ -666,6 +894,7 @@
             
             // Add change listener
             select.addEventListener('change', (e) => {
+                currentChordVariants = {}; // Reset variants when selecting new progression
                 displayProgression(parseInt(e.target.value));
             });
             
