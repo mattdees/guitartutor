@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chord Progressions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container { width: 100%; text-align: center; }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #e94560, #f39c12);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle { color: #888; margin-bottom: 20px; font-size: 1.1rem; }
+
+        .selector-container {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .progression-select {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            border: 2px solid rgba(233, 69, 96, 0.5);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            cursor: pointer;
+            min-width: 300px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23e94560' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .progression-select:focus { outline: none; border-color: #e94560; box-shadow: 0 0 10px rgba(233, 69, 96, 0.3); }
+        .progression-select option { background: #1a1a2e; color: #fff; padding: 10px; }
+
+        .random-btn {
+            background: linear-gradient(145deg, #e94560, #c73e54);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .random-btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(233, 69, 96, 0.5); }
+
+        .instrument-select {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            border: 2px solid rgba(243, 156, 18, 0.5);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            cursor: pointer;
+            min-width: 160px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23f39c12' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .instrument-select:focus { outline: none; border-color: #f39c12; box-shadow: 0 0 10px rgba(243, 156, 18, 0.3); }
+        .instrument-select option { background: #1a1a2e; color: #fff; padding: 10px; }
+
+        .key-select {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            border: 2px solid rgba(74, 222, 128, 0.5);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            cursor: pointer;
+            min-width: 100px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234ade80' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .key-select:focus { outline: none; border-color: #4ade80; box-shadow: 0 0 10px rgba(74, 222, 128, 0.3); }
+        .key-select option { background: #1a1a2e; color: #fff; padding: 10px; }
+
+        .key-label { color: #4ade80; font-size: 0.85rem; margin-right: 5px; }
+
+        .key-row { display: flex; align-items: center; gap: 8px; line-height: 1; }
+
+        .pos-label { color: #a78bfa; font-size: 0.85rem; margin-right: 5px; }
+
+        .pos-row { display: flex; align-items: center; gap: 8px; line-height: 1; }
+
+        .pos-select {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            border: 2px solid rgba(167, 139, 250, 0.5);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            cursor: pointer;
+            min-width: 140px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a78bfa' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .pos-select:focus { outline: none; border-color: #a78bfa; box-shadow: 0 0 10px rgba(167, 139, 250, 0.3); }
+        .pos-select option { background: #1a1a2e; color: #fff; padding: 10px; }
+
+        .progression-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .progression-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .progression-name { font-size: 1.8rem; font-weight: 700; color: #e94560; margin: 0; line-height: 1.2; }
+
+        .chords-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .chord-wrapper { display: flex; flex-direction: column; align-items: center; }
+
+        .chord {
+            background: linear-gradient(145deg, #e94560, #c73e54);
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 15px;
+            position: relative;
+            cursor: default;
+        }
+
+        .chord-name { pointer-events: none; }
+
+        .chord-variant-btn {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 18px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: white;
+            transition: background 0.2s;
+        }
+
+        .chord-variant-btn:hover { background: rgba(255, 255, 255, 0.4); }
+
+        .chord-variant-menu {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1a1a2e;
+            border: 2px solid #e94560;
+            border-radius: 8px;
+            padding: 5px 0;
+            min-width: 140px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.9);
+            margin-bottom: 5px;
+        }
+
+        .chord-variant-menu.show { display: block; }
+
+        .chord-variant-option {
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #fff;
+            transition: background-color 0.2s;
+            background-color: #1a1a2e;
+            text-align: left;
+        }
+
+        .chord-variant-option:hover { background-color: #e94560; color: #fff; }
+        .chord-variant-option.active { background-color: #c73e54; color: #fff; }
+        .chord-variant-option:first-child { border-radius: 6px 6px 0 0; }
+        .chord-variant-option:last-child  { border-radius: 0 0 6px 6px; }
+
+        .chord:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 25px rgba(233, 69, 96, 0.6); }
+
+        .chord-diagram { background: rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 10px; font-family: monospace; }
+
+        .diagram-grid { display: grid; gap: 0; }
+        .diagram-grid.strings-4 { grid-template-columns: 20px repeat(4, 18px); }
+        .diagram-grid.strings-5 { grid-template-columns: 20px repeat(5, 18px); }
+        .diagram-grid.strings-6 { grid-template-columns: 20px repeat(6, 18px); }
+
+        .fret-row { display: contents; }
+
+        .fret-cell {
+            width: 18px;
+            height: 20px;
+            border-right: 1px solid #555;
+            border-bottom: 2px solid #888;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nut-bar { height: 6px; background: #f39c12; border-radius: 2px; margin-bottom: 2px; }
+        .position-indicator { font-size: 11px; color: #f39c12; font-weight: bold; margin-bottom: 4px; }
+
+        .finger-dot {
+            width: 14px;
+            height: 14px;
+            background: #e94560;
+            border-radius: 50%;
+            font-size: 9px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .open-string   { font-size: 12px; color: #4ade80; font-weight: bold; }
+        .muted-string  { font-size: 12px; color: #f87171; font-weight: bold; }
+
+        .string-indicators { display: grid; grid-template-columns: repeat(6, 18px); margin-left: 20px; margin-bottom: 2px; }
+        .string-indicator  { text-align: center; font-size: 12px; }
+        .fret-number { font-size: 10px; color: #888; text-align: right; padding-right: 4px; }
+
+        .arrow { font-size: 2rem; color: #f39c12; display: flex; align-items: center; padding-top: 30px; }
+
+        .description { color: #ccc; font-size: 1.1rem; line-height: 1.6; margin-bottom: 25px; }
+
+        .songs-section { background: rgba(255, 255, 255, 0.03); border-radius: 10px; padding: 20px; }
+        .songs-title   { color: #f39c12; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .songs-list    { color: #aaa; font-style: italic; }
+
+        .guitar-icon { font-size: 3rem; margin-bottom: 20px; }
+
+        footer { margin-top: 40px; color: #555; font-size: 0.9rem; }
+
+        .loading-msg { color: #888; padding: 40px; font-size: 1rem; }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .progression-name { font-size: 1.3rem; }
+            .chord { width: 60px; height: 60px; font-size: 1.2rem; }
+            .arrow { font-size: 1.5rem; }
+            .chords-container { gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="guitar-icon" id="instrumentIcon">🎸</div>
+        <h1>Chord Progressions</h1>
+        <p class="subtitle">Select an instrument and progression</p>
+
+        <div class="selector-container">
+            <select class="instrument-select" id="instrumentSelect"></select>
+            <select class="progression-select" id="progressionSelect">
+                <option value="" disabled>Loading progressions…</option>
+            </select>
+            <button class="random-btn" onclick="showRandomProgression()">🎲 Random</button>
+        </div>
+
+        <div class="progression-card">
+            <div class="progression-header">
+                <h2 class="progression-name" id="progressionName">Loading…</h2>
+                <div class="key-row">
+                    <span class="key-label">Key:</span>
+                    <select class="key-select" id="keySelect">
+                        <option value="C">C</option>
+                        <option value="C#">C# / Db</option>
+                        <option value="D">D</option>
+                        <option value="D#">D# / Eb</option>
+                        <option value="E">E</option>
+                        <option value="F">F</option>
+                        <option value="F#">F# / Gb</option>
+                        <option value="G">G</option>
+                        <option value="G#">G# / Ab</option>
+                        <option value="A">A</option>
+                        <option value="A#">A# / Bb</option>
+                        <option value="B">B</option>
+                    </select>
+                </div>
+                <div class="pos-row" id="positionRow" style="display:none;">
+                    <span class="pos-label">Neck:</span>
+                    <select class="pos-select" id="positionSelect">
+                        <option value="0">Any position</option>
+                        <option value="2">Open (1st fret)</option>
+                        <option value="5">5th fret</option>
+                        <option value="7">7th fret</option>
+                        <option value="9">9th fret</option>
+                        <option value="12">12th fret</option>
+                    </select>
+                </div>
+            </div>
+            <div class="chords-container" id="chordsContainer">
+                <div class="loading-msg">Loading chord data…</div>
+            </div>
+            <p class="description" id="description"></p>
+            <div class="songs-section">
+                <p class="songs-title">Featured in</p>
+                <p class="songs-list" id="songsList"></p>
+            </div>
+        </div>
+
+        <footer><p id="footer"></p></footer>
+    </div>
+
+    <script>
+        // ── State ────────────────────────────────────────────────────────────────
+        let currentInstruments    = [];   // [{key, name, strings, stringNames, icon}]
+        let currentProgressions   = [];   // [{name, chords, originalKey, description, songs}]
+        let currentInstrument     = null; // active instrument object
+        let currentProgression    = null; // active progression object
+        let currentIndex          = -1;
+        let currentKey            = 'C';
+        let currentChordDiagrams  = {};   // chord → ChordVariant[] (from last batch call)
+        let currentChordVariants  = {};   // "{pos}-{chord}" → variantIndex
+        let currentTransposed     = [];   // [{original, transposed}] from last /api/transpose call
+        let preferredPosition    = 0;      // 0=any; >0=target fret (guitar only)
+
+        // ── Bootstrap ────────────────────────────────────────────────────────────
+        async function init() {
+            const [instruments, progressions] = await Promise.all([
+                fetch('/api/instruments').then(r => r.json()),
+                fetch('/api/progressions').then(r => r.json()),
+            ]);
+
+            currentInstruments  = instruments;
+            currentProgressions = progressions;
+            currentInstrument   = instruments.find(i => i.key === 'guitar') || instruments[0];
+
+            // Populate instrument dropdown
+            const instrSel = document.getElementById('instrumentSelect');
+            instruments.forEach(inst => {
+                const opt = document.createElement('option');
+                opt.value       = inst.key;
+                opt.textContent = `${inst.icon} ${inst.name}`;
+                instrSel.appendChild(opt);
+            });
+            instrSel.value = currentInstrument.key;
+
+            // Populate progression dropdown
+            const progSel = document.getElementById('progressionSelect');
+            progSel.innerHTML = '';
+            progressions.forEach((p, i) => {
+                const opt = document.createElement('option');
+                opt.value       = i;
+                opt.textContent = p.name;
+                progSel.appendChild(opt);
+            });
+
+            // Wire events
+            instrSel.addEventListener('change', e => {
+                currentInstrument = currentInstruments.find(i => i.key === e.target.value);
+                document.getElementById('instrumentIcon').textContent = currentInstrument.icon;
+                currentChordVariants = {};
+                // Show neck-position selector only for guitar
+                const posRow = document.getElementById('positionRow');
+                if (currentInstrument.key === 'guitar') {
+                    posRow.style.display = 'flex';
+                } else {
+                    posRow.style.display = 'none';
+                    preferredPosition = 0;
+                    document.getElementById('positionSelect').value = '0';
+                }
+                if (currentIndex >= 0) refreshChordDiagrams();
+            });
+
+            progSel.addEventListener('change', e => {
+                currentChordVariants = {};
+                displayProgression(parseInt(e.target.value), true);
+            });
+
+            document.getElementById('keySelect').addEventListener('change', e => {
+                currentKey = e.target.value;
+                currentChordVariants = {};
+                if (currentIndex >= 0) refreshTransposeAndDiagrams();
+            });
+
+            document.getElementById('footer').textContent =
+                `${progressions.length} progressions available`;
+
+            // Show position selector for default instrument (guitar)
+            document.getElementById('positionRow').style.display =
+                currentInstrument.key === 'guitar' ? 'flex' : 'none';
+
+            document.getElementById('positionSelect').addEventListener('change', e => {
+                preferredPosition = parseInt(e.target.value);
+                currentChordVariants = {}; // clear manual overrides so position takes effect
+                rerenderProgression();
+            });
+
+            showRandomProgression();
+        }
+
+        // ── Data fetching ─────────────────────────────────────────────────────────
+
+        // Full load: transpose chords → fetch diagrams → render
+        async function displayProgression(index, updateKeySelector = true) {
+            const progression = currentProgressions[index];
+            currentIndex      = index;
+            currentProgression = progression;
+
+            if (updateKeySelector) {
+                currentKey = progression.originalKey;
+                document.getElementById('keySelect').value = currentKey;
+            }
+            document.getElementById('progressionSelect').value = index;
+
+            await refreshTransposeAndDiagrams();
+        }
+
+        // Re-transpose (key changed) → re-fetch diagrams → re-render
+        async function refreshTransposeAndDiagrams() {
+            const progression = currentProgressions[currentIndex];
+
+            const transposeRes = await fetch('/api/transpose', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({
+                    from_key: progression.originalKey,
+                    to_key:   currentKey,
+                    chords:   progression.chords,
+                }),
+            }).then(r => r.json());
+
+            currentTransposed = transposeRes.results;
+            await refreshChordDiagrams();
+        }
+
+        // Re-fetch diagrams (instrument changed, transposition already current) → re-render
+        async function refreshChordDiagrams() {
+            if (!currentTransposed.length) return;
+
+            const uniqueChords = [...new Set(currentTransposed.map(r => r.transposed))];
+
+            const batchRes = await fetch('/api/chords/batch', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({
+                    instrument: currentInstrument.key,
+                    chords:     uniqueChords,
+                }),
+            }).then(r => r.json());
+
+            currentChordDiagrams = batchRes;
+            rerenderProgression();
+        }
+
+        // ── Neck-position variant picker (guitar only) ──────────────────────────────
+
+        function pickVariantByPosition(variants, prefPos) {
+            if (!prefPos || !variants.length) return 0;
+            let best = 0, bestDist = Infinity;
+            variants.forEach((v, i) => {
+                const d = Math.abs(v.position - prefPos);
+                if (d < bestDist) { bestDist = d; best = i; }
+            });
+            return best;
+        }
+
+        // ── Rendering (no API calls) ──────────────────────────────────────────────
+
+        function rerenderProgression() {
+            if (currentIndex < 0 || !currentProgression) return;
+
+            document.getElementById('progressionName').textContent = currentProgression.name;
+            document.getElementById('description').textContent     = currentProgression.description;
+            document.getElementById('songsList').textContent       = currentProgression.songs.join(' • ');
+
+            const container = document.getElementById('chordsContainer');
+            container.innerHTML = '';
+
+            currentTransposed.forEach(({ transposed: chord }, i) => {
+                const variants          = currentChordDiagrams[chord] || [];
+                const key               = `${i}-${chord}`;
+                const currentVariantIdx = currentChordVariants[key] !== undefined
+                    ? currentChordVariants[key]
+                    : pickVariantByPosition(variants, preferredPosition);
+                const currentVariant    = variants[currentVariantIdx] || variants[0] || null;
+                const hasVariants       = variants.length > 1;
+
+                let variantMenuHtml = '';
+                if (hasVariants) {
+                    variantMenuHtml = `<div class="chord-variant-menu" id="variant-menu-${i}">`;
+                    variants.forEach((v, vi) => {
+                        const active = vi === currentVariantIdx ? 'active' : '';
+                        variantMenuHtml += `<div class="chord-variant-option ${active}" onclick="setChordVariant(${i},'${chord}',${vi})">${v.name}</div>`;
+                    });
+                    variantMenuHtml += '</div>';
+                }
+
+                const variantBtnHtml = hasVariants
+                    ? `<button class="chord-variant-btn" onclick="toggleVariantMenu(${i},'${chord}',event)">▼</button>`
+                    : '';
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'chord-wrapper';
+                wrapper.innerHTML = `
+                    <div class="chord">
+                        <span class="chord-name">${chord}</span>
+                        ${variantBtnHtml}
+                        ${variantMenuHtml}
+                    </div>
+                    ${renderChordDiagram(currentVariant)}
+                `;
+                container.appendChild(wrapper);
+
+                if (i < currentTransposed.length - 1) {
+                    const arrow = document.createElement('div');
+                    arrow.className  = 'arrow';
+                    arrow.textContent = '→';
+                    container.appendChild(arrow);
+                }
+            });
+        }
+
+        function renderChordDiagram(diagram) {
+            if (!diagram) {
+                return '<div class="chord-diagram"><div style="color:#888;font-size:12px;padding:20px;">No diagram<br/>available</div></div>';
+            }
+
+            const stringCount = currentInstrument.strings;
+            const stringNames = currentInstrument.stringNames;
+            const stringWidth = 18;
+            const nutWidth    = stringCount * stringWidth;
+
+            let html = `<div class="chord-diagram">`;
+
+            // String name labels
+            html += `<div class="string-indicators" style="font-size:9px;color:#888;margin-bottom:2px;grid-template-columns:repeat(${stringCount},${stringWidth}px);">`;
+            stringNames.forEach(n => { html += `<span>${n}</span>`; });
+            html += '</div>';
+
+            // Open / muted indicators
+            html += `<div class="string-indicators" style="grid-template-columns:repeat(${stringCount},${stringWidth}px);">`;
+            for (let i = 0; i < stringCount; i++) {
+                if      (diagram.frets[i] === 'x') html += '<span class="string-indicator muted-string">✕</span>';
+                else if (diagram.frets[i] === '0') html += '<span class="string-indicator open-string">○</span>';
+                else                               html += '<span class="string-indicator"></span>';
+            }
+            html += '</div>';
+
+            // Nut bar or position label
+            if (diagram.position === 1) {
+                html += `<div class="nut-bar" style="margin-left:20px;width:${nutWidth}px;"></div>`;
+            } else {
+                html += `<div class="position-indicator" style="margin-left:20px;">${diagram.position}fr</div>`;
+            }
+
+            // Fret grid
+            html += `<div class="diagram-grid strings-${stringCount}">`;
+            for (let fret = diagram.position; fret < diagram.position + 4; fret++) {
+                html += '<div class="fret-row">';
+                html += `<span class="fret-number">${fret}</span>`;
+                for (let s = 0; s < stringCount; s++) {
+                    html += '<div class="fret-cell">';
+                    const fv = diagram.frets[s];
+                    if (fv !== 'x' && fv !== '0' && parseInt(fv) === fret) {
+                        const finger = diagram.fingers[s] || '●';
+                        html += `<span class="finger-dot">${finger}</span>`;
+                    }
+                    html += '</div>';
+                }
+                html += '</div>';
+            }
+            html += '</div></div>';
+            return html;
+        }
+
+        // ── Variant pickers ───────────────────────────────────────────────────────
+
+        function setChordVariant(positionIndex, chordName, variantIndex) {
+            currentChordVariants[`${positionIndex}-${chordName}`] = variantIndex;
+            rerenderProgression();
+        }
+
+        function toggleVariantMenu(positionIndex, chordName, event) {
+            event.stopPropagation();
+            document.querySelectorAll('.chord-variant-menu').forEach(m => m.classList.remove('show'));
+            const menu = document.getElementById(`variant-menu-${positionIndex}`);
+            if (menu) menu.classList.toggle('show');
+        }
+
+        document.addEventListener('click', e => {
+            if (!e.target.closest('.chord')) {
+                document.querySelectorAll('.chord-variant-menu').forEach(m => m.classList.remove('show'));
+            }
+        });
+
+        // ── Random pick ───────────────────────────────────────────────────────────
+
+        function showRandomProgression() {
+            if (!currentProgressions.length) return;
+            currentChordVariants = {};
+            const idx = Math.floor(Math.random() * currentProgressions.length);
+            displayProgression(idx, true);
+        }
+
+        // ── Start ─────────────────────────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
