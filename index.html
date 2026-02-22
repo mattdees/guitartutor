@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guitar Chord Progressions</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: #fff;
+        }
+
+        .container {
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #e94560, #f39c12);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .selector-container {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .progression-select {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            border: 2px solid rgba(233, 69, 96, 0.5);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            cursor: pointer;
+            min-width: 300px;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23e94560' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .progression-select:focus {
+            outline: none;
+            border-color: #e94560;
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.3);
+        }
+
+        .progression-select option {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 10px;
+        }
+
+        .random-btn {
+            background: linear-gradient(145deg, #e94560, #c73e54);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .random-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.5);
+        }
+
+        .progression-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .progression-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #e94560;
+            margin-bottom: 30px;
+        }
+
+        .chords-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .chord-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chord {
+            background: linear-gradient(145deg, #e94560, #c73e54);
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 15px;
+        }
+
+        .chord:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(233, 69, 96, 0.6);
+        }
+
+        .chord-diagram {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 10px;
+            font-family: monospace;
+        }
+
+        .diagram-grid {
+            display: grid;
+            grid-template-columns: 20px repeat(6, 18px);
+            gap: 0;
+        }
+
+        .fret-row {
+            display: contents;
+        }
+
+        .string-label {
+            font-size: 10px;
+            color: #888;
+            text-align: center;
+            padding: 2px;
+        }
+
+        .fret-cell {
+            width: 18px;
+            height: 20px;
+            border-right: 1px solid #555;
+            border-bottom: 2px solid #888;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fret-cell:nth-child(7) {
+            border-right: none;
+        }
+
+        .nut-bar {
+            height: 6px;
+            background: #f39c12;
+            border-radius: 2px;
+            margin-bottom: 2px;
+        }
+
+        .position-indicator {
+            font-size: 11px;
+            color: #f39c12;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .finger-dot {
+            width: 14px;
+            height: 14px;
+            background: #e94560;
+            border-radius: 50%;
+            font-size: 9px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .open-string {
+            font-size: 12px;
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .muted-string {
+            font-size: 12px;
+            color: #f87171;
+            font-weight: bold;
+        }
+
+        .string-indicators {
+            display: grid;
+            grid-template-columns: repeat(6, 18px);
+            margin-left: 20px;
+            margin-bottom: 2px;
+        }
+
+        .string-indicator {
+            text-align: center;
+            font-size: 12px;
+        }
+
+        .fret-number {
+            font-size: 10px;
+            color: #888;
+            text-align: right;
+            padding-right: 4px;
+        }
+
+        .arrow {
+            font-size: 2rem;
+            color: #f39c12;
+            display: flex;
+            align-items: center;
+            padding-top: 30px;
+        }
+
+        .description {
+            color: #ccc;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .songs-section {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .songs-title {
+            color: #f39c12;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .songs-list {
+            color: #aaa;
+            font-style: italic;
+        }
+
+        .guitar-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            margin-top: 40px;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .progression-name {
+                font-size: 1.3rem;
+            }
+
+            .chord {
+                width: 60px;
+                height: 60px;
+                font-size: 1.2rem;
+            }
+
+            .arrow {
+                font-size: 1.5rem;
+            }
+
+            .chords-container {
+                gap: 15px;
+            }
+
+            .chord-diagram {
+                transform: scale(0.9);
+            }
+
+            .progression-select {
+                min-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="guitar-icon">🎸</div>
+        <h1>Guitar Chord Progressions</h1>
+        <p class="subtitle">Select a progression or get a random one</p>
+
+        <div class="selector-container">
+            <select class="progression-select" id="progressionSelect">
+                <option value="" disabled>Choose a progression...</option>
+            </select>
+            <button class="random-btn" onclick="showRandomProgression()">
+                🎲 Random
+            </button>
+        </div>
+
+        <div class="progression-card">
+            <h2 class="progression-name" id="progressionName"></h2>
+            <div class="chords-container" id="chordsContainer"></div>
+            <p class="description" id="description"></p>
+            <div class="songs-section">
+                <p class="songs-title">Featured in</p>
+                <p class="songs-list" id="songsList"></p>
+            </div>
+        </div>
+
+        <footer>
+            <p id="footer"></p>
+        </footer>
+    </div>
+
+    <script>
+        // Chord fingering data: [E, A, D, G, B, e] strings (low to high)
+        // 'x' = muted, '0' = open, number = fret position
+        const CHORD_DIAGRAMS = {
+            // Major chords
+            "C":     {frets: ["x", "3", "2", "0", "1", "0"], fingers: ["", "3", "2", "", "1", ""], position: 1},
+            "D":     {frets: ["x", "x", "0", "2", "3", "2"], fingers: ["", "", "", "1", "3", "2"], position: 1},
+            "E":     {frets: ["0", "2", "2", "1", "0", "0"], fingers: ["", "2", "3", "1", "", ""], position: 1},
+            "F":     {frets: ["1", "3", "3", "2", "1", "1"], fingers: ["1", "3", "4", "2", "1", "1"], position: 1},
+            "G":     {frets: ["3", "2", "0", "0", "0", "3"], fingers: ["2", "1", "", "", "", "3"], position: 1},
+            "A":     {frets: ["x", "0", "2", "2", "2", "0"], fingers: ["", "", "1", "2", "3", ""], position: 1},
+            "B":     {frets: ["x", "2", "4", "4", "4", "2"], fingers: ["", "1", "2", "3", "4", "1"], position: 2},
+            
+            // Minor chords
+            "Am":    {frets: ["x", "0", "2", "2", "1", "0"], fingers: ["", "", "2", "3", "1", ""], position: 1},
+            "Bm":    {frets: ["x", "2", "4", "4", "3", "2"], fingers: ["", "1", "3", "4", "2", "1"], position: 2},
+            "Cm":    {frets: ["x", "3", "5", "5", "4", "3"], fingers: ["", "1", "3", "4", "2", "1"], position: 3},
+            "Dm":    {frets: ["x", "x", "0", "2", "3", "1"], fingers: ["", "", "", "2", "3", "1"], position: 1},
+            "Em":    {frets: ["0", "2", "2", "0", "0", "0"], fingers: ["", "2", "3", "", "", ""], position: 1},
+            "F#m":   {frets: ["2", "4", "4", "2", "2", "2"], fingers: ["1", "3", "4", "1", "1", "1"], position: 2},
+            
+            // 7th chords
+            "E7":    {frets: ["0", "2", "0", "1", "0", "0"], fingers: ["", "2", "", "1", "", ""], position: 1},
+            "G7":    {frets: ["3", "2", "0", "0", "0", "1"], fingers: ["3", "2", "", "", "", "1"], position: 1},
+            "A7":    {frets: ["x", "0", "2", "0", "2", "0"], fingers: ["", "", "1", "", "2", ""], position: 1},
+            "D7":    {frets: ["x", "x", "0", "2", "1", "2"], fingers: ["", "", "", "2", "1", "3"], position: 1},
+            "B7":    {frets: ["x", "2", "1", "2", "0", "2"], fingers: ["", "2", "1", "3", "", "4"], position: 1},
+            
+            // Major 7th chords
+            "Cmaj7": {frets: ["x", "3", "2", "0", "0", "0"], fingers: ["", "3", "2", "", "", ""], position: 1},
+            "Dmaj7": {frets: ["x", "x", "0", "2", "2", "2"], fingers: ["", "", "", "1", "1", "1"], position: 1},
+            "Fmaj7": {frets: ["x", "x", "3", "2", "1", "0"], fingers: ["", "", "3", "2", "1", ""], position: 1},
+            "Gmaj7": {frets: ["3", "2", "0", "0", "0", "2"], fingers: ["2", "1", "", "", "", "3"], position: 1},
+            
+            // Minor 7th chords
+            "Dm7":   {frets: ["x", "x", "0", "2", "1", "1"], fingers: ["", "", "", "2", "1", "1"], position: 1},
+            "Am7":   {frets: ["x", "0", "2", "0", "1", "0"], fingers: ["", "", "2", "", "1", ""], position: 1},
+            "Em7":   {frets: ["0", "2", "0", "0", "0", "0"], fingers: ["", "1", "", "", "", ""], position: 1},
+        };
+
+        // Common guitar chord progressions
+        const PROGRESSIONS = [
+            {
+                name: "I-V-vi-IV (Pop Progression)",
+                chords: ["C", "G", "Am", "F"],
+                description: "The most popular progression in modern pop music. Used in thousands of hit songs.",
+                songs: ["Let It Be", "No Woman No Cry", "With or Without You"]
+            },
+            {
+                name: "I-IV-V (12-Bar Blues Base)",
+                chords: ["G", "C", "D"],
+                description: "The foundation of rock and roll and blues music.",
+                songs: ["La Bamba", "Twist and Shout", "Wild Thing"]
+            },
+            {
+                name: "ii-V-I (Jazz Standard)",
+                chords: ["Dm7", "G7", "Cmaj7"],
+                description: "The most important progression in jazz music.",
+                songs: ["Autumn Leaves", "Fly Me to the Moon", "All The Things You Are"]
+            },
+            {
+                name: "I-vi-IV-V (50s Doo-Wop)",
+                chords: ["C", "Am", "F", "G"],
+                description: "Classic 1950s progression heard in countless doo-wop and early rock songs.",
+                songs: ["Stand By Me", "Every Breath You Take", "Earth Angel"]
+            },
+            {
+                name: "vi-IV-I-V (Emotional Pop)",
+                chords: ["Am", "F", "C", "G"],
+                description: "A minor variation of the pop progression with a more emotional feel.",
+                songs: ["Despacito", "Grenade", "Numb"]
+            },
+            {
+                name: "I-V-vi-iii-IV (Canon Progression)",
+                chords: ["D", "A", "Bm", "F#m", "G"],
+                description: "Based on Pachelbel's Canon, used in many ballads.",
+                songs: ["Basket Case", "Graduation", "Don't Look Back in Anger"]
+            },
+            {
+                name: "I-bVII-IV (Mixolydian Rock)",
+                chords: ["A", "G", "D"],
+                description: "A rock staple with a bluesy, laid-back feel.",
+                songs: ["Sweet Home Alabama", "Born to Be Wild", "Hey Joe"]
+            },
+            {
+                name: "i-bVII-bVI-V (Andalusian Cadence)",
+                chords: ["Am", "G", "F", "E"],
+                description: "A dramatic flamenco-influenced progression.",
+                songs: ["Hit the Road Jack", "Stray Cat Strut", "Sultans of Swing"]
+            },
+            {
+                name: "I-IV-vi-V",
+                chords: ["G", "C", "Em", "D"],
+                description: "Uplifting and energetic, common in alternative rock.",
+                songs: ["Wonderwall", "She Will Be Loved", "Hey There Delilah"]
+            },
+            {
+                name: "i-bVI-bIII-bVII (Epic Minor)",
+                chords: ["Em", "C", "G", "D"],
+                description: "Minor progression with a powerful, anthem-like quality.",
+                songs: ["Zombie", "Boulevard of Broken Dreams", "Radioactive"]
+            },
+            {
+                name: "I-ii-V (Jazz Turnaround)",
+                chords: ["Cmaj7", "Dm7", "G7"],
+                description: "A smooth jazz turnaround progression.",
+                songs: ["Fly Me to the Moon", "The Girl from Ipanema"]
+            },
+            {
+                name: "i-iv-V (Minor Blues)",
+                chords: ["Am", "Dm", "E7"],
+                description: "Classic minor blues progression with emotional depth.",
+                songs: ["The Thrill Is Gone", "Black Magic Woman"]
+            },
+            {
+                name: "I-V-IV (Country/Folk)",
+                chords: ["G", "D", "C"],
+                description: "Simple and timeless, used in countless country and folk songs.",
+                songs: ["Knockin' on Heaven's Door", "Free Fallin'", "Bad Moon Rising"]
+            },
+            {
+                name: "I-iii-IV-V (Optimistic Pop)",
+                chords: ["C", "Em", "F", "G"],
+                description: "Bright and uplifting progression common in feel-good songs.",
+                songs: ["Here Comes the Sun", "More Than Words"]
+            },
+            {
+                name: "i-III-VII-IV (Dorian Mode)",
+                chords: ["Am", "C", "G", "D"],
+                description: "A modal progression with a mysterious, floating quality.",
+                songs: ["Mad World", "Pumped Up Kicks"]
+            },
+            {
+                name: "I-IV (Two Chord Jam)",
+                chords: ["A", "D"],
+                description: "The simplest progression - perfect for beginners and jamming.",
+                songs: ["Achy Breaky Heart", "Something in the Way"]
+            },
+            {
+                name: "I-vi-ii-V (Jazz Standard Turnaround)",
+                chords: ["C", "Am", "Dm7", "G7"],
+                description: "Classic jazz turnaround found in standards.",
+                songs: ["I Got Rhythm", "Blue Moon", "Heart and Soul"]
+            },
+            {
+                name: "i-bVI-bVII (Epic Cinematic)",
+                chords: ["Am", "F", "G"],
+                description: "Dramatic and cinematic, common in film scores and power ballads.",
+                songs: ["All Along the Watchtower", "Stairway to Heaven intro"]
+            },
+            {
+                name: "I-V-vi-IV in G (Pop in G)",
+                chords: ["G", "D", "Em", "C"],
+                description: "The pop progression in the key of G - very guitar friendly.",
+                songs: ["Someone Like You", "Let Her Go", "Photograph"]
+            },
+            {
+                name: "I-IV-I-V (Simple Rock)",
+                chords: ["E", "A", "E", "B"],
+                description: "Essential rock progression, great for power chords.",
+                songs: ["Gloria", "Louie Louie"]
+            },
+            {
+                name: "vi-V-IV-V (Modern Minor)",
+                chords: ["Am", "G", "F", "G"],
+                description: "Modern pop progression starting on the minor chord.",
+                songs: ["Perfect", "Thinking Out Loud"]
+            },
+            {
+                name: "I-bVII-IV-I (Lydian Rock)",
+                chords: ["G", "F", "C", "G"],
+                description: "Rock progression with a bright, triumphant quality.",
+                songs: ["Man on the Moon", "Dreams"]
+            },
+            {
+                name: "i-iv-bVII-bIII (Minor Epic)",
+                chords: ["Em", "Am", "D", "G"],
+                description: "Epic minor progression with a sense of journey.",
+                songs: ["Wicked Game", "House of the Rising Sun"]
+            },
+            {
+                name: "12-Bar Blues (Key of E)",
+                chords: ["E", "E", "E", "E", "A", "A", "E", "E", "B", "A", "E", "B"],
+                description: "The complete 12-bar blues progression in E.",
+                songs: ["Johnny B. Goode", "Hound Dog", "Rock Around the Clock"]
+            },
+            {
+                name: "I-ii-iii-IV (Ascending)",
+                chords: ["C", "Dm", "Em", "F"],
+                description: "Ascending progression that builds tension and anticipation.",
+                songs: ["Here, There and Everywhere", "Creep"]
+            },
+            {
+                name: "IV-I-V-vi (Axis Variant)",
+                chords: ["F", "C", "G", "Am"],
+                description: "Rotation of the pop progression starting on IV.",
+                songs: ["Where Is the Love", "Self Esteem"]
+            }
+        ];
+
+        let currentIndex = -1;
+
+        function renderChordDiagram(chordName) {
+            const diagram = CHORD_DIAGRAMS[chordName];
+            if (!diagram) {
+                return '';
+            }
+
+            let html = '<div class="chord-diagram">';
+            
+            // String labels at top
+            html += '<div class="string-indicators" style="font-size: 9px; color: #888; margin-bottom: 2px;">';
+            html += '<span>E</span><span>A</span><span>D</span><span>G</span><span>B</span><span>e</span>';
+            html += '</div>';
+            
+            // Open/muted indicators
+            html += '<div class="string-indicators">';
+            for (let i = 0; i < 6; i++) {
+                if (diagram.frets[i] === 'x') {
+                    html += '<span class="string-indicator muted-string">✕</span>';
+                } else if (diagram.frets[i] === '0') {
+                    html += '<span class="string-indicator open-string">○</span>';
+                } else {
+                    html += '<span class="string-indicator"></span>';
+                }
+            }
+            html += '</div>';
+            
+            // Nut or position indicator
+            if (diagram.position === 1) {
+                html += '<div class="nut-bar" style="margin-left: 20px; width: 108px;"></div>';
+            } else {
+                html += `<div class="position-indicator" style="margin-left: 20px;">${diagram.position}fr</div>`;
+            }
+            
+            // Fret grid
+            html += '<div class="diagram-grid">';
+            for (let fret = diagram.position; fret < diagram.position + 4; fret++) {
+                html += '<div class="fret-row">';
+                html += `<span class="fret-number">${fret}</span>`;
+                for (let string = 0; string < 6; string++) {
+                    html += '<div class="fret-cell">';
+                    const fretValue = diagram.frets[string];
+                    if (fretValue !== 'x' && fretValue !== '0' && parseInt(fretValue) === fret) {
+                        const finger = diagram.fingers[string] || '●';
+                        html += `<span class="finger-dot">${finger}</span>`;
+                    }
+                    html += '</div>';
+                }
+                html += '</div>';
+            }
+            html += '</div>';
+            
+            html += '</div>';
+            return html;
+        }
+
+        function displayProgression(index) {
+            const progression = PROGRESSIONS[index];
+            currentIndex = index;
+            
+            document.getElementById('progressionName').textContent = progression.name;
+            document.getElementById('description').textContent = progression.description;
+            document.getElementById('songsList').textContent = progression.songs.join(' • ');
+            
+            // Update dropdown
+            document.getElementById('progressionSelect').value = index;
+            
+            // Render chords
+            const container = document.getElementById('chordsContainer');
+            container.innerHTML = '';
+            
+            progression.chords.forEach((chord, i) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'chord-wrapper';
+                
+                wrapper.innerHTML = `
+                    <div class="chord">${chord}</div>
+                    ${renderChordDiagram(chord)}
+                `;
+                
+                container.appendChild(wrapper);
+                
+                // Add arrow between chords
+                if (i < progression.chords.length - 1) {
+                    const arrow = document.createElement('div');
+                    arrow.className = 'arrow';
+                    arrow.textContent = '→';
+                    container.appendChild(arrow);
+                }
+            });
+        }
+
+        function showRandomProgression() {
+            const randomIndex = Math.floor(Math.random() * PROGRESSIONS.length);
+            displayProgression(randomIndex);
+        }
+
+        function init() {
+            // Populate dropdown
+            const select = document.getElementById('progressionSelect');
+            PROGRESSIONS.forEach((prog, i) => {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = prog.name;
+                select.appendChild(option);
+            });
+            
+            // Add change listener
+            select.addEventListener('change', (e) => {
+                displayProgression(parseInt(e.target.value));
+            });
+            
+            // Update footer
+            document.getElementById('footer').textContent = `${PROGRESSIONS.length} progressions available`;
+            
+            // Show random progression on load
+            showRandomProgression();
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
