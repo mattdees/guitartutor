@@ -1148,8 +1148,12 @@
             const HS          = SL / 2;// px per diatonic step
             const CLEF_W      = 44;    // clef & key-sig area
             const TIMESIG_W   = 22;    // time-signature area
-            const MEAS_W      = 200;   // note-area width per measure
+            
+            // Calculate dynamic measure width based on container width
             const MEAS_PER_ROW = 4;
+            const containerW  = container.offsetWidth || 800;
+            const MEAS_W      = Math.max(160, (containerW - CLEF_W - TIMESIG_W - 30) / MEAS_PER_ROW);
+            
             const ROW_H       = 160;   // Increased for Grand Staff
             const STAFF_GAP   = 45;    // Gap between treble and bass staff
             const TREBLE_BOT  = 56;    // y of treble bottom line (E4)
@@ -1167,7 +1171,7 @@
             const svgH        = numRows * ROW_H + 10;
 
             const p = [];  // SVG string parts
-            p.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${svgW}" height="${svgH}">`);
+            p.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgW} ${svgH}" width="100%" height="${svgH}" style="display:block; max-width:100%;">`);
             p.push(`<defs>
               <filter id="smGlow" x="-60%" y="-60%" width="220%" height="220%">
                 <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/>
