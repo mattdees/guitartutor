@@ -1396,6 +1396,54 @@
                     return lit.length ? lit : ordered;
                 }
 
+                case 'travis-picking': {
+                    const eighthIdxTotal = Math.floor(chordElapsed / eighthDur);
+                    if (eighthIdxTotal % 2 === 0) {
+                        // Downbeat: thumb
+                        if ((Math.floor(eighthIdxTotal / 2)) % 2 === 0) return [nonMuted[0]];
+                        return nonMuted.length > 1 ? [nonMuted[1]] : [nonMuted[0]];
+                    } else {
+                        // Upbeat: finger
+                        return [nonMuted[nonMuted.length - 1]];
+                    }
+                }
+
+                case 'alberti-bass': {
+                    const eighthIdxTotal = Math.floor(chordElapsed / eighthDur);
+                    switch (eighthIdxTotal % 4) {
+                        case 0: return [nonMuted[0]];
+                        case 1:
+                        case 3:
+                            if (nonMuted.length > 2) return [nonMuted[2]];
+                            if (nonMuted.length > 1) return [nonMuted[1]];
+                            return [nonMuted[0]];
+                        case 2:
+                            if (nonMuted.length > 1) return [nonMuted[1]];
+                            return [nonMuted[0]];
+                    }
+                    return [nonMuted[0]];
+                }
+
+                case 'triplet-arpeggio': {
+                    const tripletDur = beatDur / 3;
+                    const tripletIdx = Math.floor(chordElapsed / tripletDur);
+                    return [nonMuted[tripletIdx % nonMuted.length]];
+                }
+
+                case 'pop-stabs': {
+                    const stabPattern = [true, false, true, true, false, true, false, false];
+                    const eighthIdxTotal = Math.floor(chordElapsed / eighthDur);
+                    if (stabPattern[eighthIdxTotal % stabPattern.length]) {
+                        const eighthElapsed = chordElapsed - eighthIdxTotal * eighthDur;
+                        const lit = [];
+                        for (let si = 0; si < nonMuted.length; si++) {
+                            if (eighthElapsed >= si * 0.025 && eighthElapsed < eighthDur - 0.03) lit.push(nonMuted[si]);
+                        }
+                        return lit.length ? lit : nonMuted;
+                    }
+                    return [];
+                }
+
                 default:
                     return nonMuted;
             }
