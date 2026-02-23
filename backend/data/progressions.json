@@ -24,5 +24,6 @@
   {"name":"i-iv-bVII-bIII (Minor Epic)","chords":["Em","Am","D","G"],"originalKey":"E","description":"Epic minor progression with a sense of journey.","songs":["Wicked Game","House of the Rising Sun"]},
   {"name":"12-Bar Blues (Key of E)","chords":["E","E","E","E","A","A","E","E","B","A","E","B"],"originalKey":"E","description":"The complete 12-bar blues progression in E.","songs":["Johnny B. Goode","Hound Dog","Rock Around the Clock"]},
   {"name":"I-ii-iii-IV (Ascending)","chords":["C","Dm","Em","F"],"originalKey":"C","description":"Ascending progression that builds tension and anticipation.","songs":["Here, There and Everywhere","Creep"]},
-  {"name":"IV-I-V-vi (Axis Variant)","chords":["F","C","G","Am"],"originalKey":"C","description":"Rotation of the pop progression starting on IV.","songs":["Where Is the Love","Self Esteem"]}
+  {"name":"IV-I-V-vi (Axis Variant)","chords":["F","C","G","Am"],"originalKey":"C","description":"Rotation of the pop progression starting on IV.","songs":["Where Is the Love","Self Esteem"]},
+  {"name":"I-III-IV-iv (Dramatic Rock)","chords":["G","B","C","Cm"],"originalKey":"G","description":"A highly emotional progression using a major III and a minor iv chord.","songs":["Creep","Get Free"]}
 ]
