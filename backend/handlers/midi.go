@@ -391,7 +391,7 @@ func buildTrack(req MidiRequest) []byte {
 				}
 				// Chords
 				if chordPattern[ei%8] {
-					for j, n := range notes {
+					for _, n := range notes {
 						trk = append(trk, noteOnEvent(d, 0, n, 90)...)
 						d = 0
 					}
@@ -415,7 +415,7 @@ func buildTrack(req MidiRequest) []byte {
 			// Staccato on 2 and 4
 			for beat := 0; beat < req.Beats; beat++ {
 				if beat%2 == 1 { // Beats 2 and 4
-					for j, n := range notes {
+					for _, n := range notes {
 						trk = append(trk, noteOnEvent(0, 0, n, 110)...)
 					}
 					for j, n := range notes {
@@ -443,7 +443,7 @@ func buildTrack(req MidiRequest) []byte {
 			pattern := []bool{true, false, false, true, false, false, true, false}
 			for si := 0; si < totalSixteenths; si++ {
 				if pattern[si%8] {
-					for j, n := range notes {
+					for _, n := range notes {
 						trk = append(trk, noteOnEvent(0, 0, n, 110)...)
 					}
 					for j, n := range notes {
@@ -466,7 +466,7 @@ func buildTrack(req MidiRequest) []byte {
 			pattern := []bool{true, false, false, true, false, false, false, false}
 			for ei := 0; ei < totalEighths; ei++ {
 				if pattern[ei%8] {
-					for j, n := range notes {
+					for _, n := range notes {
 						trk = append(trk, noteOnEvent(0, 0, n, 100)...)
 					}
 					for j, n := range notes {
@@ -487,7 +487,7 @@ func buildTrack(req MidiRequest) []byte {
 			eighthTicks := beatTicks / 2
 			totalEighths := int(chordTicks / eighthTicks)
 			for ei := 0; ei < totalEighths; ei++ {
-				for j, n := range notes {
+				for _, n := range notes {
 					trk = append(trk, noteOnEvent(0, 0, n, 110)...)
 				}
 				for j, n := range notes {
