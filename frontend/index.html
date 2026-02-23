@@ -430,8 +430,8 @@
             background: rgba(0, 0, 0, 0.25);
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            overflow-x: auto;
             box-sizing: border-box;
+            width: 100%;
         }
         .sheet-music-title {
             font-size: 0.8rem;
@@ -441,7 +441,7 @@
             margin-bottom: 10px;
             text-align: center;
         }
-        .sheet-music-section svg { display: block; margin: 0 auto; overflow: visible; min-width: 100%; }
+        .sheet-music-section svg { display: block; overflow: visible; }
         /* Staff / note colours — SVG presentation attrs have specificity 0, CSS wins */
         .sh-note-group .sh-notehead            { fill: #7a8fa8; }
         .sh-note-group .sh-notehead-open       { fill: none; stroke: #7a8fa8; stroke-width: 1.5px; }
@@ -1043,6 +1043,9 @@
         let lastParsedNotes  = [];   // cached for sheet music
         let sheetNoteData    = [];   // [{startSec, endSec, svgId}]
         let sheetMeasureData = [];   // [{startSec, endSec, svgRectId}]
+        let lastSheetNotes   = [];   // cache for responsive re-render
+        let lastSheetChords  = [];
+        let lastSheetDur     = 0;
         let playbackStartTime = 0;
         let playbackChordDurSec = 0;
 
@@ -1260,6 +1263,11 @@
         }
 
         function renderSheetMusic(notes, chords, chordDurSec) {
+            // Cache for ResizeObserver re-renders
+            lastSheetNotes  = notes;
+            lastSheetChords = chords;
+            lastSheetDur    = chordDurSec;
+
             sheetNoteData    = [];
             sheetMeasureData = [];
             const section   = document.getElementById('sheetMusicSection');
@@ -1272,12 +1280,16 @@
             const HS          = SL / 2;// px per diatonic step
             const CLEF_W      = 44;    // clef & key-sig area
             const TIMESIG_W   = 22;    // time-signature area
-            
-            // Calculate dynamic measure width based on container width
-            const MEAS_PER_ROW = 4;
-            const containerW  = container.offsetWidth || 800;
-            const MEAS_W      = Math.max(160, (containerW - CLEF_W - TIMESIG_W - 30) / MEAS_PER_ROW);
-            
+            const MIN_BAR_W   = 240;   // minimum bar width before wrapping (needs room for 8 eighth notes)
+
+            // container.clientWidth = content width of the inner div (section padding already excluded)
+            const containerW   = container.clientWidth || section.clientWidth || 800;
+            const availW       = containerW - CLEF_W - TIMESIG_W - 6;
+            const numMeasures  = chords.length;
+            const MEAS_PER_ROW = Math.max(1, Math.floor(availW / MIN_BAR_W));
+            // Never make bars smaller than needed; if fewer bars exist than fit, spread them to fill the row
+            const MEAS_W       = availW / Math.min(numMeasures, MEAS_PER_ROW);
+
             const ROW_H       = 160;   // Increased for Grand Staff
             const STAFF_GAP   = 45;    // Gap between treble and bass staff
             const TREBLE_BOT  = 56;    // y of treble bottom line (E4)
@@ -1286,16 +1298,16 @@
             const NHW         = 8;     // note head half-width
             const NHH         = 5;     // note head half-height
             const STEM_H      = 28;    // stem length px
-            const NOTE_PAD_L  = 20;    // padding left inside measure note area
-            const NOTE_PAD_R  = 12;    // padding right
+            const NOTE_PAD_L  = 28;    // padding left inside measure note area
+            const NOTE_PAD_R  = 16;    // padding right
 
-            const numMeasures = chords.length;
             const numRows     = Math.ceil(numMeasures / MEAS_PER_ROW);
-            const svgW        = CLEF_W + TIMESIG_W + MEAS_PER_ROW * MEAS_W + 6;
+            const svgW        = containerW;
             const svgH        = numRows * ROW_H + 10;
 
             const p = [];  // SVG string parts
-            p.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgW} ${svgH}" width="100%" height="${svgH}" style="display:block; max-width:100%;">`);
+            // Use exact pixel width — no viewBox scaling — so ResizeObserver re-renders reflow correctly
+            p.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${svgW}" height="${svgH}" style="display:block;">`);
             p.push(`<defs>
               <filter id="smGlow" x="-60%" y="-60%" width="220%" height="220%">
                 <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/>
@@ -1992,6 +2004,27 @@
             currentChordVariants = {};
             const idx = Math.floor(Math.random() * currentProgressions.length);
             displayProgression(idx, true);
+        }
+
+        // ── Responsive sheet music (reflow on resize) ─────────────────────────────
+        {
+            let _sheetResizeObserver = null;
+            let _sheetLastW = 0;
+            function _initSheetResizeObserver() {
+                if (_sheetResizeObserver) return;
+                const section = document.getElementById('sheetMusicSection');
+                if (!section) return;
+                _sheetResizeObserver = new ResizeObserver((entries) => {
+                    if (!lastSheetNotes.length) return;
+                    const w = Math.floor(entries[0].contentRect.width);
+                    if (Math.abs(w - _sheetLastW) > 4) {
+                        _sheetLastW = w;
+                        renderSheetMusic(lastSheetNotes, lastSheetChords, lastSheetDur);
+                    }
+                });
+                _sheetResizeObserver.observe(section);
+            }
+            document.addEventListener('DOMContentLoaded', _initSheetResizeObserver);
         }
 
         // ── Start ─────────────────────────────────────────────────────────────────
