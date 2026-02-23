@@ -283,6 +283,111 @@ func buildTrack(req MidiRequest) []byte {
 				}
 			}
 
+		case "travis-picking":
+			// Alternating bass with syncopated treble
+			eighthTicks := beatTicks / 2
+			totalEighths := int(chordTicks / eighthTicks)
+			for ei := 0; ei < totalEighths; ei++ {
+				var n byte
+				var vel byte = 100
+				if ei%2 == 0 { // Downbeat: Thumb
+					if (ei/2)%2 == 0 {
+						n = notes[0] // Root
+					} else {
+						if len(notes) > 1 {
+							n = notes[1] // Fifth or second bass note
+						} else {
+							n = notes[0]
+						}
+					}
+				} else { // Upbeat: Finger
+					n = notes[len(notes)-1] // Highest note
+					vel = 80
+				}
+				trk = append(trk, noteOnEvent(0, 0, n, vel)...)
+				trk = append(trk, noteOffEvent(eighthTicks, 0, n)...)
+			}
+
+		case "alberti-bass":
+			// 1-5-3-5 pattern (classic accompaniment)
+			eighthTicks := beatTicks / 2
+			totalEighths := int(chordTicks / eighthTicks)
+			for ei := 0; ei < totalEighths; ei++ {
+				var n byte
+				switch ei % 4 {
+				case 0:
+					n = notes[0]
+				case 1, 3:
+					if len(notes) > 2 {
+						n = notes[2]
+					} else if len(notes) > 1 {
+						n = notes[1]
+					} else {
+						n = notes[0]
+					}
+				case 2:
+					if len(notes) > 1 {
+						n = notes[1]
+					} else {
+						n = notes[0]
+					}
+				}
+				trk = append(trk, noteOnEvent(0, 0, n, 100)...)
+				trk = append(trk, noteOffEvent(eighthTicks, 0, n)...)
+			}
+
+		case "triplet-arpeggio":
+			// 3 notes per beat
+			tripletTicks := beatTicks / 3
+			totalTriplets := int(chordTicks / tripletTicks)
+			for ti := 0; ti < totalTriplets; ti++ {
+				n := notes[ti%len(notes)]
+				trk = append(trk, noteOnEvent(0, 0, n, 100)...)
+				trk = append(trk, noteOffEvent(tripletTicks, 0, n)...)
+			}
+
+		case "pop-stabs":
+			// Syncopated block chords
+			eighthTicks := beatTicks / 2
+			// Pattern (eighth notes): X . X X . X . . (Common syncopation)
+			pattern := []bool{true, false, true, true, false, true, false, false}
+			totalEighths := int(chordTicks / eighthTicks)
+			for ei := 0; ei < totalEighths; ei++ {
+				if pattern[ei%len(pattern)] {
+					for j, n := range notes {
+						var d uint32 = 0
+						if j == 0 {
+							d = 0
+						}
+						trk = append(trk, noteOnEvent(d, 0, n, 100)...)
+					}
+					for j, n := range notes {
+						var d uint32 = 0
+						if j == 0 {
+							d = eighthTicks
+						}
+						trk = append(trk, noteOffEvent(d, 0, n)...)
+					}
+				} else {
+					// Rest: just wait
+					// In MIDI, we don't need an event for silence, but we need to track delta time.
+					// However, our noteOff already moved us forward by eighthTicks.
+					// If we don't play a note, we need to make sure the NEXT note starts at the right time.
+					// Wait, the current logic of building track is a bit sequential with deltas.
+					// Let's use a dummy note or just add to delta of next note.
+					// Actually, the way it's written, we always append noteOn/Off.
+					
+					// To handle silence, we can just play a note with velocity 0 or just skip and adjust delta.
+					// But the current helper functions noteOnEvent/noteOffEvent take delta.
+					// Let's use a "silent" note or fix the delta logic.
+					
+					// Alternative: add a 0-velocity note or just use a placeholder to advance time.
+					// Let's add a silent note (Note 0, velocity 0)
+					trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
+					trk = append(trk, noteOffEvent(eighthTicks, 0, 0)...)
+				}
+			}
+
 		default: // "whole" — one block chord for the entire duration
 			for j, n := range notes {
 				var d uint32
