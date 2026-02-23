@@ -249,37 +249,45 @@ func buildTrack(req MidiRequest) []byte {
 			eighthTicks := beatTicks / 2
 			// Pattern: down(8th), down(8th), up(8th), down(8th), up(8th), rest 3 eighths
 			strumPattern := []struct {
-				up  bool
-				vel byte
+				active bool
+				up     bool
+				vel    byte
 			}{
-				{false, 100}, {false, 90}, {true, 80}, {false, 100}, {true, 80},
+				{true, false, 100}, {true, false, 90}, {true, true, 80}, {true, false, 100}, {true, true, 80},
+				{false, false, 0}, {false, false, 0}, {false, false, 0},
 			}
 			totalEighths := int(chordTicks / eighthTicks)
 			for ei := 0; ei < totalEighths; ei++ {
 				pi := ei % len(strumPattern)
 				sp := strumPattern[pi]
-				// For "up" strum, play notes in reverse order with slight velocity
-				orderedNotes := make([]byte, len(notes))
-				if sp.up {
-					for k := 0; k < len(notes); k++ {
-						orderedNotes[k] = notes[len(notes)-1-k]
+
+				if sp.active {
+					// For "up" strum, play notes in reverse order with slight velocity
+					orderedNotes := make([]byte, len(notes))
+					if sp.up {
+						for k := 0; k < len(notes); k++ {
+							orderedNotes[k] = notes[len(notes)-1-k]
+						}
+					} else {
+						copy(orderedNotes, notes)
+					}
+					for j, n := range orderedNotes {
+						var d uint32
+						if j > 0 {
+							d = 0
+						}
+						trk = append(trk, noteOnEvent(d, 0, n, sp.vel)...)
+					}
+					for j, n := range orderedNotes {
+						var d uint32
+						if j == 0 {
+							d = eighthTicks
+						}
+						trk = append(trk, noteOffEvent(d, 0, n)...)
 					}
 				} else {
-					copy(orderedNotes, notes)
-				}
-				for j, n := range orderedNotes {
-					var d uint32
-					if j > 0 {
-						d = 0
-					}
-					trk = append(trk, noteOnEvent(d, 0, n, sp.vel)...)
-				}
-				for j, n := range orderedNotes {
-					var d uint32
-					if j == 0 {
-						d = eighthTicks
-					}
-					trk = append(trk, noteOffEvent(d, 0, n)...)
+					trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
+					trk = append(trk, noteOffEvent(eighthTicks, 0, 0)...)
 				}
 			}
 

@@ -1191,6 +1191,30 @@
         // Which semitones are sharps
         const _SM_SHARP = [false,true,false,true,false,false,true,false,true,false,true,false];
 
+        function renderRest(p, x, y, durSec, beatDur) {
+            const color = "#94a3b8";
+            if (durSec >= 3.5 * beatDur) {
+                // Whole rest
+                p.push(`<rect x="${x - 10}" y="${y - 11}" width="20" height="6" fill="${color}" rx="1"/>`);
+            } else if (durSec >= 1.5 * beatDur) {
+                // Half rest
+                p.push(`<rect x="${x - 10}" y="${y - 6}" width="20" height="6" fill="${color}" rx="1"/>`);
+            } else if (durSec >= 0.75 * beatDur) {
+                // Quarter rest
+                p.push(`<path d="M${x-4},${y-15} L${x+4},${y-7} L${x-4},${y+1} L${x+2},${y+9} Q${x+4},${y+12} ${x-2},${y+14}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`);
+            } else if (durSec >= 0.35 * beatDur) {
+                // Eighth rest
+                p.push(`<circle cx="${x-3}" cy="${y-4}" r="3" fill="${color}"/>`);
+                p.push(`<path d="M${x-3},${y-4} Q${x+5},${y-4} ${x},${y+12}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round"/>`);
+            } else {
+                // Sixteenth rest
+                p.push(`<circle cx="${x-3}" cy="${y-4}" r="2.5" fill="${color}"/>`);
+                p.push(`<path d="M${x-3},${y-4} Q${x+5},${y-4} ${x},${y+12}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round"/>`);
+                p.push(`<circle cx="${x-5}" cy="${y+2}" r="2.5" fill="${color}"/>`);
+                p.push(`<path d="M${x-5},${y+2} Q${x+3},${y+2} ${x-2},${y+8}" fill="none" stroke="${color}" stroke-width="1.8" stroke-linecap="round"/>`);
+            }
+        }
+
         function _midiToStaffStep(midi) {
             // Returns { clef: 'treble'|'bass', step: number }
             // step is diatonic distance from the bottom line of the respective staff.
@@ -1304,6 +1328,7 @@
                     const mRight = mLeft + MEAS_W;
                     const tStart = mi * chordDurSec;
                     const tEnd   = (mi + 1) * chordDurSec;
+                    const beatDur = chordDurSec / 4;
 
                     // Measure highlight background
                     const mhId = `sh-mh-${mi}`;
@@ -1326,10 +1351,9 @@
                     const mNotes = notes.filter(n => n.start >= tStart - 0.02 && n.start < tEnd - 0.01);
 
                     if (!mNotes.length) {
-                        // Whole rest (Treble)
-                        p.push(`<rect x="${mLeft + MEAS_W / 2 - 12}" y="${trbY - 6 * HS}" width="24" height="${HS - 0.5}" fill="#3d4d63" rx="1"/>`);
-                        // Whole rest (Bass)
-                        p.push(`<rect x="${mLeft + MEAS_W / 2 - 12}" y="${basY - 6 * HS}" width="24" height="${HS - 0.5}" fill="#3d4d63" rx="1"/>`);
+                        // Use renderRest for whole rest in empty measures (center on 3rd line)
+                        renderRest(p, mLeft + MEAS_W / 2, trbY - 2 * SL, 4 * beatDur, beatDur);
+                        renderRest(p, mLeft + MEAS_W / 2, basY - 2 * SL, 4 * beatDur, beatDur);
                         continue;
                     }
 
@@ -1346,22 +1370,61 @@
                     });
 
                     const noteAreaW = MEAS_W - NOTE_PAD_L - NOTE_PAD_R;
-                    const beatDur   = chordDurSec / 4;
 
-                    groups.forEach((grp, gi) => {
-                        const tOff   = grp[0].start - tStart;
-                        const gx     = mLeft + NOTE_PAD_L + (tOff / chordDurSec) * noteAreaW;
+                    // Fill gaps between notes with rests
+                    const items = [];
+                    let currT = tStart;
+                    groups.forEach(grp => {
+                        const start = grp[0].start;
+                        // Be more lenient with rest detection (0.02s gap)
+                        if (start > currT + 0.02) {
+                            items.push({ isRest: true, start: currT, duration: start - currT });
+                        }
+                        items.push({ isRest: false, grp });
+                        currT = start + grp[0].duration;
+                    });
+                    if (currT < tEnd - 0.02) {
+                        items.push({ isRest: true, start: currT, duration: tEnd - currT });
+                    }
+
+                    items.forEach((item, ii) => {
+                        const tOff = (item.isRest ? item.start : item.grp[0].start) - tStart;
+                        const gx   = mLeft + NOTE_PAD_L + (tOff / chordDurSec) * noteAreaW;
+
+                        if (item.isRest) {
+                            // Render rest on both treble and bass staff (center on 3rd line)
+                            // Use a brighter color and ensure it's drawn
+                            renderRest(p, gx, trbY - 2 * SL, item.duration, beatDur);
+                            renderRest(p, gx, basY - 2 * SL, item.duration, beatDur);
+                            return;
+                        }
+
+                        const grp = item.grp;
+                        const gi  = ii; 
                         const durSec = grp[0].duration;
                         const isWhole = durSec >= 3.5 * beatDur;
                         const isHalf  = !isWhole && durSec >= 1.5 * beatDur;
                         const isOpen  = isWhole || isHalf;
-                        const isEighth = !isWhole && !isHalf && durSec < 0.75 * beatDur;
-                        const isTriplet = !isWhole && !isHalf && Math.abs(durSec - (beatDur / 3)) < (beatDur * 0.1);
+                        
+                        // Strict triplet detection: only if it's very close to 1/3 of a beat
+                        const isTriplet = !isWhole && !isHalf && Math.abs(durSec - (beatDur / 3)) < (beatDur * 0.03);
+                        const isEighth = !isWhole && !isHalf && !isTriplet && durSec < 0.75 * beatDur;
 
                         const noteData = grp.map(n => _midiToStaffStep(n.note));
                         
                         const ngId = `sh-ng-${mi}-${gi}`;
                         p.push(`<g id="${ngId}" class="sh-note-group">`);
+
+                        // Triplet "3" marker (only one per chord group)
+                        if (isTriplet) {
+                            const steps = noteData.map(nd => nd.step);
+                            const maxStep = Math.max(...steps);
+                            const minStep = Math.min(...steps);
+                            // Choose y based on clef of highest/lowest note
+                            const baseStaffY = noteData[0].clef === 'treble' ? trbY : basY;
+                            const markerY = maxStep >= 4 ? baseStaffY - maxStep * HS - STEM_H - 12 : baseStaffY - minStep * HS + STEM_H + 12;
+                            p.push(`<text x="${gx}" y="${markerY}" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="#7a8fa8">3</text>`);
+                        }
 
                         noteData.forEach((nd, ni) => {
                             const sb = nd.clef === 'treble' ? trbY : basY;
@@ -1395,12 +1458,6 @@
                                     const d = stemUp ? 1 : -1;
                                     p.push(`<path d="M${stemX},${stemY2} Q${stemX + d * 12},${stemY2 + d * 6} ${stemX + d * 8},${stemY2 + d * 12}" fill="none" class="sh-stem" stroke-width="1.2"/>`);
                                 }
-                            }
-
-                            // Triplet "3" marker
-                            if (isTriplet) {
-                                const ty = stemUp ? ny - STEM_H - 12 : ny + STEM_H + 12;
-                                p.push(`<text x="${gx}" y="${ty}" text-anchor="middle" font-family="serif" font-size="10" font-style="italic" fill="#7a8fa8">3</text>`);
                             }
 
                             // Head
@@ -1502,10 +1559,11 @@
                 }
 
                 case 'pop-strum': {
-                    const strumTypes = ['down', 'down', 'up', 'down', 'up'];
+                    const strumTypes = ['down', 'down', 'up', 'down', 'up', null, null, null];
                     const totalEighths = Math.floor(chordDurSec / eighthDur);
                     const curEighth = Math.min(eighthIdx, totalEighths - 1);
                     const dir = strumTypes[curEighth % strumTypes.length];
+                    if (!dir) return [];
                     const eighthElapsed = chordElapsed - curEighth * eighthDur;
                     const ordered = dir === 'up' ? [...nonMuted].reverse() : [...nonMuted];
                     const lit = [];
