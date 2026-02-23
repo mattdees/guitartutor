@@ -16,7 +16,7 @@ import (
 type MidiRequest struct {
 	Chords   []string   `json:"chords"   binding:"required"` // e.g. ["C","Am","F","G"]
 	Tempo    int        `json:"tempo"`                       // BPM (default 120)
-	Pattern  string     `json:"pattern"`                     // "whole","half","quarter","arpeggio-up","arpeggio-down","boom-chick","pop-strum","travis-picking","alberti-bass","triplet-arpeggio","pop-stabs","bossa-nova","reggae-skank","funk-16th","jazz-swing","rock-8th"
+	Pattern  string     `json:"pattern"`                     // "whole","half","quarter","arpeggio-up","arpeggio-down","boom-chick","pop-strum","travis-picking","alberti-bass","triplet-arpeggio","pop-stabs","bossa-nova","reggae-skank","funk-16th","jazz-swing","rock-8th","let-it-be","stand-by-me","creep-arpeggio","twist-and-shout","blues-shuffle","sweet-home-alabama","stairway-arpeggio","hotel-california","wonderwall-strum","blackbird-pick","palm-mute-8th","off-beat-8th","country-alt-bass","pima-arpeggio","four-on-the-floor"
 	Octave   int        `json:"octave"`                      // base octave 2–6 (default 4)
 	Beats    int        `json:"beats"`                       // beats per chord (default 4)
 	Frets    [][]string `json:"frets"`                       // per-chord fret positions (e.g. ["x","3","2","0","1","0"])
@@ -503,6 +503,315 @@ func buildTrack(req MidiRequest) []byte {
 					if j == 0 {
 						d = eighthTicks
 					}
+					trk = append(trk, noteOffEvent(d, 0, n)...)
+				}
+			}
+
+		case "let-it-be":
+			// Piano ballad style: Quarters on 1, 2, 3, 4 with a subtle octaved root pulse
+			for beat := 0; beat < req.Beats; beat++ {
+				// Play chord
+				for _, n := range notes {
+					trk = append(trk, noteOnEvent(0, 0, n, 95)...)
+				}
+				// Beat 1 and 3: add a lower octave root for depth
+				if beat%2 == 0 {
+					trk = append(trk, noteOnEvent(0, 0, notes[0]-12, 100)...)
+				}
+				// Release all
+				trk = append(trk, noteOffEvent(beatTicks, 0, notes[0]-12)...)
+				for _, n := range notes {
+					trk = append(trk, noteOffEvent(0, 0, n)...)
+				}
+			}
+
+		case "stand-by-me":
+			// Classic 50s bass line + backbeat stabs
+			bassNote := notes[0] - 12
+			eighthTicks := beatTicks / 2
+			// Pattern (8 eighths): Bass(1), ., Bass(2-and), ., Stab(3), ., Stab(4), .
+			pattern := []int{1, 0, 1, 0, 2, 0, 2, 0} // 1=Bass, 2=Stab
+			for ei := 0; ei < 8; ei++ {
+				p := pattern[ei%len(pattern)]
+				if p == 1 { // Bass
+					trk = append(trk, noteOnEvent(0, 0, bassNote, 110)...)
+					trk = append(trk, noteOffEvent(eighthTicks, 0, bassNote)...)
+				} else if p == 2 { // Stab
+					for _, n := range notes {
+						trk = append(trk, noteOnEvent(0, 0, n, 90)...)
+					}
+					for j, n := range notes {
+						d := uint32(0)
+						if j == 0 {
+							d = eighthTicks
+						}
+						trk = append(trk, noteOffEvent(d, 0, n)...)
+					}
+				} else { // Rest
+					trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
+					trk = append(trk, noteOffEvent(eighthTicks, 0, 0)...)
+				}
+			}
+
+		case "creep-arpeggio":
+			// Slow 8th note arpeggio: 1 2 3 4 5 6 7 8
+			eighthTicks := beatTicks / 2
+			for ei := 0; ei < 8; ei++ {
+				n := notes[ei%len(notes)]
+				trk = append(trk, noteOnEvent(0, 0, n, 100)...)
+				trk = append(trk, noteOffEvent(eighthTicks, 0, n)...)
+			}
+
+		case "twist-and-shout":
+			// Classic rock strum: D . D U . U D U (8th notes)
+			eighthTicks := beatTicks / 2
+			strumPattern := []struct {
+				active bool
+				up     bool
+			}{
+				{true, false}, {false, false}, {true, false}, {true, true},
+				{false, false}, {true, true}, {true, false}, {true, true},
+			}
+			for ei := 0; ei < 8; ei++ {
+				sp := strumPattern[ei%8]
+				if sp.active {
+					ordered := notes
+					if sp.up {
+						ordered = make([]byte, len(notes))
+						for k := 0; k < len(notes); k++ {
+							ordered[k] = notes[len(notes)-1-k]
+						}
+					}
+					for _, n := range ordered {
+						trk = append(trk, noteOnEvent(0, 0, n, 105)...)
+					}
+					for j, n := range ordered {
+						d := uint32(0)
+						if j == 0 {
+							d = eighthTicks
+						}
+						trk = append(trk, noteOffEvent(d, 0, n)...)
+					}
+				} else {
+					trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
+					trk = append(trk, noteOffEvent(eighthTicks, 0, 0)...)
+				}
+			}
+
+		case "blues-shuffle":
+			// Swung eighth notes: long-short (triplet feel)
+			longTicks := (beatTicks * 2) / 3
+			shortTicks := beatTicks / 3
+			for beat := 0; beat < req.Beats; beat++ {
+				// Downbeat (long)
+				for _, n := range notes {
+					trk = append(trk, noteOnEvent(0, 0, n, 110)...)
+				}
+				for j, n := range notes {
+					d := uint32(0)
+					if j == 0 {
+						d = longTicks
+					}
+					trk = append(trk, noteOffEvent(d, 0, n)...)
+				}
+				// Upbeat (short)
+				for _, n := range notes {
+					trk = append(trk, noteOnEvent(0, 0, n, 90)...)
+				}
+				for j, n := range notes {
+					d := uint32(0)
+					if j == 0 {
+						d = shortTicks
+					}
+					trk = append(trk, noteOffEvent(d, 0, n)...)
+				}
+			}
+
+		case "sweet-home-alabama":
+			// D-C-G style syncopated picking: Bass-Bass-Upper-Bass-Upper (8th notes)
+			eighthTicks := beatTicks / 2
+			bassNote := notes[0]
+			for ei := 0; ei < 8; ei++ {
+				var n byte
+				var vel byte = 100
+				switch ei % 8 {
+				case 0, 1, 3: // Bass
+					n = bassNote
+				case 2, 4, 5, 6, 7: // Upper
+					n = notes[len(notes)-1] // High note
+					if ei > 4 {
+						n = notes[len(notes)-2] // alternate
+					}
+					vel = 90
+				}
+				trk = append(trk, noteOnEvent(0, 0, n, vel)...)
+				trk = append(trk, noteOffEvent(eighthTicks, 0, n)...)
+			}
+
+		case "stairway-arpeggio":
+			// Fingerstyle ascending: Bass-T1-T2-T3-T2-T1 (8th note triplets feel)
+			eighthTicks := beatTicks / 2
+			for ei := 0; ei < 8; ei++ {
+				var n byte
+				switch ei % 8 {
+				case 0: n = notes[0] // Bass
+				case 1: n = notes[1]
+				case 2: n = notes[2]
+				case 3: n = notes[len(notes)-1]
+				case 4: n = notes[len(notes)-2]
+				case 5: n = notes[1]
+				case 6: n = notes[2]
+				case 7: n = notes[0]
+				}
+				trk = append(trk, noteOnEvent(0, 0, n, 100)...)
+				trk = append(trk, noteOffEvent(eighthTicks, 0, n)...)
+			}
+
+		case "hotel-california":
+			// 8th note arpeggio: 1 3 2 4 1 3 2 4 (Spanish/Classic feel)
+			eighthTicks := beatTicks / 2
+			for ei := 0; ei < 8; ei++ {
+				var n byte
+				idx := 0
+				switch ei % 4 {
+				case 0: idx = 0
+				case 1: idx = 2
+				case 2: idx = 1
+				case 3: idx = 3
+				}
+				if idx >= len(notes) { idx = len(notes)-1 }
+				n = notes[idx]
+				trk = append(trk, noteOnEvent(0, 0, n, 100)...)
+				trk = append(trk, noteOffEvent(eighthTicks, 0, n)...)
+			}
+
+		case "wonderwall-strum":
+			// Syncopated 16th strum: D . D . D U D . D . D U D U D U
+			sixteenthTicks := beatTicks / 4
+			pattern := []bool{true, false, true, false, true, true, true, false, true, false, true, true, true, true, true, true}
+			for si := 0; si < 16; si++ {
+				if pattern[si] {
+					for _, n := range notes {
+						trk = append(trk, noteOnEvent(0, 0, n, 100)...)
+					}
+					for j, n := range notes {
+						d := uint32(0)
+						if j == 0 { d = sixteenthTicks }
+						trk = append(trk, noteOffEvent(d, 0, n)...)
+					}
+				} else {
+					trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
+					trk = append(trk, noteOffEvent(sixteenthTicks, 0, 0)...)
+				}
+			}
+
+		case "blackbird-pick":
+			// Bass + high note pluck, then rhythmic filler
+			eighthTicks := beatTicks / 2
+			for ei := 0; ei < 8; ei++ {
+				if ei % 2 == 0 {
+					// Pluck Bass + High
+					trk = append(trk, noteOnEvent(0, 0, notes[0], 110)...)
+					trk = append(trk, noteOnEvent(0, 0, notes[len(notes)-1], 100)...)
+					trk = append(trk, noteOffEvent(eighthTicks, 0, notes[0])...)
+					trk = append(trk, noteOffEvent(0, 0, notes[len(notes)-1])...)
+				} else {
+					// Filler
+					trk = append(trk, noteOnEvent(0, 0, notes[1%len(notes)], 80)...)
+					trk = append(trk, noteOffEvent(eighthTicks, 0, notes[1%len(notes)])...)
+				}
+			}
+
+		case "palm-mute-8th":
+			// Constant 8th notes, short duration (staccato)
+			eighthTicks := beatTicks / 2
+			for ei := 0; ei < 8; ei++ {
+				for _, n := range notes {
+					trk = append(trk, noteOnEvent(0, 0, n, 100)...)
+				}
+				for j, n := range notes {
+					d := uint32(0)
+					if j == 0 { d = eighthTicks / 2 }
+					trk = append(trk, noteOffEvent(d, 0, n)...)
+				}
+				// rest of eighth
+				trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
+				trk = append(trk, noteOffEvent(eighthTicks/2, 0, 0)...)
+			}
+
+		case "off-beat-8th":
+			// 1 & 2 & 3 & 4 & - play only on the '&'
+			eighthTicks := beatTicks / 2
+			for ei := 0; ei < 8; ei++ {
+				if ei % 2 == 1 {
+					for _, n := range notes {
+						trk = append(trk, noteOnEvent(0, 0, n, 100)...)
+					}
+					for j, n := range notes {
+						d := uint32(0)
+						if j == 0 { d = eighthTicks }
+						trk = append(trk, noteOffEvent(d, 0, n)...)
+					}
+				} else {
+					trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
+					trk = append(trk, noteOffEvent(eighthTicks, 0, 0)...)
+				}
+			}
+
+		case "country-alt-bass":
+			// Bass(1), Strum(2), Bass(3-Fifth), Strum(4)
+			bassRoot := notes[0]
+			bassFifth := notes[0] + 7 // Default 5th
+			if len(notes) > 2 {
+				bassFifth = notes[2] // Use actual 5th if available
+			}
+			if bassFifth > 60 { bassFifth -= 12 } // Keep bass low
+
+			for beat := 0; beat < 4; beat++ {
+				if beat == 0 {
+					// Root bass
+					trk = append(trk, noteOnEvent(0, 0, bassRoot-12, 110)...)
+					trk = append(trk, noteOffEvent(beatTicks, 0, bassRoot-12)...)
+				} else if beat == 2 {
+					// Fifth bass
+					trk = append(trk, noteOnEvent(0, 0, bassFifth-12, 110)...)
+					trk = append(trk, noteOffEvent(beatTicks, 0, bassFifth-12)...)
+				} else {
+					// Strum
+					for _, n := range notes {
+						trk = append(trk, noteOnEvent(0, 0, n, 90)...)
+					}
+					for j, n := range notes {
+						d := uint32(0)
+						if j == 0 { d = beatTicks }
+						trk = append(trk, noteOffEvent(d, 0, n)...)
+					}
+				}
+			}
+
+		case "pima-arpeggio":
+			// Classic fingerstyle: P-i-m-a-m-i (8th notes)
+			eighthTicks := beatTicks / 2
+			pimaIdxs := []int{0, 1, 2, len(notes)-1, 2, 1, 0, 1}
+			for ei := 0; ei < 8; ei++ {
+				idx := pimaIdxs[ei % 8]
+				if idx >= len(notes) { idx = len(notes)-1 }
+				n := notes[idx]
+				trk = append(trk, noteOnEvent(0, 0, n, 100)...)
+				trk = append(trk, noteOffEvent(eighthTicks, 0, n)...)
+			}
+
+		case "four-on-the-floor":
+			// Consistent quarter notes with pulse on 1 and 3
+			for beat := 0; beat < 4; beat++ {
+				vel := byte(90)
+				if beat % 2 == 0 { vel = 110 }
+				for _, n := range notes {
+					trk = append(trk, noteOnEvent(0, 0, n, vel)...)
+				}
+				for j, n := range notes {
+					d := uint32(0)
+					if j == 0 { d = beatTicks }
 					trk = append(trk, noteOffEvent(d, 0, n)...)
 				}
 			}
