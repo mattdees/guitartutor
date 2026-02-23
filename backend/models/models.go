@@ -7,6 +7,7 @@ type Instrument struct {
 	Strings     int      `json:"strings"`
 	StringNames []string `json:"stringNames"`
 	Icon        string   `json:"icon"`
+	DisplayType string   `json:"displayType"` // "fretboard" or "keyboard"
 }
 
 // Progression is a named chord progression.
@@ -19,11 +20,14 @@ type Progression struct {
 }
 
 // ChordVariant is a single fingering for a chord.
+// For fretboard instruments: Frets, Fingers, Position are used.
+// For keyboard instruments (piano): Keys is used (note strings like "C4", "F#3").
 type ChordVariant struct {
 	Name     string   `json:"name"`
-	Frets    []string `json:"frets"`
-	Fingers  []string `json:"fingers"`
-	Position int      `json:"position"`
+	Frets    []string `json:"frets,omitempty"`
+	Fingers  []string `json:"fingers,omitempty"`
+	Position int      `json:"position,omitempty"`
+	Keys     []string `json:"keys,omitempty"` // piano: MIDI-style note names, e.g. "C4", "F#3"
 }
 
 // ChordDiagrams maps chord name → slice of variants.

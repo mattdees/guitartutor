@@ -1,0 +1,3242 @@
+{
+  "C": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C3",
+        "E3",
+        "G3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "E3",
+        "G3",
+        "C4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G3",
+        "C4",
+        "E4"
+      ]
+    }
+  ],
+  "Cm": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C3",
+        "D#3",
+        "G3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D#3",
+        "G3",
+        "C4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G3",
+        "C4",
+        "D#4"
+      ]
+    }
+  ],
+  "C7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C3",
+        "E3",
+        "G3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "E3",
+        "G3",
+        "A#3",
+        "C4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G3",
+        "A#3",
+        "C4",
+        "E4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "A#3",
+        "C4",
+        "E4",
+        "G4"
+      ]
+    }
+  ],
+  "Cmaj7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C3",
+        "E3",
+        "G3",
+        "B3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "E3",
+        "G3",
+        "B3",
+        "C4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G3",
+        "B3",
+        "C4",
+        "E4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "B3",
+        "C4",
+        "E4",
+        "G4"
+      ]
+    }
+  ],
+  "Cm7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C3",
+        "D#3",
+        "G3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D#3",
+        "G3",
+        "A#3",
+        "C4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G3",
+        "A#3",
+        "C4",
+        "D#4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "A#3",
+        "C4",
+        "D#4",
+        "G4"
+      ]
+    }
+  ],
+  "Cdim": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C3",
+        "D#3",
+        "F#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D#3",
+        "F#3",
+        "C4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F#3",
+        "C4",
+        "D#4"
+      ]
+    }
+  ],
+  "Caug": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C3",
+        "E3",
+        "G#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "E3",
+        "G#3",
+        "C4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G#3",
+        "C4",
+        "E4"
+      ]
+    }
+  ],
+  "Csus2": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C3",
+        "D3",
+        "G3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D3",
+        "G3",
+        "C4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G3",
+        "C4",
+        "D4"
+      ]
+    }
+  ],
+  "Csus4": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C3",
+        "F3",
+        "G3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F3",
+        "G3",
+        "C4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G3",
+        "C4",
+        "F4"
+      ]
+    }
+  ],
+  "C#": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C#3",
+        "F3",
+        "G#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F3",
+        "G#3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G#3",
+        "C#4",
+        "F4"
+      ]
+    }
+  ],
+  "C#m": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C#3",
+        "E3",
+        "G#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "E3",
+        "G#3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G#3",
+        "C#4",
+        "E4"
+      ]
+    }
+  ],
+  "C#7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C#3",
+        "F3",
+        "G#3",
+        "B3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F3",
+        "G#3",
+        "B3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G#3",
+        "B3",
+        "C#4",
+        "F4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "B3",
+        "C#4",
+        "F4",
+        "G#4"
+      ]
+    }
+  ],
+  "C#maj7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C#3",
+        "F3",
+        "G#3",
+        "C4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F3",
+        "G#3",
+        "C4",
+        "C#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G#3",
+        "C4",
+        "C#4",
+        "F4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "C3",
+        "C#3",
+        "F3",
+        "G#3"
+      ]
+    }
+  ],
+  "C#m7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C#3",
+        "E3",
+        "G#3",
+        "B3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "E3",
+        "G#3",
+        "B3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G#3",
+        "B3",
+        "C#4",
+        "E4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "B3",
+        "C#4",
+        "E4",
+        "G#4"
+      ]
+    }
+  ],
+  "C#dim": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C#3",
+        "E3",
+        "G3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "E3",
+        "G3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G3",
+        "C#4",
+        "E4"
+      ]
+    }
+  ],
+  "C#aug": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C#3",
+        "F3",
+        "A3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F3",
+        "A3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A3",
+        "C#4",
+        "F4"
+      ]
+    }
+  ],
+  "C#sus2": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C#3",
+        "D#3",
+        "G#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D#3",
+        "G#3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G#3",
+        "C#4",
+        "D#4"
+      ]
+    }
+  ],
+  "C#sus4": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "C#3",
+        "F#3",
+        "G#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F#3",
+        "G#3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G#3",
+        "C#4",
+        "F#4"
+      ]
+    }
+  ],
+  "D": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D3",
+        "F#3",
+        "A3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F#3",
+        "A3",
+        "D4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A3",
+        "D4",
+        "F#4"
+      ]
+    }
+  ],
+  "Dm": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D3",
+        "F3",
+        "A3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F3",
+        "A3",
+        "D4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A3",
+        "D4",
+        "F4"
+      ]
+    }
+  ],
+  "D7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D3",
+        "F#3",
+        "A3",
+        "C4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F#3",
+        "A3",
+        "C4",
+        "D4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A3",
+        "C4",
+        "D4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "C3",
+        "D3",
+        "F#3",
+        "A3"
+      ]
+    }
+  ],
+  "Dmaj7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D3",
+        "F#3",
+        "A3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F#3",
+        "A3",
+        "C#4",
+        "D4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A3",
+        "C#4",
+        "D4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "C#3",
+        "D3",
+        "F#3",
+        "A3"
+      ]
+    }
+  ],
+  "Dm7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D3",
+        "F3",
+        "A3",
+        "C4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F3",
+        "A3",
+        "C4",
+        "D4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A3",
+        "C4",
+        "D4",
+        "F4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "C3",
+        "D3",
+        "F3",
+        "A3"
+      ]
+    }
+  ],
+  "Ddim": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D3",
+        "F3",
+        "G#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F3",
+        "G#3",
+        "D4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G#3",
+        "D4",
+        "F4"
+      ]
+    }
+  ],
+  "Daug": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D3",
+        "F#3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F#3",
+        "A#3",
+        "D4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A#3",
+        "D4",
+        "F#4"
+      ]
+    }
+  ],
+  "Dsus2": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D3",
+        "E3",
+        "A3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "E3",
+        "A3",
+        "D4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A3",
+        "D4",
+        "E4"
+      ]
+    }
+  ],
+  "Dsus4": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D3",
+        "G3",
+        "A3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G3",
+        "A3",
+        "D4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A3",
+        "D4",
+        "G4"
+      ]
+    }
+  ],
+  "D#": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D#3",
+        "G3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G3",
+        "A#3",
+        "D#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A#3",
+        "D#4",
+        "G4"
+      ]
+    }
+  ],
+  "D#m": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D#3",
+        "F#3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F#3",
+        "A#3",
+        "D#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A#3",
+        "D#4",
+        "F#4"
+      ]
+    }
+  ],
+  "D#7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D#3",
+        "G3",
+        "A#3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G3",
+        "A#3",
+        "C#4",
+        "D#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A#3",
+        "C#4",
+        "D#4",
+        "G4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "C#3",
+        "D#3",
+        "G3",
+        "A#3"
+      ]
+    }
+  ],
+  "D#maj7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D#3",
+        "G3",
+        "A#3",
+        "D4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G3",
+        "A#3",
+        "D4",
+        "D#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A#3",
+        "D4",
+        "D#4",
+        "G4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "D3",
+        "D#3",
+        "G3",
+        "A#3"
+      ]
+    }
+  ],
+  "D#m7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D#3",
+        "F#3",
+        "A#3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F#3",
+        "A#3",
+        "C#4",
+        "D#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A#3",
+        "C#4",
+        "D#4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "C#3",
+        "D#3",
+        "F#3",
+        "A#3"
+      ]
+    }
+  ],
+  "D#dim": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D#3",
+        "F#3",
+        "A3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F#3",
+        "A3",
+        "D#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A3",
+        "D#4",
+        "F#4"
+      ]
+    }
+  ],
+  "D#aug": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D#3",
+        "G3",
+        "B3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G3",
+        "B3",
+        "D#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "B3",
+        "D#4",
+        "G4"
+      ]
+    }
+  ],
+  "D#sus2": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D#3",
+        "F3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F3",
+        "A#3",
+        "D#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A#3",
+        "D#4",
+        "F4"
+      ]
+    }
+  ],
+  "D#sus4": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "D#3",
+        "G#3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G#3",
+        "A#3",
+        "D#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A#3",
+        "D#4",
+        "G#4"
+      ]
+    }
+  ],
+  "E": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "E3",
+        "G#3",
+        "B3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G#3",
+        "B3",
+        "E4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "B3",
+        "E4",
+        "G#4"
+      ]
+    }
+  ],
+  "Em": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "E3",
+        "G3",
+        "B3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G3",
+        "B3",
+        "E4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "B3",
+        "E4",
+        "G4"
+      ]
+    }
+  ],
+  "E7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "E3",
+        "G#3",
+        "B3",
+        "D4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G#3",
+        "B3",
+        "D4",
+        "E4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "B3",
+        "D4",
+        "E4",
+        "G#4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "D3",
+        "E3",
+        "G#3",
+        "B3"
+      ]
+    }
+  ],
+  "Emaj7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "E3",
+        "G#3",
+        "B3",
+        "D#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G#3",
+        "B3",
+        "D#4",
+        "E4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "B3",
+        "D#4",
+        "E4",
+        "G#4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "D#3",
+        "E3",
+        "G#3",
+        "B3"
+      ]
+    }
+  ],
+  "Em7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "E3",
+        "G3",
+        "B3",
+        "D4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G3",
+        "B3",
+        "D4",
+        "E4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "B3",
+        "D4",
+        "E4",
+        "G4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "D3",
+        "E3",
+        "G3",
+        "B3"
+      ]
+    }
+  ],
+  "Edim": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "E3",
+        "G3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G3",
+        "A#3",
+        "E4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "A#3",
+        "E4",
+        "G4"
+      ]
+    }
+  ],
+  "Eaug": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "E3",
+        "G#3",
+        "C4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G#3",
+        "C4",
+        "E4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C3",
+        "E3",
+        "G#3"
+      ]
+    }
+  ],
+  "Esus2": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "E3",
+        "F#3",
+        "B3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "F#3",
+        "B3",
+        "E4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "B3",
+        "E4",
+        "F#4"
+      ]
+    }
+  ],
+  "Esus4": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "E3",
+        "A3",
+        "B3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A3",
+        "B3",
+        "E4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "B3",
+        "E4",
+        "A4"
+      ]
+    }
+  ],
+  "F": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F3",
+        "A3",
+        "C4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A3",
+        "C4",
+        "F4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C3",
+        "F3",
+        "A3"
+      ]
+    }
+  ],
+  "Fm": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F3",
+        "G#3",
+        "C4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G#3",
+        "C4",
+        "F4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C3",
+        "F3",
+        "G#3"
+      ]
+    }
+  ],
+  "F7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F3",
+        "A3",
+        "C4",
+        "D#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A3",
+        "C4",
+        "D#4",
+        "F4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C3",
+        "D#3",
+        "F3",
+        "A3"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "D#3",
+        "F3",
+        "A3",
+        "C4"
+      ]
+    }
+  ],
+  "Fmaj7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F3",
+        "A3",
+        "C4",
+        "E4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A3",
+        "C4",
+        "E4",
+        "F4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C3",
+        "E3",
+        "F3",
+        "A3"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "E3",
+        "F3",
+        "A3",
+        "C4"
+      ]
+    }
+  ],
+  "Fm7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F3",
+        "G#3",
+        "C4",
+        "D#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G#3",
+        "C4",
+        "D#4",
+        "F4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C3",
+        "D#3",
+        "F3",
+        "G#3"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "D#3",
+        "F3",
+        "G#3",
+        "C4"
+      ]
+    }
+  ],
+  "Fdim": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F3",
+        "G#3",
+        "B3"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G#3",
+        "B3",
+        "F4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "B3",
+        "F4",
+        "G#4"
+      ]
+    }
+  ],
+  "Faug": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F3",
+        "A3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A3",
+        "C#4",
+        "F4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C#3",
+        "F3",
+        "A3"
+      ]
+    }
+  ],
+  "Fsus2": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F3",
+        "G3",
+        "C4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G3",
+        "C4",
+        "F4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C3",
+        "F3",
+        "G3"
+      ]
+    }
+  ],
+  "Fsus4": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F3",
+        "A#3",
+        "C4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A#3",
+        "C4",
+        "F4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C3",
+        "F3",
+        "A#3"
+      ]
+    }
+  ],
+  "F#": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F#3",
+        "A#3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A#3",
+        "C#4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C#3",
+        "F#3",
+        "A#3"
+      ]
+    }
+  ],
+  "F#m": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F#3",
+        "A3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A3",
+        "C#4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C#3",
+        "F#3",
+        "A3"
+      ]
+    }
+  ],
+  "F#7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F#3",
+        "A#3",
+        "C#4",
+        "E4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A#3",
+        "C#4",
+        "E4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C#3",
+        "E3",
+        "F#3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "E3",
+        "F#3",
+        "A#3",
+        "C#4"
+      ]
+    }
+  ],
+  "F#maj7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F#3",
+        "A#3",
+        "C#4",
+        "F4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A#3",
+        "C#4",
+        "F4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C#3",
+        "F3",
+        "F#3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "F3",
+        "F#3",
+        "A#3",
+        "C#4"
+      ]
+    }
+  ],
+  "F#m7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F#3",
+        "A3",
+        "C#4",
+        "E4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A3",
+        "C#4",
+        "E4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C#3",
+        "E3",
+        "F#3",
+        "A3"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "E3",
+        "F#3",
+        "A3",
+        "C#4"
+      ]
+    }
+  ],
+  "F#dim": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F#3",
+        "A3",
+        "C4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A3",
+        "C4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C3",
+        "F#3",
+        "A3"
+      ]
+    }
+  ],
+  "F#aug": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F#3",
+        "A#3",
+        "D4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A#3",
+        "D4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D3",
+        "F#3",
+        "A#3"
+      ]
+    }
+  ],
+  "F#sus2": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F#3",
+        "G#3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "G#3",
+        "C#4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C#3",
+        "F#3",
+        "G#3"
+      ]
+    }
+  ],
+  "F#sus4": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "F#3",
+        "B3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "B3",
+        "C#4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C#3",
+        "F#3",
+        "B3"
+      ]
+    }
+  ],
+  "G": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G3",
+        "B3",
+        "D4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "B3",
+        "D4",
+        "G4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D3",
+        "G3",
+        "B3"
+      ]
+    }
+  ],
+  "Gm": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G3",
+        "A#3",
+        "D4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A#3",
+        "D4",
+        "G4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D3",
+        "G3",
+        "A#3"
+      ]
+    }
+  ],
+  "G7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G3",
+        "B3",
+        "D4",
+        "F4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "B3",
+        "D4",
+        "F4",
+        "G4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D3",
+        "F3",
+        "G3",
+        "B3"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "F3",
+        "G3",
+        "B3",
+        "D4"
+      ]
+    }
+  ],
+  "Gmaj7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G3",
+        "B3",
+        "D4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "B3",
+        "D4",
+        "F#4",
+        "G4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D3",
+        "F#3",
+        "G3",
+        "B3"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "F#3",
+        "G3",
+        "B3",
+        "D4"
+      ]
+    }
+  ],
+  "Gm7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G3",
+        "A#3",
+        "D4",
+        "F4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A#3",
+        "D4",
+        "F4",
+        "G4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D3",
+        "F3",
+        "G3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "F3",
+        "G3",
+        "A#3",
+        "D4"
+      ]
+    }
+  ],
+  "Gdim": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G3",
+        "A#3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A#3",
+        "C#4",
+        "G4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "C#3",
+        "G3",
+        "A#3"
+      ]
+    }
+  ],
+  "Gaug": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G3",
+        "B3",
+        "D#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "B3",
+        "D#4",
+        "G4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D#3",
+        "G3",
+        "B3"
+      ]
+    }
+  ],
+  "Gsus2": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G3",
+        "A3",
+        "D4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A3",
+        "D4",
+        "G4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D3",
+        "G3",
+        "A3"
+      ]
+    }
+  ],
+  "Gsus4": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G3",
+        "C4",
+        "D4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C3",
+        "D3",
+        "G3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D3",
+        "G3",
+        "C4"
+      ]
+    }
+  ],
+  "G#": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G#3",
+        "C4",
+        "D#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C3",
+        "D#3",
+        "G#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D#3",
+        "G#3",
+        "C4"
+      ]
+    }
+  ],
+  "G#m": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G#3",
+        "B3",
+        "D#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "B3",
+        "D#4",
+        "G#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D#3",
+        "G#3",
+        "B3"
+      ]
+    }
+  ],
+  "G#7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G#3",
+        "C4",
+        "D#4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C3",
+        "D#3",
+        "F#3",
+        "G#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D#3",
+        "F#3",
+        "G#3",
+        "C4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "F#3",
+        "G#3",
+        "C4",
+        "D#4"
+      ]
+    }
+  ],
+  "G#maj7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G#3",
+        "C4",
+        "D#4",
+        "G4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C3",
+        "D#3",
+        "G3",
+        "G#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D#3",
+        "G3",
+        "G#3",
+        "C4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "G3",
+        "G#3",
+        "C4",
+        "D#4"
+      ]
+    }
+  ],
+  "G#m7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G#3",
+        "B3",
+        "D#4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "B3",
+        "D#4",
+        "F#4",
+        "G#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D#3",
+        "F#3",
+        "G#3",
+        "B3"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "F#3",
+        "G#3",
+        "B3",
+        "D#4"
+      ]
+    }
+  ],
+  "G#dim": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G#3",
+        "B3",
+        "D4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "B3",
+        "D4",
+        "G#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D3",
+        "G#3",
+        "B3"
+      ]
+    }
+  ],
+  "G#aug": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G#3",
+        "C4",
+        "E4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C3",
+        "E3",
+        "G#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "E3",
+        "G#3",
+        "C4"
+      ]
+    }
+  ],
+  "G#sus2": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G#3",
+        "A#3",
+        "D#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "A#3",
+        "D#4",
+        "G#4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D#3",
+        "G#3",
+        "A#3"
+      ]
+    }
+  ],
+  "G#sus4": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "G#3",
+        "C#4",
+        "D#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C#3",
+        "D#3",
+        "G#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D#3",
+        "G#3",
+        "C#4"
+      ]
+    }
+  ],
+  "A": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A3",
+        "C#4",
+        "E4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C#3",
+        "E3",
+        "A3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "E3",
+        "A3",
+        "C#4"
+      ]
+    }
+  ],
+  "Am": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A3",
+        "C4",
+        "E4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C3",
+        "E3",
+        "A3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "E3",
+        "A3",
+        "C4"
+      ]
+    }
+  ],
+  "A7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A3",
+        "C#4",
+        "E4",
+        "G4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C#3",
+        "E3",
+        "G3",
+        "A3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "E3",
+        "G3",
+        "A3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "G3",
+        "A3",
+        "C#4",
+        "E4"
+      ]
+    }
+  ],
+  "Amaj7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A3",
+        "C#4",
+        "E4",
+        "G#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C#3",
+        "E3",
+        "G#3",
+        "A3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "E3",
+        "G#3",
+        "A3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "G#3",
+        "A3",
+        "C#4",
+        "E4"
+      ]
+    }
+  ],
+  "Am7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A3",
+        "C4",
+        "E4",
+        "G4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C3",
+        "E3",
+        "G3",
+        "A3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "E3",
+        "G3",
+        "A3",
+        "C4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "G3",
+        "A3",
+        "C4",
+        "E4"
+      ]
+    }
+  ],
+  "Adim": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A3",
+        "C4",
+        "D#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C3",
+        "D#3",
+        "A3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "D#3",
+        "A3",
+        "C4"
+      ]
+    }
+  ],
+  "Aaug": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A3",
+        "C#4",
+        "F4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C#3",
+        "F3",
+        "A3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F3",
+        "A3",
+        "C#4"
+      ]
+    }
+  ],
+  "Asus2": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A3",
+        "B3",
+        "E4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "B3",
+        "E4",
+        "A4"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "E3",
+        "A3",
+        "B3"
+      ]
+    }
+  ],
+  "Asus4": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A3",
+        "D4",
+        "E4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D3",
+        "E3",
+        "A3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "E3",
+        "A3",
+        "D4"
+      ]
+    }
+  ],
+  "A#": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A#3",
+        "D4",
+        "F4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D3",
+        "F3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F3",
+        "A#3",
+        "D4"
+      ]
+    }
+  ],
+  "A#m": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A#3",
+        "C#4",
+        "F4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C#3",
+        "F3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F3",
+        "A#3",
+        "C#4"
+      ]
+    }
+  ],
+  "A#7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A#3",
+        "D4",
+        "F4",
+        "G#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D3",
+        "F3",
+        "G#3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F3",
+        "G#3",
+        "A#3",
+        "D4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "G#3",
+        "A#3",
+        "D4",
+        "F4"
+      ]
+    }
+  ],
+  "A#maj7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A#3",
+        "D4",
+        "F4",
+        "A4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D3",
+        "F3",
+        "A3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F3",
+        "A3",
+        "A#3",
+        "D4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "A3",
+        "A#3",
+        "D4",
+        "F4"
+      ]
+    }
+  ],
+  "A#m7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A#3",
+        "C#4",
+        "F4",
+        "G#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C#3",
+        "F3",
+        "G#3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F3",
+        "G#3",
+        "A#3",
+        "C#4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "G#3",
+        "A#3",
+        "C#4",
+        "F4"
+      ]
+    }
+  ],
+  "A#dim": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A#3",
+        "C#4",
+        "E4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C#3",
+        "E3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "E3",
+        "A#3",
+        "C#4"
+      ]
+    }
+  ],
+  "A#aug": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A#3",
+        "D4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D3",
+        "F#3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F#3",
+        "A#3",
+        "D4"
+      ]
+    }
+  ],
+  "A#sus2": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A#3",
+        "C4",
+        "F4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C3",
+        "F3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F3",
+        "A#3",
+        "C4"
+      ]
+    }
+  ],
+  "A#sus4": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "A#3",
+        "D#4",
+        "F4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D#3",
+        "F3",
+        "A#3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F3",
+        "A#3",
+        "D#4"
+      ]
+    }
+  ],
+  "B": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "B3",
+        "D#4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D#3",
+        "F#3",
+        "B3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F#3",
+        "B3",
+        "D#4"
+      ]
+    }
+  ],
+  "Bm": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "B3",
+        "D4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D3",
+        "F#3",
+        "B3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F#3",
+        "B3",
+        "D4"
+      ]
+    }
+  ],
+  "B7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "B3",
+        "D#4",
+        "F#4",
+        "A4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D#3",
+        "F#3",
+        "A3",
+        "B3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F#3",
+        "A3",
+        "B3",
+        "D#4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "A3",
+        "B3",
+        "D#4",
+        "F#4"
+      ]
+    }
+  ],
+  "Bmaj7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "B3",
+        "D#4",
+        "F#4",
+        "A#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D#3",
+        "F#3",
+        "A#3",
+        "B3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F#3",
+        "A#3",
+        "B3",
+        "D#4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "A#3",
+        "B3",
+        "D#4",
+        "F#4"
+      ]
+    }
+  ],
+  "Bm7": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "B3",
+        "D4",
+        "F#4",
+        "A4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D3",
+        "F#3",
+        "A3",
+        "B3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F#3",
+        "A3",
+        "B3",
+        "D4"
+      ]
+    },
+    {
+      "name": "3rd Inversion",
+      "keys": [
+        "A3",
+        "B3",
+        "D4",
+        "F#4"
+      ]
+    }
+  ],
+  "Bdim": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "B3",
+        "D4",
+        "F4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D3",
+        "F3",
+        "B3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F3",
+        "B3",
+        "D4"
+      ]
+    }
+  ],
+  "Baug": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "B3",
+        "D#4",
+        "G4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "D#3",
+        "G3",
+        "B3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "G3",
+        "B3",
+        "D#4"
+      ]
+    }
+  ],
+  "Bsus2": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "B3",
+        "C#4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "C#3",
+        "F#3",
+        "B3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F#3",
+        "B3",
+        "C#4"
+      ]
+    }
+  ],
+  "Bsus4": [
+    {
+      "name": "Root Position",
+      "keys": [
+        "B3",
+        "E4",
+        "F#4"
+      ]
+    },
+    {
+      "name": "1st Inversion",
+      "keys": [
+        "E3",
+        "F#3",
+        "B3"
+      ]
+    },
+    {
+      "name": "2nd Inversion",
+      "keys": [
+        "F#3",
+        "B3",
+        "E4"
+      ]
+    }
+  ]
+}

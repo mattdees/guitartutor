@@ -292,6 +292,40 @@
         .open-string   { font-size: 12px; color: #4ade80; font-weight: bold; }
         .muted-string  { font-size: 12px; color: #f87171; font-weight: bold; }
 
+        /* ── Piano keyboard ─────────────────────────────────────────────── */
+        .piano-chord-diagram { padding: 8px 6px 6px !important; }
+        .piano-keyboard { position: relative; display: flex; user-select: none; }
+
+        .piano-key {
+            border: 1px solid #333;
+            border-radius: 0 0 3px 3px;
+            box-sizing: border-box;
+            position: relative;
+            flex-shrink: 0;
+        }
+        .piano-white { background: #e8e8e8; }
+        .piano-black {
+            background: #1a1a1a;
+            position: absolute;
+            z-index: 2;
+            border-radius: 0 0 4px 4px;
+        }
+        .piano-white.piano-active { background: #14b8a6; }
+        .piano-black.piano-active { background: #0d6e68; border: 1px solid #14b8a6; }
+
+        .piano-key-label {
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 7px;
+            font-weight: bold;
+            color: #1a1a2e;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .piano-black .piano-key-label { color: #e0fdf4; font-size: 6px; bottom: 3px; }
+
         .string-indicators { display: grid; grid-template-columns: repeat(6, 18px); margin-left: 20px; margin-bottom: 2px; }
         .string-indicator  { text-align: center; font-size: 12px; }
         .fret-number { font-size: 10px; color: #888; text-align: right; padding-right: 4px; }
@@ -588,7 +622,57 @@
             });
         }
 
+        // ── Piano keyboard constants ──────────────────────────────────────────
+        const PIANO_WHITE_KEYS = [
+            'C3','D3','E3','F3','G3','A3','B3',
+            'C4','D4','E4','F4','G4','A4','B4','C5',
+        ];
+        // left offset (px) of each black key from the left edge of the keyboard container
+        const PIANO_BLACK_KEYS = [
+            {note:'C#3', left:15}, {note:'D#3', left:37}, {note:'F#3', left:81},
+            {note:'G#3', left:103},{note:'A#3', left:125},
+            {note:'C#4', left:169},{note:'D#4', left:191},{note:'F#4', left:235},
+            {note:'G#4', left:257},{note:'A#4', left:279},
+        ];
+        const PIANO_WHITE_W  = 22;
+        const PIANO_WHITE_H  = 90;
+        const PIANO_BLACK_W  = 13;
+        const PIANO_BLACK_H  = 55;
+
+        function renderPianoChordDiagram(diagram) {
+            if (!diagram || !diagram.keys || !diagram.keys.length) {
+                return '<div class="chord-diagram piano-chord-diagram"><div style="color:#888;font-size:12px;padding:20px;">No diagram<br/>available</div></div>';
+            }
+            const active = new Set(diagram.keys);
+            const totalW = PIANO_WHITE_KEYS.length * PIANO_WHITE_W;
+            let html = `<div class="chord-diagram piano-chord-diagram">`;
+            html += `<div class="piano-keyboard" style="width:${totalW}px;height:${PIANO_WHITE_H}px;">`;
+
+            // White keys (laid out as flex children)
+            PIANO_WHITE_KEYS.forEach(note => {
+                const on = active.has(note);
+                html += `<div class="piano-key piano-white${on ? ' piano-active' : ''}" style="width:${PIANO_WHITE_W}px;height:${PIANO_WHITE_H}px;">`;
+                if (on) html += `<span class="piano-key-label">${note.replace(/\d+$/, '')}</span>`;
+                html += '</div>';
+            });
+
+            // Black keys (absolutely positioned on top)
+            PIANO_BLACK_KEYS.forEach(({note, left}) => {
+                const on = active.has(note);
+                const noteName = note.replace(/\d+$/, '');
+                html += `<div class="piano-key piano-black${on ? ' piano-active' : ''}" style="left:${left}px;top:0;width:${PIANO_BLACK_W}px;height:${PIANO_BLACK_H}px;">`;
+                if (on) html += `<span class="piano-key-label">${noteName}</span>`;
+                html += '</div>';
+            });
+
+            html += '</div></div>';
+            return html;
+        }
+
         function renderChordDiagram(diagram) {
+            if (currentInstrument && currentInstrument.displayType === 'keyboard') {
+                return renderPianoChordDiagram(diagram);
+            }
             if (!diagram) {
                 return '<div class="chord-diagram"><div style="color:#888;font-size:12px;padding:20px;">No diagram<br/>available</div></div>';
             }

@@ -1,6 +1,7 @@
 [
-  {"key": "guitar",   "name": "Guitar",   "strings": 6, "stringNames": ["E","A","D","G","B","e"], "icon": "🎸"},
-  {"key": "ukulele",  "name": "Ukulele",  "strings": 4, "stringNames": ["G","C","E","A"],         "icon": "🪕"},
-  {"key": "mandolin", "name": "Mandolin", "strings": 4, "stringNames": ["G","D","A","E"],         "icon": "🎻"},
-  {"key": "banjo",    "name": "Banjo",    "strings": 5, "stringNames": ["g","D","G","B","D"],     "icon": "🪕"}
+  {"key": "guitar",   "name": "Guitar",   "strings": 6, "stringNames": ["E","A","D","G","B","e"], "icon": "🎸", "displayType": "fretboard"},
+  {"key": "ukulele",  "name": "Ukulele",  "strings": 4, "stringNames": ["G","C","E","A"],         "icon": "🪕", "displayType": "fretboard"},
+  {"key": "mandolin", "name": "Mandolin", "strings": 4, "stringNames": ["G","D","A","E"],         "icon": "🎻", "displayType": "fretboard"},
+  {"key": "banjo",    "name": "Banjo",    "strings": 5, "stringNames": ["g","D","G","B","D"],     "icon": "🪕", "displayType": "fretboard"},
+  {"key": "piano",    "name": "Piano",    "strings": 0, "stringNames": [],                         "icon": "🎹", "displayType": "keyboard"}
 ]

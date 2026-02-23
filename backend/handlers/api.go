@@ -81,7 +81,7 @@ func getTransposition(fromKey, toKey string) int {
 // loadChordDiagrams reads the embedded JSON for the given instrument key.
 func loadChordDiagrams(instrument string) (models.ChordDiagrams, error) {
 	// Sanitise: only allow known instrument names.
-	allowed := map[string]bool{"guitar": true, "ukulele": true, "mandolin": true, "banjo": true}
+	allowed := map[string]bool{"guitar": true, "ukulele": true, "mandolin": true, "banjo": true, "piano": true}
 	if !allowed[strings.ToLower(instrument)] {
 		return nil, fmt.Errorf("unknown instrument: %s", instrument)
 	}
