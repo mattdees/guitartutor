@@ -1037,6 +1037,29 @@
         let audioCtx = null;
         let isPlaying = false;
         let scheduledNodes = [];
+        let _audioUnlocked = false;
+
+        // iOS Safari requires AudioContext to be created+unlocked in a synchronous
+        // user-gesture handler. We do it on the first touch/click anywhere on the
+        // page so it's ready before the Play button does an async network fetch.
+        function _ensureAudioCtx() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        function _unlockAudio() {
+            if (_audioUnlocked) return;
+            _ensureAudioCtx();
+            // Play one frame of silence — this "unlocks" the context on iOS
+            const buf = audioCtx.createBuffer(1, 1, audioCtx.sampleRate);
+            const src = audioCtx.createBufferSource();
+            src.buffer = buf;
+            src.connect(audioCtx.destination);
+            src.start(0);
+            // Also kick a resume in case context was suspended
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            _audioUnlocked = true;
+        }
+        document.addEventListener('touchstart', _unlockAudio, { once: true, passive: true });
+        document.addEventListener('click',      _unlockAudio, { once: true });
         let playbackTimer = null;
         let highlightTimers = [];
         let timelineAnimFrame = null;
@@ -1924,7 +1947,10 @@
             isPlaying = true;
 
             try {
-                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                // Create + unlock AudioContext synchronously while still in the
+                // user-gesture call stack — BEFORE any await (critical for iOS Safari)
+                _ensureAudioCtx();
+                _unlockAudio();
                 if (audioCtx.state === 'suspended') await audioCtx.resume();
 
                 const midiBuffer = await fetchMidiBuffer();
