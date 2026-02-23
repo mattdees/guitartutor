@@ -610,6 +610,13 @@
                             <option value="5">5</option>
                         </select>
                     </div>
+                    <div class="playback-control">
+                        <label class="playback-label">Tone</label>
+                        <select id="toneSelect" class="playback-select">
+                            <option value="synth">Synth</option>
+                            <option value="guitar" selected>Guitar</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
@@ -1087,44 +1094,82 @@
         }
 
         function synthNote(ctx, midiNote, startTime, duration, velocity) {
+            const tone = document.getElementById('toneSelect').value;
             const freq = 440 * Math.pow(2, (midiNote - 69) / 12);
             const vol = (velocity / 127) * 0.15;
 
-            const osc1 = ctx.createOscillator();
-            const osc2 = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc1.type = 'triangle';
-            osc1.frequency.value = freq;
-            osc2.type = 'sine';
-            osc2.frequency.value = freq * 2;
+            if (tone === 'guitar') {
+                // Karplus-Strong Synthesis for Plucked String
+                const bufferSize = Math.round(ctx.sampleRate / freq);
+                const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+                const data = buffer.getChannelData(0);
+                
+                // Initial burst of white noise
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                
+                const source = ctx.createBufferSource();
+                source.buffer = buffer;
+                source.loop = true;
+                
+                const lowpass = ctx.createBiquadFilter();
+                lowpass.type = 'lowpass';
+                lowpass.frequency.value = freq * 3.5;
+                lowpass.Q.value = 1.0;
+                
+                const gain = ctx.createGain();
+                // Sharper attack for guitar pluck, then decay
+                const decayTime = Math.min(2.0, duration * 3.5);
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(vol * 1.5, startTime + 0.005);
+                gain.gain.exponentialRampToValueAtTime(0.001, startTime + decayTime);
+                
+                source.connect(lowpass);
+                lowpass.connect(gain);
+                gain.connect(ctx.destination);
+                
+                source.start(startTime);
+                source.stop(startTime + decayTime);
+                scheduledNodes.push(source, lowpass, gain);
+            } else {
+                // Original Synth logic (refined)
+                const osc1 = ctx.createOscillator();
+                const osc2 = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc1.type = 'triangle';
+                osc1.frequency.value = freq;
+                osc2.type = 'sine';
+                osc2.frequency.value = freq * 2;
 
-            const mix1 = ctx.createGain();
-            const mix2 = ctx.createGain();
-            mix1.gain.value = 0.7;
-            mix2.gain.value = 0.3;
+                const mix1 = ctx.createGain();
+                const mix2 = ctx.createGain();
+                mix1.gain.value = 0.7;
+                mix2.gain.value = 0.3;
 
-            osc1.connect(mix1); mix1.connect(gain);
-            osc2.connect(mix2); mix2.connect(gain);
-            gain.connect(ctx.destination);
+                osc1.connect(mix1); mix1.connect(gain);
+                osc2.connect(mix2); mix2.connect(gain);
+                gain.connect(ctx.destination);
 
-            const attack = 0.015;
-            const decay = 0.1;
-            const sustain = vol * 0.6;
-            const release = Math.min(0.15, duration * 0.2);
+                const attack = 0.015;
+                const decay = 0.1;
+                const sustain = vol * 0.6;
+                const release = Math.min(0.15, duration * 0.2);
 
-            gain.gain.setValueAtTime(0, startTime);
-            gain.gain.linearRampToValueAtTime(vol, startTime + attack);
-            gain.gain.linearRampToValueAtTime(sustain, startTime + attack + decay);
-            gain.gain.setValueAtTime(sustain, startTime + duration - release);
-            gain.gain.linearRampToValueAtTime(0.001, startTime + duration);
+                gain.gain.setValueAtTime(0, startTime);
+                gain.gain.linearRampToValueAtTime(vol, startTime + attack);
+                gain.gain.linearRampToValueAtTime(sustain, startTime + attack + decay);
+                gain.gain.setValueAtTime(sustain, startTime + duration - release);
+                gain.gain.linearRampToValueAtTime(0.001, startTime + duration);
 
-            const endTime = startTime + duration + 0.02;
-            osc1.start(startTime);
-            osc1.stop(endTime);
-            osc2.start(startTime);
-            osc2.stop(endTime);
+                const endTime = startTime + duration + 0.02;
+                osc1.start(startTime);
+                osc1.stop(endTime);
+                osc2.start(startTime);
+                osc2.stop(endTime);
 
-            scheduledNodes.push(osc1, osc2, gain, mix1, mix2);
+                scheduledNodes.push(osc1, osc2, gain, mix1, mix2);
+            }
         }
 
         // ── Note name helpers ──────────────────────────────────────────────
