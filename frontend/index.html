@@ -430,6 +430,8 @@
             background: rgba(0, 0, 0, 0.25);
             border-radius: 12px;
             border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow-x: auto;
+            box-sizing: border-box;
         }
         .sheet-music-title {
             font-size: 0.8rem;
@@ -438,7 +440,7 @@
             letter-spacing: 0.1em;
             margin-bottom: 10px;
         }
-        .sheet-music-section svg { display: block; margin: 0 auto; overflow: visible; }
+        .sheet-music-section svg { display: block; margin: 0 auto; overflow: visible; min-width: 100%; }
         /* Staff / note colours — SVG presentation attrs have specificity 0, CSS wins */
         .sh-note-group .sh-notehead            { fill: #7a8fa8; }
         .sh-note-group .sh-notehead-open       { fill: none; stroke: #7a8fa8; stroke-width: 1.5px; }
@@ -1115,10 +1117,22 @@
         const _SM_SHARP = [false,true,false,true,false,false,true,false,true,false,true,false];
 
         function _midiToStaffStep(midi) {
-            // Diatonic half-steps above E4 (treble staff bottom line = step 0).
-            // E4(64)→0, F4→1, G4→2, A4→3, B4→4, C5→5, D5→6, F5→8
+            // Returns { clef: 'treble'|'bass', step: number }
+            // step is diatonic distance from the bottom line of the respective staff.
             const octave = Math.floor(midi / 12) - 1;
-            return (octave - 4) * 7 + _SM_DIAT[midi % 12] - 2;
+            const diatonicTotal = octave * 7 + _SM_DIAT[midi % 12];
+            
+            // Middle C (C4) is midi 60.
+            // Treble Staff: bottom line is E4 (midi 64). E4 is step 0.
+            // Bass Staff: bottom line is G2 (midi 43). G2 is step 0.
+            
+            if (midi >= 60) { // C4 and above use treble staff
+                const e4Diatonic = 4 * 7 + _SM_DIAT[64 % 12]; // 4*7 + 2 = 30
+                return { clef: 'treble', step: diatonicTotal - e4Diatonic };
+            } else { // Below C4 use bass staff
+                const g2Diatonic = 2 * 7 + _SM_DIAT[43 % 12]; // 2*7 + 4 = 18
+                return { clef: 'bass', step: diatonicTotal - g2Diatonic };
+            }
         }
 
         function renderSheetMusic(notes, chords, chordDurSec) {
@@ -1136,8 +1150,11 @@
             const TIMESIG_W   = 22;    // time-signature area
             const MEAS_W      = 200;   // note-area width per measure
             const MEAS_PER_ROW = 4;
-            const ROW_H       = 90;    // total px height per staff row
-            const STAFF_BOT   = 56;    // y (within row) of bottom staff line (E4)
+            const ROW_H       = 160;   // Increased for Grand Staff
+            const STAFF_GAP   = 45;    // Gap between treble and bass staff
+            const TREBLE_BOT  = 56;    // y of treble bottom line (E4)
+            const BASS_BOT    = TREBLE_BOT + 4 * SL + STAFF_GAP; // y of bass bottom line (G2)
+            
             const NHW         = 8;     // note head half-width
             const NHH         = 5;     // note head half-height
             const STEM_H      = 28;    // stem length px
@@ -1159,30 +1176,48 @@
             </defs>`);
 
             for (let row = 0; row < numRows; row++) {
-                const rowY   = row * ROW_H + 5;
-                const sbY    = rowY + STAFF_BOT;           // absolute Y of bottom line
-                const stY    = sbY - 4 * SL;               // absolute Y of top line
+                const rowY    = row * ROW_H + 5;
+                const trbY    = rowY + TREBLE_BOT; // Treble bottom
+                const basY    = rowY + BASS_BOT;   // Bass bottom
+                const trtY    = trbY - 4 * SL;     // Treble top
+                const batY    = basY - 4 * SL;     // Bass top
+                
                 const na0    = CLEF_W + TIMESIG_W;         // X where note area starts
                 const mStart = row * MEAS_PER_ROW;
                 const mEnd   = Math.min(mStart + MEAS_PER_ROW, numMeasures);
                 const rowEndX = na0 + (mEnd - mStart) * MEAS_W;
 
-                // 5 staff lines
+                // 5 staff lines (Treble)
                 for (let l = 0; l < 5; l++) {
-                    const ly = sbY - l * SL;
+                    const ly = trbY - l * SL;
+                    p.push(`<line x1="0" y1="${ly}" x2="${rowEndX}" y2="${ly}" stroke="#3d4d63" stroke-width="1"/>`);
+                }
+                // 5 staff lines (Bass)
+                for (let l = 0; l < 5; l++) {
+                    const ly = basY - l * SL;
                     p.push(`<line x1="0" y1="${ly}" x2="${rowEndX}" y2="${ly}" stroke="#3d4d63" stroke-width="1"/>`);
                 }
 
+                // Clefs
                 // Treble clef (𝄞 U+1D11E)
-                p.push(`<text x="2" y="${sbY + 6}" font-family="'Times New Roman',Georgia,serif" font-size="56" fill="#506070">&#x1D11E;</text>`);
+                p.push(`<text x="2" y="${trbY + 6}" font-family="'Times New Roman',Georgia,serif" font-size="56" fill="#506070">&#x1D11E;</text>`);
+                // Bass clef (𝄢 U+1D122)
+                p.push(`<text x="2" y="${basY - 14}" font-family="'Times New Roman',Georgia,serif" font-size="44" fill="#506070">&#x1D122;</text>`);
 
                 // Time signature 4/4
                 const tsx = CLEF_W + TIMESIG_W / 2;
-                p.push(`<text x="${tsx}" y="${sbY - SL - 1}" text-anchor="middle" font-family="serif" font-size="13" font-weight="bold" fill="#506070">4</text>`);
-                p.push(`<text x="${tsx}" y="${sbY + 4}"      text-anchor="middle" font-family="serif" font-size="13" font-weight="bold" fill="#506070">4</text>`);
+                // Treble
+                p.push(`<text x="${tsx}" y="${trbY - SL - 1}" text-anchor="middle" font-family="serif" font-size="13" font-weight="bold" fill="#506070">4</text>`);
+                p.push(`<text x="${tsx}" y="${trbY + 4}"      text-anchor="middle" font-family="serif" font-size="13" font-weight="bold" fill="#506070">4</text>`);
+                // Bass
+                p.push(`<text x="${tsx}" y="${basY - SL - 1}" text-anchor="middle" font-family="serif" font-size="13" font-weight="bold" fill="#506070">4</text>`);
+                p.push(`<text x="${tsx}" y="${basY + 4}"      text-anchor="middle" font-family="serif" font-size="13" font-weight="bold" fill="#506070">4</text>`);
 
-                // Opening barline
-                p.push(`<line x1="${na0}" y1="${stY}" x2="${na0}" y2="${sbY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+                // Opening barlines
+                p.push(`<line x1="${na0}" y1="${trtY}" x2="${na0}" y2="${trbY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+                p.push(`<line x1="${na0}" y1="${batY}" x2="${na0}" y2="${basY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+                // Connecting barline (Grand Staff)
+                p.push(`<line x1="0" y1="${trtY}" x2="0" y2="${basY}" stroke="#3d4d63" stroke-width="1.5"/>`);
 
                 for (let mi = mStart; mi < mEnd; mi++) {
                     const mOff   = mi - mStart;
@@ -1191,33 +1226,35 @@
                     const tStart = mi * chordDurSec;
                     const tEnd   = (mi + 1) * chordDurSec;
 
-                    // Measure highlight background (toggled during playback)
+                    // Measure highlight background
                     const mhId = `sh-mh-${mi}`;
-                    p.push(`<rect id="${mhId}" class="sh-mh" x="${mLeft}" y="${stY - 3}" width="${MEAS_W}" height="${sbY - stY + 6}" rx="3"/>`);
+                    p.push(`<rect id="${mhId}" class="sh-mh" x="${mLeft}" y="${trtY - 3}" width="${MEAS_W}" height="${basY - trtY + 6}" rx="3"/>`);
                     sheetMeasureData.push({ startSec: tStart, endSec: tEnd, svgRectId: mhId });
 
-                    // Chord name label above staff
+                    // Chord name label
                     p.push(`<text x="${mLeft + MEAS_W / 2}" y="${rowY + 7}" text-anchor="middle" font-family="'Poppins',sans-serif" font-size="10" font-weight="600" fill="#e94560">${chords[mi]}</text>`);
 
-                    // Closing barline
+                    // Closing barlines
                     if (mi === numMeasures - 1) {
-                        p.push(`<line x1="${mRight - 3}" y1="${stY}" x2="${mRight - 3}" y2="${sbY}" stroke="#3d4d63" stroke-width="3.5"/>`);
-                        p.push(`<line x1="${mRight - 8}" y1="${stY}" x2="${mRight - 8}" y2="${sbY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+                        p.push(`<line x1="${mRight - 3}" y1="${trtY}" x2="${mRight - 3}" y2="${basY}" stroke="#3d4d63" stroke-width="3.5"/>`);
+                        p.push(`<line x1="${mRight - 8}" y1="${trtY}" x2="${mRight - 8}" y2="${basY}" stroke="#3d4d63" stroke-width="1.5"/>`);
                     } else {
-                        p.push(`<line x1="${mRight}" y1="${stY}" x2="${mRight}" y2="${sbY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+                        p.push(`<line x1="${mRight}" y1="${trtY}" x2="${mRight}" y2="${trbY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+                        p.push(`<line x1="${mRight}" y1="${batY}" x2="${mRight}" y2="${basY}" stroke="#3d4d63" stroke-width="1.5"/>`);
                     }
 
                     // Notes in this measure
                     const mNotes = notes.filter(n => n.start >= tStart - 0.02 && n.start < tEnd - 0.01);
 
                     if (!mNotes.length) {
-                        // Whole rest: filled rect hanging from 4th line (D5 = step 6)
-                        const ry = sbY - 6 * HS;
-                        p.push(`<rect x="${mLeft + MEAS_W / 2 - 12}" y="${ry}" width="24" height="${HS - 0.5}" fill="#3d4d63" rx="1"/>`);
+                        // Whole rest (Treble)
+                        p.push(`<rect x="${mLeft + MEAS_W / 2 - 12}" y="${trbY - 6 * HS}" width="24" height="${HS - 0.5}" fill="#3d4d63" rx="1"/>`);
+                        // Whole rest (Bass)
+                        p.push(`<rect x="${mLeft + MEAS_W / 2 - 12}" y="${basY - 6 * HS}" width="24" height="${HS - 0.5}" fill="#3d4d63" rx="1"/>`);
                         continue;
                     }
 
-                    // Sort + group simultaneous notes (within 40 ms) as chords
+                    // Sort + group simultaneous notes
                     const sorted = [...mNotes].sort((a, b) => a.start - b.start);
                     const groups = [];
                     sorted.forEach(n => {
@@ -1240,54 +1277,43 @@
                         const isHalf  = !isWhole && durSec >= 1.5 * beatDur;
                         const isOpen  = isWhole || isHalf;
 
-                        const steps   = grp.map(n => _midiToStaffStep(n.note));
-                        const ys      = steps.map(s => sbY - s * HS);
-                        const minStep = Math.min(...steps);
-                        const maxStep = Math.max(...steps);
-                        const avgStep = (minStep + maxStep) / 2;
-                        const stemUp  = avgStep < 4;  // up when below B4 (step 4)
-
+                        const noteData = grp.map(n => _midiToStaffStep(n.note));
+                        
                         const ngId = `sh-ng-${mi}-${gi}`;
                         p.push(`<g id="${ngId}" class="sh-note-group">`);
 
-                        // Ledger lines below staff (step ≤ -2) and above (step ≥ 10)
-                        const ledgers = new Set();
-                        steps.forEach(s => {
-                            if (s <= -2) {
-                                const count = Math.floor(-s / 2);
-                                for (let i = 1; i <= count; i++) ledgers.add(-i * 2);
-                            }
-                            if (s >= 10) {
-                                const count = Math.floor((s - 8) / 2);
-                                for (let i = 1; i <= count; i++) ledgers.add(8 + i * 2);
-                            }
-                        });
-                        ledgers.forEach(ls => {
-                            const ly = sbY - ls * HS;
-                            p.push(`<line x1="${gx - NHW - 4}" y1="${ly}" x2="${gx + NHW + 4}" y2="${ly}" class="sh-ledger"/>`);
-                        });
-
-                        // Stem (whole notes have no stem)
-                        if (!isWhole) {
-                            const stemX  = stemUp ? gx + NHW - 1 : gx - NHW + 1;
-                            const stemY1 = stemUp ? Math.min(...ys) - NHH + 1 : Math.max(...ys) + NHH - 1;
-                            const stemY2 = stemUp ? stemY1 - STEM_H : stemY1 + STEM_H;
-                            p.push(`<line x1="${stemX}" y1="${stemY1}" x2="${stemX}" y2="${stemY2}" class="sh-stem"/>`);
-
-                            // Eighth-note flag for short single notes
-                            if (durSec < 0.6 * beatDur && grp.length === 1) {
-                                const d = stemUp ? 1 : -1;
-                                p.push(`<path d="M${stemX},${stemY2} Q${stemX + d * 12},${stemY2 + d * 6} ${stemX + d * 8},${stemY2 + d * 12}" fill="none" class="sh-stem" stroke-width="1.2"/>`);
-                            }
-                        }
-
-                        // Note heads + accidentals
-                        grp.forEach((n, ni) => {
-                            const s  = steps[ni];
-                            const ny = sbY - s * HS;
+                        noteData.forEach((nd, ni) => {
+                            const sb = nd.clef === 'treble' ? trbY : basY;
+                            const ny = sb - nd.step * HS;
                             const nhClass = isOpen ? 'sh-notehead sh-notehead-open' : 'sh-notehead';
+                            
+                            // Ledger lines
+                            if (nd.step <= -2) {
+                                for (let i = 1; i <= Math.floor(-nd.step / 2); i++) {
+                                    const ly = sb - (-i * 2) * HS;
+                                    p.push(`<line x1="${gx - NHW - 4}" y1="${ly}" x2="${gx + NHW + 4}" y2="${ly}" class="sh-ledger"/>`);
+                                }
+                            }
+                            if (nd.step >= 10) {
+                                for (let i = 1; i <= Math.floor((nd.step - 8) / 2); i++) {
+                                    const ly = sb - (8 + i * 2) * HS;
+                                    p.push(`<line x1="${gx - NHW - 4}" y1="${ly}" x2="${gx + NHW + 4}" y2="${ly}" class="sh-ledger"/>`);
+                                }
+                            }
+
+                            // Stem
+                            if (!isWhole) {
+                                const stemUp = nd.step < 4;
+                                const stemX  = stemUp ? gx + NHW - 1 : gx - NHW + 1;
+                                const stemY1 = stemUp ? ny - NHH + 1 : ny + NHH - 1;
+                                const stemY2 = stemUp ? stemY1 - STEM_H : stemY1 + STEM_H;
+                                p.push(`<line x1="${stemX}" y1="${stemY1}" x2="${stemX}" y2="${stemY2}" class="sh-stem"/>`);
+                            }
+
+                            // Head
                             p.push(`<ellipse cx="${gx}" cy="${ny}" rx="${NHW}" ry="${NHH}" class="${nhClass}"/>`);
-                            if (_SM_SHARP[n.note % 12]) {
+                            // Accidental
+                            if (_SM_SHARP[grp[ni].note % 12]) {
                                 p.push(`<text x="${gx - NHW - 5}" y="${ny + 4}" font-family="serif" font-size="10" class="sh-accidental">#</text>`);
                             }
                         });
