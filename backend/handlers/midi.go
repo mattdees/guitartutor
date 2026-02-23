@@ -16,7 +16,7 @@ import (
 type MidiRequest struct {
 	Chords   []string   `json:"chords"   binding:"required"` // e.g. ["C","Am","F","G"]
 	Tempo    int        `json:"tempo"`                       // BPM (default 120)
-	Pattern  string     `json:"pattern"`                     // "whole","half","quarter","arpeggio-up","arpeggio-down","boom-chick","pop-strum","travis-picking","alberti-bass","triplet-arpeggio","pop-stabs"
+	Pattern  string     `json:"pattern"`                     // "whole","half","quarter","arpeggio-up","arpeggio-down","boom-chick","pop-strum","travis-picking","alberti-bass","triplet-arpeggio","pop-stabs","bossa-nova","reggae-skank","funk-16th","jazz-swing","rock-8th"
 	Octave   int        `json:"octave"`                      // base octave 2–6 (default 4)
 	Beats    int        `json:"beats"`                       // beats per chord (default 4)
 	Frets    [][]string `json:"frets"`                       // per-chord fret positions (e.g. ["x","3","2","0","1","0"])
@@ -369,22 +369,133 @@ func buildTrack(req MidiRequest) []byte {
 						trk = append(trk, noteOffEvent(d, 0, n)...)
 					}
 				} else {
-					// Rest: just wait
-					// In MIDI, we don't need an event for silence, but we need to track delta time.
-					// However, our noteOff already moved us forward by eighthTicks.
-					// If we don't play a note, we need to make sure the NEXT note starts at the right time.
-					// Wait, the current logic of building track is a bit sequential with deltas.
-					// Let's use a dummy note or just add to delta of next note.
-					// Actually, the way it's written, we always append noteOn/Off.
-					
-					// To handle silence, we can just play a note with velocity 0 or just skip and adjust delta.
-					// But the current helper functions noteOnEvent/noteOffEvent take delta.
-					// Let's use a "silent" note or fix the delta logic.
-					
-					// Alternative: add a 0-velocity note or just use a placeholder to advance time.
-					// Let's add a silent note (Note 0, velocity 0)
 					trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
 					trk = append(trk, noteOffEvent(eighthTicks, 0, 0)...)
+				}
+			}
+
+		case "bossa-nova":
+			// Bass: 1, 3. Chords: syncopated
+			eighthTicks := beatTicks / 2
+			totalEighths := int(chordTicks / eighthTicks)
+			// Chord pattern: X . X . . X . X (across 8 eighths)
+			chordPattern := []bool{true, false, true, false, false, true, false, true}
+			for ei := 0; ei < totalEighths; ei++ {
+				d := uint32(0)
+				// Bass on 1 and 3 (eighth 0 and 4)
+				if ei%4 == 0 {
+					bassNote := notes[0] - 12
+					trk = append(trk, noteOnEvent(d, 0, bassNote, 100)...)
+					trk = append(trk, noteOffEvent(eighthTicks, 0, bassNote)...)
+					d = 0
+				}
+				// Chords
+				if chordPattern[ei%8] {
+					for j, n := range notes {
+						trk = append(trk, noteOnEvent(d, 0, n, 90)...)
+						d = 0
+					}
+					for j, n := range notes {
+						if j == 0 {
+							d = eighthTicks
+						} else {
+							d = 0
+						}
+						trk = append(trk, noteOffEvent(d, 0, n)...)
+						d = 0
+					}
+				} else if ei%4 != 0 {
+					// Silence for this eighth
+					trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
+					trk = append(trk, noteOffEvent(eighthTicks, 0, 0)...)
+				}
+			}
+
+		case "reggae-skank":
+			// Staccato on 2 and 4
+			for beat := 0; beat < req.Beats; beat++ {
+				if beat%2 == 1 { // Beats 2 and 4
+					for j, n := range notes {
+						trk = append(trk, noteOnEvent(0, 0, n, 110)...)
+					}
+					for j, n := range notes {
+						d := uint32(0)
+						if j == 0 {
+							d = beatTicks / 4 // Very staccato
+						}
+						trk = append(trk, noteOffEvent(d, 0, n)...)
+					}
+					// Wait for rest of beat
+					trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
+					trk = append(trk, noteOffEvent(3*beatTicks/4, 0, 0)...)
+				} else {
+					// Silence for beats 1 and 3
+					trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
+					trk = append(trk, noteOffEvent(beatTicks, 0, 0)...)
+				}
+			}
+
+		case "funk-16th":
+			// 16th note syncopation
+			sixteenthTicks := beatTicks / 4
+			totalSixteenths := int(chordTicks / sixteenthTicks)
+			// X . . X . . X . (Common 16th funk)
+			pattern := []bool{true, false, false, true, false, false, true, false}
+			for si := 0; si < totalSixteenths; si++ {
+				if pattern[si%8] {
+					for j, n := range notes {
+						trk = append(trk, noteOnEvent(0, 0, n, 110)...)
+					}
+					for j, n := range notes {
+						d := uint32(0)
+						if j == 0 {
+							d = sixteenthTicks
+						}
+						trk = append(trk, noteOffEvent(d, 0, n)...)
+					}
+				} else {
+					trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
+					trk = append(trk, noteOffEvent(sixteenthTicks, 0, 0)...)
+				}
+			}
+
+		case "jazz-swing":
+			// Charleston rhythm: 1, 2-and
+			eighthTicks := beatTicks / 2
+			totalEighths := int(chordTicks / eighthTicks)
+			pattern := []bool{true, false, false, true, false, false, false, false}
+			for ei := 0; ei < totalEighths; ei++ {
+				if pattern[ei%8] {
+					for j, n := range notes {
+						trk = append(trk, noteOnEvent(0, 0, n, 100)...)
+					}
+					for j, n := range notes {
+						d := uint32(0)
+						if j == 0 {
+							d = eighthTicks
+						}
+						trk = append(trk, noteOffEvent(d, 0, n)...)
+					}
+				} else {
+					trk = append(trk, noteOnEvent(0, 0, 0, 0)...)
+					trk = append(trk, noteOffEvent(eighthTicks, 0, 0)...)
+				}
+			}
+
+		case "rock-8th":
+			// Driving 8th notes
+			eighthTicks := beatTicks / 2
+			totalEighths := int(chordTicks / eighthTicks)
+			for ei := 0; ei < totalEighths; ei++ {
+				for j, n := range notes {
+					trk = append(trk, noteOnEvent(0, 0, n, 110)...)
+				}
+				for j, n := range notes {
+					d := uint32(0)
+					if j == 0 {
+						d = eighthTicks
+					}
+					trk = append(trk, noteOffEvent(d, 0, n)...)
 				}
 			}
 
