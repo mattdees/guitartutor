@@ -16,7 +16,7 @@ import (
 type MidiRequest struct {
 	Chords   []string   `json:"chords"   binding:"required"` // e.g. ["C","Am","F","G"]
 	Tempo    int        `json:"tempo"`                       // BPM (default 120)
-	Pattern  string     `json:"pattern"`                     // "whole","half","quarter","arpeggio-up","arpeggio-down","boom-chick","pop-strum"
+	Pattern  string     `json:"pattern"`                     // "whole","half","quarter","arpeggio-up","arpeggio-down","boom-chick","pop-strum","travis-picking","alberti-bass","triplet-arpeggio","pop-stabs"
 	Octave   int        `json:"octave"`                      // base octave 2–6 (default 4)
 	Beats    int        `json:"beats"`                       // beats per chord (default 4)
 	Frets    [][]string `json:"frets"`                       // per-chord fret positions (e.g. ["x","3","2","0","1","0"])
@@ -25,15 +25,19 @@ type MidiRequest struct {
 
 // qualityIntervals maps the suffix after the root to semitone intervals.
 var qualityIntervals = map[string][]int{
-	"":     {0, 4, 7},
-	"m":    {0, 3, 7},
-	"7":    {0, 4, 7, 10},
-	"maj7": {0, 4, 7, 11},
-	"m7":   {0, 3, 7, 10},
-	"dim":  {0, 3, 6},
-	"aug":  {0, 4, 8},
-	"sus2": {0, 2, 7},
-	"sus4": {0, 5, 7},
+	"":      {0, 4, 7},
+	"m":     {0, 3, 7},
+	"7":     {0, 4, 7, 10},
+	"maj7":  {0, 4, 7, 11},
+	"m7":    {0, 3, 7, 10},
+	"dim":   {0, 3, 6},
+	"aug":   {0, 4, 8},
+	"sus2":  {0, 2, 7},
+	"sus4":  {0, 5, 7},
+	"6":     {0, 4, 7, 9},
+	"m6":    {0, 3, 7, 9},
+	"add9":  {0, 4, 7, 14},
+	"madd9": {0, 3, 7, 14},
 }
 
 // fretsToMidi converts fret positions + open-string MIDI tuning to a sorted,
