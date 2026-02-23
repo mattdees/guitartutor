@@ -601,6 +601,11 @@
                             <option value="alberti-bass">Alberti Bass</option>
                             <option value="triplet-arpeggio">Triplet Arp</option>
                             <option value="pop-stabs">Pop Stabs</option>
+                            <option value="bossa-nova">Bossa Nova</option>
+                            <option value="reggae-skank">Reggae Skank</option>
+                            <option value="funk-16th">Funk 16th</option>
+                            <option value="jazz-swing">Jazz Swing</option>
+                            <option value="rock-8th">Rock 8th</option>
                         </select>
                     </div>
                     <div class="playback-control">
@@ -1556,6 +1561,53 @@
                         return lit.length ? lit : nonMuted;
                     }
                     return [];
+                }
+
+                case 'bossa-nova': {
+                    const chordPattern = [true, false, true, false, false, true, false, true];
+                    const eighthIdxTotal = Math.floor(chordElapsed / eighthDur);
+                    const lit = [];
+                    // Bass on 1 and 3
+                    if (eighthIdxTotal % 4 === 0) lit.push(nonMuted[0]);
+                    // Chords
+                    if (chordPattern[eighthIdxTotal % 8]) {
+                        for (let si = 1; si < nonMuted.length; si++) lit.push(nonMuted[si]);
+                        if (nonMuted.length === 1 && !lit.length) lit.push(nonMuted[0]);
+                    }
+                    return lit;
+                }
+
+                case 'reggae-skank': {
+                    if (beatIdx % 2 === 1) {
+                        const beatElapsed = chordElapsed - beatIdx * beatDur;
+                        if (beatElapsed < beatDur / 4) return nonMuted;
+                    }
+                    return [];
+                }
+
+                case 'funk-16th': {
+                    const sixteenthDur = beatDur / 4;
+                    const sixteenthIdx = Math.floor(chordElapsed / sixteenthDur);
+                    const funkPattern = [true, false, false, true, false, false, true, false];
+                    if (funkPattern[sixteenthIdx % 8]) return nonMuted;
+                    return [];
+                }
+
+                case 'jazz-swing': {
+                    const jazzPattern = [true, false, false, true, false, false, false, false];
+                    const eighthIdxTotal = Math.floor(chordElapsed / eighthDur);
+                    if (jazzPattern[eighthIdxTotal % 8]) return nonMuted;
+                    return [];
+                }
+
+                case 'rock-8th': {
+                    const eighthIdxTotal = Math.floor(chordElapsed / eighthDur);
+                    const eighthElapsed = chordElapsed - eighthIdxTotal * eighthDur;
+                    const lit = [];
+                    for (let si = 0; si < nonMuted.length; si++) {
+                        if (eighthElapsed >= si * 0.025 && eighthElapsed < eighthDur - 0.03) lit.push(nonMuted[si]);
+                    }
+                    return lit.length ? lit : nonMuted;
                 }
 
                 default:
