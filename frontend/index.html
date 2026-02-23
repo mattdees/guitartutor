@@ -353,6 +353,169 @@
 
         .loading-msg { color: #888; padding: 40px; font-size: 1rem; }
 
+        /* ── Playback controls ───────────────────────────────────────── */
+        .playback-section {
+            margin: 20px 0;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .playback-controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .playback-btn {
+            background: linear-gradient(145deg, #14b8a6, #0d9488);
+            color: white;
+            border: none;
+            padding: 10px 22px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 90px;
+        }
+        .playback-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4); }
+        .playback-btn.playing { background: linear-gradient(145deg, #ef4444, #dc2626); }
+        .playback-btn.playing:hover { box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
+        .playback-btn.download-btn { background: linear-gradient(145deg, #6366f1, #4f46e5); min-width: unset; padding: 10px 16px; }
+        .playback-btn.download-btn:hover { box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); }
+        .playback-control { display: flex; align-items: center; gap: 6px; }
+        .playback-label { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+        .tempo-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            outline: none;
+        }
+        .tempo-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #14b8a6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .tempo-value { font-size: 0.85rem; color: #14b8a6; min-width: 30px; }
+        .playback-select {
+            padding: 6px 10px;
+            font-size: 0.85rem;
+            font-family: 'Poppins', sans-serif;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            cursor: pointer;
+        }
+        .playback-select option { background: #1a1a2e; color: #fff; }
+        .chord.chord-playing {
+            box-shadow: 0 0 20px 6px rgba(20, 184, 166, 0.7);
+            transform: translateY(-5px) scale(1.08);
+        }
+
+        /* ── Sheet music ───────────────────────────────────────────── */
+        .sheet-music-section {
+            margin-top: 20px;
+            padding: 16px 12px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .sheet-music-title {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+        }
+        .sheet-music-section svg { display: block; margin: 0 auto; overflow: visible; }
+        /* Staff / note colours — SVG presentation attrs have specificity 0, CSS wins */
+        .sh-note-group .sh-notehead            { fill: #7a8fa8; }
+        .sh-note-group .sh-notehead-open       { fill: none; stroke: #7a8fa8; stroke-width: 1.5px; }
+        .sh-note-group .sh-stem                { stroke: #7a8fa8; }
+        .sh-note-group .sh-ledger              { stroke: #3d4d63; }
+        .sh-note-group .sh-accidental          { fill: #6b7280; }
+        /* Active (currently sounding) note */
+        .sh-note-group.sh-active .sh-notehead  { fill: #14b8a6; filter: drop-shadow(0 0 4px rgba(20,184,166,0.8)); }
+        .sh-note-group.sh-active .sh-notehead-open { stroke: #14b8a6; filter: drop-shadow(0 0 4px rgba(20,184,166,0.8)); }
+        .sh-note-group.sh-active .sh-stem      { stroke: #14b8a6; }
+        .sh-note-group.sh-active .sh-ledger    { stroke: #14b8a6; }
+        .sh-note-group.sh-active .sh-accidental{ fill: #14b8a6; }
+        /* Active measure highlight */
+        .sh-mh { fill: transparent; }
+        .sh-mh.sh-mh-active { fill: rgba(20, 184, 166, 0.10); }
+        /* ── Diagram playback highlighting ──────────────────────── */
+        .chord-diagram.diagram-playing {
+            box-shadow: 0 0 16px rgba(20, 184, 166, 0.5);
+            border: 1px solid rgba(20, 184, 166, 0.45);
+        }
+        .diagram-playing .finger-dot {
+            background: #14b8a6;
+            box-shadow: 0 0 8px rgba(20, 184, 166, 0.9);
+            animation: dot-pulse 0.5s ease-in-out infinite alternate;
+        }
+        .diagram-playing .open-string {
+            color: #14b8a6;
+            text-shadow: 0 0 6px rgba(20, 184, 166, 0.8);
+        }
+        .diagram-playing .piano-white.piano-active {
+            background: #2dd4bf;
+            box-shadow: inset 0 0 8px rgba(20, 184, 166, 0.6);
+        }
+        .diagram-playing .piano-black.piano-active {
+            background: #14b8a6;
+            box-shadow: inset 0 0 8px rgba(20, 184, 166, 0.6);
+        }
+        @keyframes dot-pulse {
+            from { transform: scale(1); }
+            to   { transform: scale(1.25); }
+        }
+
+        /* ── Per-string hit highlighting (arpeggio / boom-chick / etc.) ── */
+        .fret-cell.string-hit {
+            background: rgba(20, 184, 166, 0.25);
+            border-right-color: rgba(20, 184, 166, 0.6);
+        }
+        .string-indicator.string-hit.open-string {
+            color: #2dd4bf !important;
+            text-shadow: 0 0 10px rgba(20, 184, 166, 1);
+            animation: string-pulse 0.3s ease-in-out infinite alternate;
+        }
+        /* Fretted string: show a small teal indicator dot above the column */
+        .string-indicator.string-hit:not(.open-string):not(.muted-string) {
+            position: relative;
+        }
+        .string-indicator.string-hit:not(.open-string):not(.muted-string)::after {
+            content: '▼';
+            font-size: 9px;
+            color: #2dd4bf;
+            text-shadow: 0 0 6px rgba(20, 184, 166, 1);
+            animation: string-pulse 0.3s ease-in-out infinite alternate;
+        }
+        @keyframes string-pulse {
+            from { text-shadow: 0 0 6px rgba(20, 184, 166, 0.7); }
+            to   { text-shadow: 0 0 14px rgba(20, 184, 166, 1); }
+        }
+        .playing-notes-label {
+            font-size: 0.7rem;
+            color: #14b8a6;
+            margin-top: 6px;
+            text-align: center;
+            min-height: 1.4em;
+            letter-spacing: 0.04em;
+            font-weight: 600;
+            transition: opacity 0.15s;
+        }
         @media (max-width: 600px) {
             h1 { font-size: 1.8rem; }
             .progression-name { font-size: 1.3rem; }
@@ -411,6 +574,44 @@
             <div class="chords-container" id="chordsContainer">
                 <div class="loading-msg">Loading chord data…</div>
             </div>
+
+            <div class="playback-section" id="playbackSection">
+                <div class="playback-controls-row">
+                    <button class="playback-btn" id="playBtn" onclick="togglePlayback()">▶ Play</button>
+                    <button class="playback-btn download-btn" onclick="downloadMidi()">⬇ MIDI</button>
+                    <div class="playback-control">
+                        <label class="playback-label">Tempo</label>
+                        <input type="range" id="tempoSlider" min="40" max="220" value="120" class="tempo-slider">
+                        <span id="tempoValue" class="tempo-value">120</span>
+                    </div>
+                    <div class="playback-control">
+                        <label class="playback-label">Pattern</label>
+                        <select id="patternSelect" class="playback-select">
+                            <option value="whole">Whole</option>
+                            <option value="half">Half</option>
+                            <option value="quarter" selected>Quarter</option>
+                            <option value="arpeggio-up">Arpeggio ↑</option>
+                            <option value="arpeggio-down">Arpeggio ↓</option>
+                            <option value="boom-chick">Boom-chick</option>
+                            <option value="pop-strum">Pop strum</option>
+                        </select>
+                    </div>
+                    <div class="playback-control">
+                        <label class="playback-label">Octave</label>
+                        <select id="octaveSelect" class="playback-select">
+                            <option value="3">3</option>
+                            <option value="4" selected>4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sheet-music-section" id="sheetMusicSection" style="display:none">
+                <div class="sheet-music-title">Sheet Music</div>
+                <div id="sheetMusicContainer"></div>
+            </div>
+
             <p class="description" id="description"></p>
             <div class="songs-section">
                 <p class="songs-title">Featured in</p>
@@ -504,6 +705,10 @@
                 preferredPosition = parseInt(e.target.value);
                 currentChordVariants = {}; // clear manual overrides so position takes effect
                 rerenderProgression();
+            });
+
+            document.getElementById('tempoSlider').addEventListener('input', e => {
+                document.getElementById('tempoValue').textContent = e.target.value;
             });
 
             showRandomProgression();
@@ -623,7 +828,8 @@
                         ${variantMenuHtml}
                     </div>
                     ${variantLabelHtml}
-                    ${renderChordDiagram(currentVariant)}
+                    ${renderChordDiagram(currentVariant, i)}
+                    <div class="playing-notes-label" id="pnl-${i}"></div>
                 `;
                 container.appendChild(wrapper);
 
@@ -653,13 +859,13 @@
         const PIANO_BLACK_W  = 13;
         const PIANO_BLACK_H  = 55;
 
-        function renderPianoChordDiagram(diagram) {
+        function renderPianoChordDiagram(diagram, chordIdx) {
             if (!diagram || !diagram.keys || !diagram.keys.length) {
                 return '<div class="chord-diagram piano-chord-diagram"><div style="color:#888;font-size:12px;padding:20px;">No diagram<br/>available</div></div>';
             }
             const active = new Set(diagram.keys);
             const totalW = PIANO_WHITE_KEYS.length * PIANO_WHITE_W;
-            let html = `<div class="chord-diagram piano-chord-diagram">`;
+            let html = `<div class="chord-diagram piano-chord-diagram" data-chord-idx="${chordIdx}">`;
             html += `<div class="piano-keyboard" style="width:${totalW}px;height:${PIANO_WHITE_H}px;">`;
 
             // White keys (laid out as flex children)
@@ -683,9 +889,9 @@
             return html;
         }
 
-        function renderChordDiagram(diagram) {
+        function renderChordDiagram(diagram, chordIdx) {
             if (currentInstrument && currentInstrument.displayType === 'keyboard') {
-                return renderPianoChordDiagram(diagram);
+                return renderPianoChordDiagram(diagram, chordIdx);
             }
             if (!diagram) {
                 return '<div class="chord-diagram"><div style="color:#888;font-size:12px;padding:20px;">No diagram<br/>available</div></div>';
@@ -696,7 +902,7 @@
             const stringWidth = 18;
             const nutWidth    = stringCount * stringWidth;
 
-            let html = `<div class="chord-diagram">`;
+            let html = `<div class="chord-diagram" data-chord-idx="${chordIdx}">`;
 
             // String name labels
             html += `<div class="string-indicators" style="font-size:9px;color:#888;margin-bottom:2px;grid-template-columns:repeat(${stringCount},${stringWidth}px);">`;
@@ -706,9 +912,9 @@
             // Open / muted indicators
             html += `<div class="string-indicators" style="grid-template-columns:repeat(${stringCount},${stringWidth}px);">`;
             for (let i = 0; i < stringCount; i++) {
-                if      (diagram.frets[i] === 'x') html += '<span class="string-indicator muted-string">✕</span>';
-                else if (diagram.frets[i] === '0') html += '<span class="string-indicator open-string">○</span>';
-                else                               html += '<span class="string-indicator"></span>';
+                if      (diagram.frets[i] === 'x') html += `<span class="string-indicator muted-string" data-string="${i}">✕</span>`;
+                else if (diagram.frets[i] === '0') html += `<span class="string-indicator open-string" data-string="${i}">○</span>`;
+                else                               html += `<span class="string-indicator" data-string="${i}"></span>`;
             }
             html += '</div>';
 
@@ -725,7 +931,7 @@
                 html += '<div class="fret-row">';
                 html += `<span class="fret-number">${fret}</span>`;
                 for (let s = 0; s < stringCount; s++) {
-                    html += '<div class="fret-cell">';
+                    html += `<div class="fret-cell" data-string="${s}">`;
                     const fv = diagram.frets[s];
                     if (fv !== 'x' && fv !== '0' && parseInt(fv) === fret) {
                         const finger = diagram.fingers[s] || '●';
@@ -758,6 +964,621 @@
                 document.querySelectorAll('.chord-variant-menu').forEach(m => m.classList.remove('show'));
             }
         });
+
+        // ── Playback ──────────────────────────────────────────────────────────
+        let audioCtx = null;
+        let isPlaying = false;
+        let scheduledNodes = [];
+        let playbackTimer = null;
+        let highlightTimers = [];
+        let timelineAnimFrame = null;
+        let lastParsedNotes  = [];   // cached for sheet music
+        let sheetNoteData    = [];   // [{startSec, endSec, svgId}]
+        let sheetMeasureData = [];   // [{startSec, endSec, svgRectId}]
+        let playbackStartTime = 0;
+        let playbackChordDurSec = 0;
+
+        function parseMidi(arrayBuffer) {
+            const data = new DataView(arrayBuffer);
+            const bytes = new Uint8Array(arrayBuffer);
+            let pos = 0;
+
+            // MThd header
+            pos = 8; // skip "MThd" + length
+            const format = data.getUint16(pos); pos += 2;
+            const ntracks = data.getUint16(pos); pos += 2;
+            const division = data.getUint16(pos); pos += 2;
+
+            // MTrk
+            pos += 4; // skip "MTrk"
+            const trkLen = data.getUint32(pos); pos += 4;
+            const trkEnd = pos + trkLen;
+
+            let tempo = 500000; // default 120 BPM
+            const events = [];
+            let tickPos = 0;
+
+            function readVarLen() {
+                let val = 0;
+                while (pos < trkEnd) {
+                    const b = bytes[pos++];
+                    val = (val << 7) | (b & 0x7F);
+                    if (!(b & 0x80)) break;
+                }
+                return val;
+            }
+
+            while (pos < trkEnd) {
+                const delta = readVarLen();
+                tickPos += delta;
+                const status = bytes[pos++];
+
+                if (status === 0xFF) {
+                    const type = bytes[pos++];
+                    const len = readVarLen();
+                    if (type === 0x51 && len === 3) {
+                        tempo = (bytes[pos] << 16) | (bytes[pos+1] << 8) | bytes[pos+2];
+                    }
+                    pos += len;
+                } else if ((status & 0xF0) === 0x90) {
+                    const note = bytes[pos++];
+                    const vel = bytes[pos++];
+                    events.push({ tick: tickPos, note, velocity: vel, on: vel > 0 });
+                } else if ((status & 0xF0) === 0x80) {
+                    const note = bytes[pos++];
+                    pos++; // velocity
+                    events.push({ tick: tickPos, note, velocity: 0, on: false });
+                }
+            }
+
+            // Convert ticks to seconds
+            const secPerTick = (tempo / 1000000) / division;
+            const noteOns = {};
+            const notes = [];
+
+            for (const evt of events) {
+                const timeSec = evt.tick * secPerTick;
+                if (evt.on) {
+                    if (!noteOns[evt.note]) noteOns[evt.note] = [];
+                    noteOns[evt.note].push({ time: timeSec, velocity: evt.velocity });
+                } else {
+                    if (noteOns[evt.note] && noteOns[evt.note].length > 0) {
+                        const start = noteOns[evt.note].shift();
+                        notes.push({
+                            note: evt.note,
+                            start: start.time,
+                            duration: Math.max(0.05, timeSec - start.time),
+                            velocity: start.velocity,
+                        });
+                    }
+                }
+            }
+            return notes;
+        }
+
+        function synthNote(ctx, midiNote, startTime, duration, velocity) {
+            const freq = 440 * Math.pow(2, (midiNote - 69) / 12);
+            const vol = (velocity / 127) * 0.15;
+
+            const osc1 = ctx.createOscillator();
+            const osc2 = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc1.type = 'triangle';
+            osc1.frequency.value = freq;
+            osc2.type = 'sine';
+            osc2.frequency.value = freq * 2;
+
+            const mix1 = ctx.createGain();
+            const mix2 = ctx.createGain();
+            mix1.gain.value = 0.7;
+            mix2.gain.value = 0.3;
+
+            osc1.connect(mix1); mix1.connect(gain);
+            osc2.connect(mix2); mix2.connect(gain);
+            gain.connect(ctx.destination);
+
+            const attack = 0.015;
+            const decay = 0.1;
+            const sustain = vol * 0.6;
+            const release = Math.min(0.15, duration * 0.2);
+
+            gain.gain.setValueAtTime(0, startTime);
+            gain.gain.linearRampToValueAtTime(vol, startTime + attack);
+            gain.gain.linearRampToValueAtTime(sustain, startTime + attack + decay);
+            gain.gain.setValueAtTime(sustain, startTime + duration - release);
+            gain.gain.linearRampToValueAtTime(0.001, startTime + duration);
+
+            const endTime = startTime + duration + 0.02;
+            osc1.start(startTime);
+            osc1.stop(endTime);
+            osc2.start(startTime);
+            osc2.stop(endTime);
+
+            scheduledNodes.push(osc1, osc2, gain, mix1, mix2);
+        }
+
+        // ── Note name helpers ──────────────────────────────────────────────
+        const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+        function midiToNoteName(midi) {
+            const octave = Math.floor(midi / 12) - 1;
+            return NOTE_NAMES[midi % 12] + octave;
+        }
+
+        // ── Sheet music ────────────────────────────────────────────────────
+        // MIDI semitone → diatonic steps within an octave (C=0,D=1,E=2,F=3,G=4,A=5,B=6)
+        const _SM_DIAT  = [0,0,1,1,2,3,3,4,4,5,5,6];
+        // Which semitones are sharps
+        const _SM_SHARP = [false,true,false,true,false,false,true,false,true,false,true,false];
+
+        function _midiToStaffStep(midi) {
+            // Diatonic half-steps above E4 (treble staff bottom line = step 0).
+            // E4(64)→0, F4→1, G4→2, A4→3, B4→4, C5→5, D5→6, F5→8
+            const octave = Math.floor(midi / 12) - 1;
+            return (octave - 4) * 7 + _SM_DIAT[midi % 12] - 2;
+        }
+
+        function renderSheetMusic(notes, chords, chordDurSec) {
+            sheetNoteData    = [];
+            sheetMeasureData = [];
+            const section   = document.getElementById('sheetMusicSection');
+            const container = document.getElementById('sheetMusicContainer');
+            if (!notes.length) { section.style.display = 'none'; return; }
+            section.style.display = 'block';
+
+            // ── Layout constants ──────────────────────────────────────────
+            const SL          = 11;    // staff line spacing (px)
+            const HS          = SL / 2;// px per diatonic step
+            const CLEF_W      = 44;    // clef & key-sig area
+            const TIMESIG_W   = 22;    // time-signature area
+            const MEAS_W      = 200;   // note-area width per measure
+            const MEAS_PER_ROW = 4;
+            const ROW_H       = 90;    // total px height per staff row
+            const STAFF_BOT   = 56;    // y (within row) of bottom staff line (E4)
+            const NHW         = 8;     // note head half-width
+            const NHH         = 5;     // note head half-height
+            const STEM_H      = 28;    // stem length px
+            const NOTE_PAD_L  = 20;    // padding left inside measure note area
+            const NOTE_PAD_R  = 12;    // padding right
+
+            const numMeasures = chords.length;
+            const numRows     = Math.ceil(numMeasures / MEAS_PER_ROW);
+            const svgW        = CLEF_W + TIMESIG_W + MEAS_PER_ROW * MEAS_W + 6;
+            const svgH        = numRows * ROW_H + 10;
+
+            const p = [];  // SVG string parts
+            p.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${svgW}" height="${svgH}">`);
+            p.push(`<defs>
+              <filter id="smGlow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="b"/>
+                <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>`);
+
+            for (let row = 0; row < numRows; row++) {
+                const rowY   = row * ROW_H + 5;
+                const sbY    = rowY + STAFF_BOT;           // absolute Y of bottom line
+                const stY    = sbY - 4 * SL;               // absolute Y of top line
+                const na0    = CLEF_W + TIMESIG_W;         // X where note area starts
+                const mStart = row * MEAS_PER_ROW;
+                const mEnd   = Math.min(mStart + MEAS_PER_ROW, numMeasures);
+                const rowEndX = na0 + (mEnd - mStart) * MEAS_W;
+
+                // 5 staff lines
+                for (let l = 0; l < 5; l++) {
+                    const ly = sbY - l * SL;
+                    p.push(`<line x1="0" y1="${ly}" x2="${rowEndX}" y2="${ly}" stroke="#3d4d63" stroke-width="1"/>`);
+                }
+
+                // Treble clef (𝄞 U+1D11E)
+                p.push(`<text x="2" y="${sbY + 6}" font-family="'Times New Roman',Georgia,serif" font-size="56" fill="#506070">&#x1D11E;</text>`);
+
+                // Time signature 4/4
+                const tsx = CLEF_W + TIMESIG_W / 2;
+                p.push(`<text x="${tsx}" y="${sbY - SL - 1}" text-anchor="middle" font-family="serif" font-size="13" font-weight="bold" fill="#506070">4</text>`);
+                p.push(`<text x="${tsx}" y="${sbY + 4}"      text-anchor="middle" font-family="serif" font-size="13" font-weight="bold" fill="#506070">4</text>`);
+
+                // Opening barline
+                p.push(`<line x1="${na0}" y1="${stY}" x2="${na0}" y2="${sbY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+
+                for (let mi = mStart; mi < mEnd; mi++) {
+                    const mOff   = mi - mStart;
+                    const mLeft  = na0 + mOff * MEAS_W;
+                    const mRight = mLeft + MEAS_W;
+                    const tStart = mi * chordDurSec;
+                    const tEnd   = (mi + 1) * chordDurSec;
+
+                    // Measure highlight background (toggled during playback)
+                    const mhId = `sh-mh-${mi}`;
+                    p.push(`<rect id="${mhId}" class="sh-mh" x="${mLeft}" y="${stY - 3}" width="${MEAS_W}" height="${sbY - stY + 6}" rx="3"/>`);
+                    sheetMeasureData.push({ startSec: tStart, endSec: tEnd, svgRectId: mhId });
+
+                    // Chord name label above staff
+                    p.push(`<text x="${mLeft + MEAS_W / 2}" y="${rowY + 7}" text-anchor="middle" font-family="'Poppins',sans-serif" font-size="10" font-weight="600" fill="#e94560">${chords[mi]}</text>`);
+
+                    // Closing barline
+                    if (mi === numMeasures - 1) {
+                        p.push(`<line x1="${mRight - 3}" y1="${stY}" x2="${mRight - 3}" y2="${sbY}" stroke="#3d4d63" stroke-width="3.5"/>`);
+                        p.push(`<line x1="${mRight - 8}" y1="${stY}" x2="${mRight - 8}" y2="${sbY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+                    } else {
+                        p.push(`<line x1="${mRight}" y1="${stY}" x2="${mRight}" y2="${sbY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+                    }
+
+                    // Notes in this measure
+                    const mNotes = notes.filter(n => n.start >= tStart - 0.02 && n.start < tEnd - 0.01);
+
+                    if (!mNotes.length) {
+                        // Whole rest: filled rect hanging from 4th line (D5 = step 6)
+                        const ry = sbY - 6 * HS;
+                        p.push(`<rect x="${mLeft + MEAS_W / 2 - 12}" y="${ry}" width="24" height="${HS - 0.5}" fill="#3d4d63" rx="1"/>`);
+                        continue;
+                    }
+
+                    // Sort + group simultaneous notes (within 40 ms) as chords
+                    const sorted = [...mNotes].sort((a, b) => a.start - b.start);
+                    const groups = [];
+                    sorted.forEach(n => {
+                        const last = groups[groups.length - 1];
+                        if (last && Math.abs(n.start - last[0].start) <= 0.04) {
+                            last.push(n);
+                        } else {
+                            groups.push([n]);
+                        }
+                    });
+
+                    const noteAreaW = MEAS_W - NOTE_PAD_L - NOTE_PAD_R;
+                    const beatDur   = chordDurSec / 4;
+
+                    groups.forEach((grp, gi) => {
+                        const tOff   = grp[0].start - tStart;
+                        const gx     = mLeft + NOTE_PAD_L + (tOff / chordDurSec) * noteAreaW;
+                        const durSec = grp[0].duration;
+                        const isWhole = durSec >= 3.5 * beatDur;
+                        const isHalf  = !isWhole && durSec >= 1.5 * beatDur;
+                        const isOpen  = isWhole || isHalf;
+
+                        const steps   = grp.map(n => _midiToStaffStep(n.note));
+                        const ys      = steps.map(s => sbY - s * HS);
+                        const minStep = Math.min(...steps);
+                        const maxStep = Math.max(...steps);
+                        const avgStep = (minStep + maxStep) / 2;
+                        const stemUp  = avgStep < 4;  // up when below B4 (step 4)
+
+                        const ngId = `sh-ng-${mi}-${gi}`;
+                        p.push(`<g id="${ngId}" class="sh-note-group">`);
+
+                        // Ledger lines below staff (step ≤ -2) and above (step ≥ 10)
+                        const ledgers = new Set();
+                        steps.forEach(s => {
+                            if (s <= -2) {
+                                const count = Math.floor(-s / 2);
+                                for (let i = 1; i <= count; i++) ledgers.add(-i * 2);
+                            }
+                            if (s >= 10) {
+                                const count = Math.floor((s - 8) / 2);
+                                for (let i = 1; i <= count; i++) ledgers.add(8 + i * 2);
+                            }
+                        });
+                        ledgers.forEach(ls => {
+                            const ly = sbY - ls * HS;
+                            p.push(`<line x1="${gx - NHW - 4}" y1="${ly}" x2="${gx + NHW + 4}" y2="${ly}" class="sh-ledger"/>`);
+                        });
+
+                        // Stem (whole notes have no stem)
+                        if (!isWhole) {
+                            const stemX  = stemUp ? gx + NHW - 1 : gx - NHW + 1;
+                            const stemY1 = stemUp ? Math.min(...ys) - NHH + 1 : Math.max(...ys) + NHH - 1;
+                            const stemY2 = stemUp ? stemY1 - STEM_H : stemY1 + STEM_H;
+                            p.push(`<line x1="${stemX}" y1="${stemY1}" x2="${stemX}" y2="${stemY2}" class="sh-stem"/>`);
+
+                            // Eighth-note flag for short single notes
+                            if (durSec < 0.6 * beatDur && grp.length === 1) {
+                                const d = stemUp ? 1 : -1;
+                                p.push(`<path d="M${stemX},${stemY2} Q${stemX + d * 12},${stemY2 + d * 6} ${stemX + d * 8},${stemY2 + d * 12}" fill="none" class="sh-stem" stroke-width="1.2"/>`);
+                            }
+                        }
+
+                        // Note heads + accidentals
+                        grp.forEach((n, ni) => {
+                            const s  = steps[ni];
+                            const ny = sbY - s * HS;
+                            const nhClass = isOpen ? 'sh-notehead sh-notehead-open' : 'sh-notehead';
+                            p.push(`<ellipse cx="${gx}" cy="${ny}" rx="${NHW}" ry="${NHH}" class="${nhClass}"/>`);
+                            if (_SM_SHARP[n.note % 12]) {
+                                p.push(`<text x="${gx - NHW - 5}" y="${ny + 4}" font-family="serif" font-size="10" class="sh-accidental">#</text>`);
+                            }
+                        });
+
+                        p.push('</g>');
+                        sheetNoteData.push({
+                            startSec: grp[0].start,
+                            endSec:   grp[0].start + grp[0].duration,
+                            svgId:    ngId,
+                        });
+                    });
+                }
+            }
+
+            p.push('</svg>');
+            container.innerHTML = p.join('\n');
+        }
+
+        // ── String hit helpers ─────────────────────────────────────────
+        function getActiveDiagramFrets(chordIdx) {
+            const chord = currentTransposed[chordIdx]?.transposed;
+            if (!chord) return null;
+            const variants = currentChordDiagrams[chord] || [];
+            const key = `${chordIdx}-${chord}`;
+            const variantIdx = currentChordVariants[key] !== undefined
+                ? currentChordVariants[key]
+                : pickVariantByPosition(variants, preferredPosition);
+            const variant = variants[variantIdx] || variants[0];
+            return variant?.frets || null;
+        }
+
+        function getHitStrings(chordElapsed, chordDurSec, pattern, frets) {
+            if (!frets) return [];
+            const nonMuted = [];
+            for (let i = 0; i < frets.length; i++) {
+                if (frets[i] !== 'x') nonMuted.push(i);
+            }
+            if (!nonMuted.length) return [];
+
+            const beatDur = chordDurSec / 4;
+            const beatIdx = Math.min(Math.floor(chordElapsed / beatDur), 3);
+            const eighthDur = beatDur / 2;
+            const eighthIdx = Math.floor(chordElapsed / eighthDur);
+
+            switch (pattern) {
+                case 'whole':
+                    return nonMuted;
+
+                case 'half': {
+                    const halfDur = chordDurSec / 2;
+                    const halfElapsed = chordElapsed % halfDur;
+                    const lit = [];
+                    for (let si = 0; si < nonMuted.length; si++) {
+                        if (halfElapsed >= si * 0.03 && halfElapsed < halfDur - 0.05) lit.push(nonMuted[si]);
+                    }
+                    return lit;
+                }
+
+                case 'quarter': {
+                    const beatElapsed = chordElapsed - beatIdx * beatDur;
+                    const lit = [];
+                    for (let si = 0; si < nonMuted.length; si++) {
+                        if (beatElapsed >= si * 0.03 && beatElapsed < beatDur - 0.05) lit.push(nonMuted[si]);
+                    }
+                    return lit;
+                }
+
+                case 'arpeggio-up': {
+                    const noteCount = nonMuted.length;
+                    const noteDur = chordDurSec / noteCount;
+                    const noteIdx = Math.min(Math.floor(chordElapsed / noteDur), noteCount - 1);
+                    return [nonMuted[noteIdx]];
+                }
+
+                case 'arpeggio-down': {
+                    const reversed = [...nonMuted].reverse();
+                    const noteCount = reversed.length;
+                    const noteDur = chordDurSec / noteCount;
+                    const noteIdx = Math.min(Math.floor(chordElapsed / noteDur), noteCount - 1);
+                    return [reversed[noteIdx]];
+                }
+
+                case 'boom-chick': {
+                    const bass = nonMuted[0];
+                    const upper = nonMuted.slice(1);
+                    if (beatIdx === 0) return [bass];
+                    const beatElapsed = chordElapsed - beatIdx * beatDur;
+                    const lit = [];
+                    for (let si = 0; si < upper.length; si++) {
+                        if (beatElapsed >= si * 0.03 && beatElapsed < beatDur - 0.05) lit.push(upper[si]);
+                    }
+                    return lit.length ? lit : upper;
+                }
+
+                case 'pop-strum': {
+                    const strumTypes = ['down', 'down', 'up', 'down', 'up'];
+                    const totalEighths = Math.floor(chordDurSec / eighthDur);
+                    const curEighth = Math.min(eighthIdx, totalEighths - 1);
+                    const dir = strumTypes[curEighth % strumTypes.length];
+                    const eighthElapsed = chordElapsed - curEighth * eighthDur;
+                    const ordered = dir === 'up' ? [...nonMuted].reverse() : [...nonMuted];
+                    const lit = [];
+                    for (let si = 0; si < ordered.length; si++) {
+                        if (eighthElapsed >= si * 0.025 && eighthElapsed < eighthDur - 0.03) lit.push(ordered[si]);
+                    }
+                    return lit.length ? lit : ordered;
+                }
+
+                default:
+                    return nonMuted;
+            }
+        }
+
+        // ── Unified playback visuals (rAF loop) ──────────────────────
+        function animatePlaybackVisuals() {
+            if (!isPlaying || !audioCtx) return;
+
+            const elapsed = audioCtx.currentTime - playbackStartTime;
+            const numChords = currentTransposed.length;
+            const totalDur = numChords * playbackChordDurSec;
+            const activeIdx = elapsed < totalDur
+                ? Math.min(Math.floor(elapsed / playbackChordDurSec), numChords - 1)
+                : -1;
+
+            // Highlight active chord tile + diagram
+            const chordEls = document.querySelectorAll('.chord-wrapper .chord');
+            const diagramEls = document.querySelectorAll('.chord-wrapper .chord-diagram');
+
+            chordEls.forEach((el, i) => {
+                el.classList.toggle('chord-playing', i === activeIdx);
+            });
+            diagramEls.forEach((el, i) => {
+                el.classList.toggle('diagram-playing', i === activeIdx);
+            });
+
+            // Highlight individual strings being hit
+            document.querySelectorAll('.string-hit').forEach(el => el.classList.remove('string-hit'));
+            if (activeIdx >= 0) {
+                const activeDiagram = document.querySelector(`.chord-diagram[data-chord-idx="${activeIdx}"]`);
+                if (activeDiagram && !activeDiagram.classList.contains('piano-chord-diagram')) {
+                    const chordElapsed = elapsed - activeIdx * playbackChordDurSec;
+                    const pattern = document.getElementById('patternSelect').value;
+                    const frets = getActiveDiagramFrets(activeIdx);
+                    const hitStrings = getHitStrings(chordElapsed, playbackChordDurSec, pattern, frets);
+                    hitStrings.forEach(s => {
+                        activeDiagram.querySelectorAll(`[data-string="${s}"]`).forEach(el => el.classList.add('string-hit'));
+                    });
+                }
+            }
+
+            // Show currently-sounding note names under each diagram
+            for (let i = 0; i < numChords; i++) {
+                const lbl = document.getElementById(`pnl-${i}`);
+                if (!lbl) continue;
+                if (i === activeIdx) {
+                    const activeNotes = lastParsedNotes
+                        .filter(n => elapsed >= n.start && elapsed < n.start + n.duration)
+                        .map(n => midiToNoteName(n.note));
+                    const unique = [...new Set(activeNotes)];
+                    lbl.textContent = unique.length ? '\u266A ' + unique.join('  ') : '';
+                } else {
+                    lbl.textContent = '';
+                }
+            }
+
+            // Sheet music: highlight active note groups and current measure
+            sheetNoteData.forEach(nd => {
+                const el = document.getElementById(nd.svgId);
+                if (el) el.classList.toggle('sh-active', elapsed >= nd.startSec && elapsed < nd.endSec);
+            });
+            sheetMeasureData.forEach(md => {
+                const el = document.getElementById(md.svgRectId);
+                if (el) el.classList.toggle('sh-mh-active', elapsed >= md.startSec && elapsed < md.endSec);
+            });
+
+            if (elapsed < totalDur + 0.3) {
+                timelineAnimFrame = requestAnimationFrame(animatePlaybackVisuals);
+            } else {
+                // Playback finished — clean up visuals
+                chordEls.forEach(el => el.classList.remove('chord-playing'));
+                diagramEls.forEach(el => el.classList.remove('diagram-playing'));
+                document.querySelectorAll('.playing-notes-label').forEach(l => l.textContent = '');
+                document.querySelectorAll('.string-hit').forEach(el => el.classList.remove('string-hit'));
+                document.querySelectorAll('.sh-active').forEach(el => el.classList.remove('sh-active'));
+                document.querySelectorAll('.sh-mh-active').forEach(el => el.classList.remove('sh-mh-active'));
+            }
+        }
+
+        async function fetchMidiBuffer() {
+            const chords = currentTransposed.map(r => r.transposed);
+            const tempo = parseInt(document.getElementById('tempoSlider').value);
+            const pattern = document.getElementById('patternSelect').value;
+            const octave = parseInt(document.getElementById('octaveSelect').value);
+
+            const body = { chords, tempo, pattern, octave, beats: 4 };
+
+            // For fretboard instruments, send actual fret positions and open-string
+            // tuning so the backend can generate pitch-accurate MIDI notes.
+            if (currentInstrument && currentInstrument.openMidi && currentInstrument.openMidi.length > 0) {
+                body.openMidi = currentInstrument.openMidi;
+                body.frets = currentTransposed.map((_, i) => getActiveDiagramFrets(i) || []);
+            }
+
+            const res = await fetch('/api/midi', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+            return res.arrayBuffer();
+        }
+
+
+
+        async function togglePlayback() {
+            if (isPlaying) { stopPlayback(); return; }
+            if (!currentTransposed.length) return;
+
+            const btn = document.getElementById('playBtn');
+            btn.textContent = '⏹ Stop';
+            btn.classList.add('playing');
+            isPlaying = true;
+
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                if (audioCtx.state === 'suspended') await audioCtx.resume();
+
+                const midiBuffer = await fetchMidiBuffer();
+                const notes = parseMidi(midiBuffer);
+                if (!isPlaying) return;
+
+                const startTime = audioCtx.currentTime + 0.1;
+                let maxEnd = 0;
+                for (const n of notes) {
+                    synthNote(audioCtx, n.note, startTime + n.start, n.duration, n.velocity);
+                    const end = n.start + n.duration;
+                    if (end > maxEnd) maxEnd = end;
+                }
+
+                // Compute timing
+                const tempo = parseInt(document.getElementById('tempoSlider').value);
+                playbackChordDurSec = 4 * (60 / tempo); // beats * secondsPerBeat
+                playbackStartTime = startTime;
+
+                // Render sheet music
+                lastParsedNotes = notes;
+                const chordNames = currentTransposed.map(r => r.transposed);
+                renderSheetMusic(notes, chordNames, playbackChordDurSec);
+
+                // Start unified visual animation (chord tiles + diagrams + note names + sheet music)
+                animatePlaybackVisuals();
+
+                playbackTimer = setTimeout(() => { stopPlayback(); }, (maxEnd + 0.5) * 1000);
+            } catch (err) {
+                console.error('Playback error:', err);
+                stopPlayback();
+            }
+        }
+
+        function stopPlayback() {
+            isPlaying = false;
+            if (playbackTimer) { clearTimeout(playbackTimer); playbackTimer = null; }
+            highlightTimers.forEach(t => clearTimeout(t));
+            highlightTimers = [];
+            document.querySelectorAll('.chord-wrapper .chord').forEach(w => w.classList.remove('chord-playing'));
+            document.querySelectorAll('.chord-wrapper .chord-diagram').forEach(d => d.classList.remove('diagram-playing'));
+            document.querySelectorAll('.playing-notes-label').forEach(l => l.textContent = '');
+            document.querySelectorAll('.string-hit').forEach(el => el.classList.remove('string-hit'));
+
+            const now = audioCtx ? audioCtx.currentTime : 0;
+            scheduledNodes.forEach(node => {
+                try { if (node.stop) node.stop(now + 0.01); node.disconnect(); } catch (e) {}
+            });
+            scheduledNodes = [];
+
+            const btn = document.getElementById('playBtn');
+            btn.textContent = '▶ Play';
+            btn.classList.remove('playing');
+
+            // Stop visual animation
+            if (timelineAnimFrame) { cancelAnimationFrame(timelineAnimFrame); timelineAnimFrame = null; }
+            document.querySelectorAll('.sh-active').forEach(el => el.classList.remove('sh-active'));
+            document.querySelectorAll('.sh-mh-active').forEach(el => el.classList.remove('sh-mh-active'));
+        }
+
+        async function downloadMidi() {
+            if (!currentTransposed.length) return;
+            const midiBuffer = await fetchMidiBuffer();
+            const blob = new Blob([midiBuffer], { type: 'audio/midi' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = (currentProgression ? currentProgression.name : 'progression') + '.mid';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
 
         // ── Random pick ───────────────────────────────────────────────────────────
 

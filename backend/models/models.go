@@ -6,6 +6,7 @@ type Instrument struct {
 	Name        string   `json:"name"`
 	Strings     int      `json:"strings"`
 	StringNames []string `json:"stringNames"`
+	OpenMidi    []int    `json:"openMidi"`    // MIDI note for each open string (fretboard instruments only)
 	Icon        string   `json:"icon"`
 	DisplayType string   `json:"displayType"` // "fretboard" or "keyboard"
 }

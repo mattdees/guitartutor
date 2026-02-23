@@ -26,6 +26,7 @@ func main() {
 		api.GET("/chords/:instrument", handlers.GetChords)
 		api.POST("/chords/batch", handlers.BatchChords)
 		api.POST("/transpose", handlers.Transpose)
+		api.POST("/midi", handlers.GenerateMidi)
 	}
 
 	r.Run(":8080")
