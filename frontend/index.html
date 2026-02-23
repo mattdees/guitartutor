@@ -253,6 +253,15 @@
 
         .chord:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 25px rgba(233, 69, 96, 0.6); }
 
+        .chord-variant-label {
+            font-size: 0.7rem;
+            color: #a78bfa;
+            text-align: center;
+            margin-bottom: 4px;
+            min-height: 1em;
+            letter-spacing: 0.03em;
+        }
+
         .chord-diagram { background: rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 10px; font-family: monospace; }
 
         .diagram-grid { display: grid; gap: 0; }
@@ -601,6 +610,10 @@
                     ? `<button class="chord-variant-btn" onclick="toggleVariantMenu(${i},'${chord}',event)">▼</button>`
                     : '';
 
+                const variantLabelHtml = hasVariants && currentVariant
+                    ? `<div class="chord-variant-label">${currentVariant.name}</div>`
+                    : '<div class="chord-variant-label"></div>';
+
                 const wrapper = document.createElement('div');
                 wrapper.className = 'chord-wrapper';
                 wrapper.innerHTML = `
@@ -609,6 +622,7 @@
                         ${variantBtnHtml}
                         ${variantMenuHtml}
                     </div>
+                    ${variantLabelHtml}
                     ${renderChordDiagram(currentVariant)}
                 `;
                 container.appendChild(wrapper);
