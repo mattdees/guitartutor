@@ -717,6 +717,30 @@
                 document.getElementById('tempoValue').textContent = e.target.value;
             });
 
+            document.getElementById('patternSelect').addEventListener('change', async () => {
+                if (currentTransposed.length > 0) {
+                    // Re-fetch and re-render sheet music immediately
+                    const wasPlaying = isPlaying;
+                    if (wasPlaying) stopPlayback();
+                    
+                    try {
+                        const midiBuffer = await fetchMidiBuffer();
+                        const notes = parseMidi(midiBuffer);
+                        lastParsedNotes = notes;
+                        const tempo = parseInt(document.getElementById('tempoSlider').value);
+                        playbackChordDurSec = 4 * (60 / tempo);
+                        const chordNames = currentTransposed.map(r => r.transposed);
+                        renderSheetMusic(notes, chordNames, playbackChordDurSec);
+                        
+                        if (wasPlaying) {
+                            togglePlayback(); // Restart with new pattern
+                        }
+                    } catch (err) {
+                        console.error('Error updating pattern:', err);
+                    }
+                }
+            });
+
             showRandomProgression();
         }
 
