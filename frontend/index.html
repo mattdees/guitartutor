@@ -172,7 +172,7 @@
         .chords-container {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 27px; /* 10% reduction from 30px */
             flex-wrap: wrap;
             margin-bottom: 30px;
         }
@@ -263,7 +263,14 @@
             letter-spacing: 0.03em;
         }
 
-        .chord-diagram { background: rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 10px; font-family: monospace; }
+        .chord-diagram { 
+            background: rgba(255, 255, 255, 0.08); 
+            border-radius: 10px; 
+            padding: 10px; 
+            font-family: monospace; 
+            border: 1px solid transparent; /* Fixed border to prevent shifting */
+            box-sizing: border-box;
+        }
 
         .diagram-grid { display: grid; gap: 0; }
         .diagram-grid.strings-4 { grid-template-columns: 20px repeat(4, 18px); }
@@ -344,9 +351,15 @@
 
         .description { color: #ccc; font-size: 1.1rem; line-height: 1.6; margin-bottom: 25px; }
 
-        .songs-section { background: rgba(255, 255, 255, 0.03); border-radius: 10px; padding: 20px; }
-        .songs-title   { color: #f39c12; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
-        .songs-list    { color: #aaa; font-style: italic; }
+        .songs-section { background: rgba(255, 255, 255, 0.03); border-radius: 10px; padding: 20px; transition: all 0.3s ease; }
+        .songs-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-bottom: 1px solid rgba(243, 156, 18, 0.2); margin-bottom: 15px; padding-bottom: 8px; }
+        .songs-header:hover .songs-title { color: #fff; }
+        .songs-title   { color: #f39c12; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 0; border-bottom: none; padding-bottom: 0; transition: color 0.2s; }
+        .songs-toggle  { color: #f39c12; font-size: 0.8rem; transition: transform 0.3s ease; }
+        .songs-list    { color: #aaa; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .songs-section.collapsed .songs-list { max-height: 0 !important; }
+        .songs-section.collapsed .songs-toggle { transform: rotate(-90deg); }
+        .songs-section.collapsed { padding-bottom: 10px; }
 
         .guitar-icon { font-size: 3rem; margin-bottom: 20px; }
 
@@ -370,7 +383,7 @@
             flex-wrap: wrap;
         }
         .playback-btn {
-            background: linear-gradient(145deg, #14b8a6, #0d9488);
+            background: linear-gradient(145deg, #f39c12, #d35400);
             color: white;
             border: none;
             padding: 10px 22px;
@@ -382,11 +395,11 @@
             transition: all 0.3s ease;
             min-width: 90px;
         }
-        .playback-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4); }
+        .playback-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4); }
         .playback-btn.playing { background: linear-gradient(145deg, #ef4444, #dc2626); }
         .playback-btn.playing:hover { box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
-        .playback-btn.loop-active { background: linear-gradient(145deg, #f39c12, #d35400); }
-        .playback-btn.loop-active:hover { box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4); }
+        .playback-btn.loop-active { background: linear-gradient(145deg, #14b8a6, #0d9488); }
+        .playback-btn.loop-active:hover { box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4); }
         .playback-btn.download-btn { background: linear-gradient(145deg, #6366f1, #4f46e5); min-width: unset; padding: 10px 16px; }
         .playback-btn.download-btn:hover { box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); }
         .playback-control { display: flex; align-items: center; gap: 6px; }
@@ -421,6 +434,7 @@
             cursor: pointer;
         }
         .playback-select option { background: #1a1a2e; color: #fff; }
+        .playback-select optgroup { background: #1a1a2e; color: #e94560; font-weight: bold; font-style: normal; }
         .chord.chord-playing {
             box-shadow: 0 0 20px 6px rgba(20, 184, 166, 0.7);
             transform: translateY(-5px) scale(1.08);
@@ -588,13 +602,18 @@
                 <div class="loading-msg">Loading chord data…</div>
             </div>
 
-            <div class="playback-section" id="playbackSection">
-                <!-- Row 1: Primary Controls -->
-                <div class="playback-controls-row">
-                    <button class="playback-btn" id="playBtn" onclick="togglePlayback()">▶ Play</button>
+            <p class="description" id="description"></p>
+            <div class="songs-section" id="songsSection" style="margin-bottom: 25px;">
+                <div class="songs-header" onclick="toggleSongsCollapse()">
+                    <p class="songs-title">Featured in</p>
+                    <span class="songs-toggle" id="songsToggle">▼</span>
                 </div>
-                <!-- Row 2: Secondary Settings -->
-                <div class="playback-controls-row" style="margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+                <div class="songs-list" id="songsList"></div>
+            </div>
+
+            <div class="playback-section" id="playbackSection">
+                <!-- MIDI Settings -->
+                <div class="playback-controls-row">
                     <div class="playback-control">
                         <label class="playback-label">Pattern</label>
                         <select id="patternSelect" class="playback-select">
@@ -673,7 +692,7 @@
                             </optgroup>
                             <optgroup label="Folk & World">
                                 <option value="banjo">Banjo</option>
-                                <option value="fiddle">Fiddle / Mandolin</option>
+                                <option value="fiddle">Fiddle</option>
                                 <option value="sitar">Sitar</option>
                                 <option value="kalimba">Kalimba</option>
                                 <option value="steel_drums">Steel Drums</option>
@@ -701,14 +720,9 @@
             </div>
 
             <div class="playback-controls-row" style="margin-top: 20px;">
+                <button class="playback-btn" id="playBtn" onclick="togglePlayback()">▶ Play</button>
                 <button class="playback-btn" id="loopBtn" onclick="toggleLooping()">🔁 Loop: Off</button>
                 <button class="playback-btn download-btn" onclick="downloadMidi()">⬇ MIDI</button>
-            </div>
-
-            <p class="description" id="description"></p>
-            <div class="songs-section">
-                <p class="songs-title">Featured in</p>
-                <p class="songs-list" id="songsList"></p>
             </div>
         </div>
 
@@ -969,12 +983,48 @@
 
         // ── Rendering (no API calls) ──────────────────────────────────────────────
 
+        function toggleSongsCollapse() {
+            const section = document.getElementById('songsSection');
+            section.classList.toggle('collapsed');
+            const toggle = document.getElementById('songsToggle');
+            toggle.textContent = section.classList.contains('collapsed') ? '▶' : '▼';
+        }
+
         function rerenderProgression() {
             if (currentIndex < 0 || !currentProgression) return;
 
             document.getElementById('progressionName').textContent = currentProgression.name;
             document.getElementById('description').textContent     = currentProgression.description;
-            document.getElementById('songsList').textContent       = currentProgression.songs.join(' • ');
+            
+            const songsList = document.getElementById('songsList');
+            songsList.innerHTML = '';
+            // Reset max-height before measuring
+            songsList.style.maxHeight = 'none';
+
+            currentProgression.songs.forEach(song => {
+                const item = document.createElement('div');
+                item.className = 'song-item';
+                item.style.marginBottom = '8px';
+                item.style.display = 'flex';
+                item.style.justifyContent = 'space-between';
+                item.style.fontSize = '0.9rem';
+                
+                const mainInfo = document.createElement('span');
+                mainInfo.innerHTML = `<strong style="color: #fff;">${song.title}</strong> by ${song.artist}`;
+                
+                const yearInfo = document.createElement('span');
+                yearInfo.style.color = '#666';
+                yearInfo.textContent = song.year || '';
+                
+                item.appendChild(mainInfo);
+                item.appendChild(yearInfo);
+                songsList.appendChild(item);
+            });
+
+            // Set max-height for animation (after content is loaded)
+            setTimeout(() => {
+                songsList.style.maxHeight = songsList.scrollHeight + 'px';
+            }, 0);
 
             const container = document.getElementById('chordsContainer');
             container.innerHTML = '';

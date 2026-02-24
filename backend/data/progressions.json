@@ -1,29 +1,294 @@
 [
-  {"name":"I-V-vi-IV (Pop Progression)","chords":["C","G","Am","F"],"originalKey":"C","description":"The most popular progression in modern pop music. Used in thousands of hit songs.","songs":["Let It Be","No Woman No Cry","With or Without You"]},
-  {"name":"I-IV-V (12-Bar Blues Base)","chords":["G","C","D"],"originalKey":"G","description":"The foundation of rock and roll and blues music.","songs":["La Bamba","Twist and Shout","Wild Thing"]},
-  {"name":"ii-V-I (Jazz Standard)","chords":["Dm7","G7","Cmaj7"],"originalKey":"C","description":"The most important progression in jazz music.","songs":["Autumn Leaves","Fly Me to the Moon","All The Things You Are"]},
-  {"name":"I-vi-IV-V (50s Doo-Wop)","chords":["C","Am","F","G"],"originalKey":"C","description":"Classic 1950s progression heard in countless doo-wop and early rock songs.","songs":["Stand By Me","Every Breath You Take","Earth Angel"]},
-  {"name":"vi-IV-I-V (Emotional Pop)","chords":["Am","F","C","G"],"originalKey":"C","description":"A minor variation of the pop progression with a more emotional feel.","songs":["Despacito","Grenade","Numb"]},
-  {"name":"I-V-vi-iii-IV (Canon Progression)","chords":["D","A","Bm","F#m","G"],"originalKey":"D","description":"Based on Pachelbel's Canon, used in many ballads.","songs":["Basket Case","Graduation","Don't Look Back in Anger"]},
-  {"name":"I-bVII-IV (Mixolydian Rock)","chords":["A","G","D"],"originalKey":"A","description":"A rock staple with a bluesy, laid-back feel.","songs":["Sweet Home Alabama","Born to Be Wild","Hey Joe"]},
-  {"name":"i-bVII-bVI-V (Andalusian Cadence)","chords":["Am","G","F","E"],"originalKey":"A","description":"A dramatic flamenco-influenced progression.","songs":["Hit the Road Jack","Stray Cat Strut","Sultans of Swing"]},
-  {"name":"I-IV-vi-V","chords":["G","C","Em","D"],"originalKey":"G","description":"Uplifting and energetic, common in alternative rock.","songs":["Wonderwall","She Will Be Loved","Hey There Delilah"]},
-  {"name":"i-bVI-bIII-bVII (Epic Minor)","chords":["Em","C","G","D"],"originalKey":"E","description":"Minor progression with a powerful, anthem-like quality.","songs":["Zombie","Boulevard of Broken Dreams","Radioactive"]},
-  {"name":"I-ii-V (Jazz Turnaround)","chords":["Cmaj7","Dm7","G7"],"originalKey":"C","description":"A smooth jazz turnaround progression.","songs":["Fly Me to the Moon","The Girl from Ipanema"]},
-  {"name":"i-iv-V (Minor Blues)","chords":["Am","Dm","E7"],"originalKey":"A","description":"Classic minor blues progression with emotional depth.","songs":["The Thrill Is Gone","Black Magic Woman"]},
-  {"name":"I-V-IV (Country/Folk)","chords":["G","D","C"],"originalKey":"G","description":"Simple and timeless, used in countless country and folk songs.","songs":["Knockin' on Heaven's Door","Free Fallin'","Bad Moon Rising"]},
-  {"name":"I-iii-IV-V (Optimistic Pop)","chords":["C","Em","F","G"],"originalKey":"C","description":"Bright and uplifting progression common in feel-good songs.","songs":["Here Comes the Sun","More Than Words"]},
-  {"name":"i-III-VII-IV (Dorian Mode)","chords":["Am","C","G","D"],"originalKey":"A","description":"A modal progression with a mysterious, floating quality.","songs":["Mad World","Pumped Up Kicks"]},
-  {"name":"I-IV (Two Chord Jam)","chords":["A","D"],"originalKey":"A","description":"The simplest progression - perfect for beginners and jamming.","songs":["Achy Breaky Heart","Something in the Way"]},
-  {"name":"I-vi-ii-V (Jazz Standard Turnaround)","chords":["C","Am","Dm7","G7"],"originalKey":"C","description":"Classic jazz turnaround found in standards.","songs":["I Got Rhythm","Blue Moon","Heart and Soul"]},
-  {"name":"i-bVI-bVII (Epic Cinematic)","chords":["Am","F","G"],"originalKey":"A","description":"Dramatic and cinematic, common in film scores and power ballads.","songs":["All Along the Watchtower","Stairway to Heaven intro"]},
-  {"name":"I-V-vi-IV in G (Pop in G)","chords":["G","D","Em","C"],"originalKey":"G","description":"The pop progression in the key of G - very guitar friendly.","songs":["Someone Like You","Let Her Go","Photograph"]},
-  {"name":"I-IV-I-V (Simple Rock)","chords":["E","A","E","B"],"originalKey":"E","description":"Essential rock progression, great for power chords.","songs":["Gloria","Louie Louie"]},
-  {"name":"vi-V-IV-V (Modern Minor)","chords":["Am","G","F","G"],"originalKey":"C","description":"Modern pop progression starting on the minor chord.","songs":["Perfect","Thinking Out Loud"]},
-  {"name":"I-bVII-IV-I (Lydian Rock)","chords":["G","F","C","G"],"originalKey":"G","description":"Rock progression with a bright, triumphant quality.","songs":["Man on the Moon","Dreams"]},
-  {"name":"i-iv-bVII-bIII (Minor Epic)","chords":["Em","Am","D","G"],"originalKey":"E","description":"Epic minor progression with a sense of journey.","songs":["Wicked Game","House of the Rising Sun"]},
-  {"name":"12-Bar Blues (Key of E)","chords":["E","E","E","E","A","A","E","E","B","A","E","B"],"originalKey":"E","description":"The complete 12-bar blues progression in E.","songs":["Johnny B. Goode","Hound Dog","Rock Around the Clock"]},
-  {"name":"I-ii-iii-IV (Ascending)","chords":["C","Dm","Em","F"],"originalKey":"C","description":"Ascending progression that builds tension and anticipation.","songs":["Here, There and Everywhere","Creep"]},
-  {"name":"IV-I-V-vi (Axis Variant)","chords":["F","C","G","Am"],"originalKey":"C","description":"Rotation of the pop progression starting on IV.","songs":["Where Is the Love","Self Esteem"]},
-  {"name":"I-III-IV-iv (Dramatic Rock)","chords":["G","B","C","Cm"],"originalKey":"G","description":"A highly emotional progression using a major III and a minor iv chord.","songs":["Creep","Get Free"]}
+  {
+    "name": "I-V-vi-IV (Pop Progression)",
+    "chords": ["C", "G", "Am", "F"],
+    "originalKey": "C",
+    "description": "The most popular progression in modern pop music. Used in thousands of hit songs.",
+    "songs": [
+      { "title": "Let It Be", "artist": "The Beatles", "year": "1970" },
+      { "title": "No Woman No Cry", "artist": "Bob Marley", "year": "1974" },
+      { "title": "With or Without You", "artist": "U2", "year": "1987" },
+      { "title": "Don't Stop Believin'", "artist": "Journey", "year": "1981" },
+      { "title": "I'm Yours", "artist": "Jason Mraz", "year": "2008" },
+      { "title": "Someone Like You", "artist": "Adele", "year": "2011" }
+    ]
+  },
+  {
+    "name": "I-IV-V (12-Bar Blues Base)",
+    "chords": ["G", "C", "D"],
+    "originalKey": "G",
+    "description": "The foundation of rock and roll and blues music.",
+    "songs": [
+      { "title": "La Bamba", "artist": "Ritchie Valens", "year": "1958" },
+      { "title": "Twist and Shout", "artist": "The Beatles", "year": "1963" },
+      { "title": "Wild Thing", "artist": "The Troggs", "year": "1966" },
+      { "title": "Johnny B. Goode", "artist": "Chuck Berry", "year": "1958" }
+    ]
+  },
+  {
+    "name": "ii-V-I (Jazz Standard)",
+    "chords": ["Dm7", "G7", "Cmaj7"],
+    "originalKey": "C",
+    "description": "The most important progression in jazz music.",
+    "songs": [
+      { "title": "Autumn Leaves", "artist": "Joseph Kosma", "year": "1945" },
+      { "title": "Satin Doll", "artist": "Duke Ellington", "year": "1953" },
+      { "title": "Sunday Morning", "artist": "Maroon 5", "year": "2002" },
+      { "title": "Fly Me to the Moon", "artist": "Bart Howard", "year": "1954" }
+    ]
+  },
+  {
+    "name": "I-vi-IV-V (50s Doo-Wop)",
+    "chords": ["C", "Am", "F", "G"],
+    "originalKey": "C",
+    "description": "Classic 1950s progression heard in countless doo-wop and early rock songs.",
+    "songs": [
+      { "title": "Stand By Me", "artist": "Ben E. King", "year": "1961" },
+      { "title": "Earth Angel", "artist": "The Penguins", "year": "1954" },
+      { "title": "Every Breath You Take", "artist": "The Police", "year": "1983" },
+      { "title": "Blue Moon", "artist": "Richard Rodgers", "year": "1934" },
+      { "title": "Perfect", "artist": "Ed Sheeran", "year": "2017" }
+    ]
+  },
+  {
+    "name": "vi-IV-I-V (Emotional Pop)",
+    "chords": ["Am", "F", "C", "G"],
+    "originalKey": "C",
+    "description": "A minor variation of the pop progression with a more emotional feel.",
+    "songs": [
+      { "title": "Despacito", "artist": "Luis Fonsi", "year": "2017" },
+      { "title": "Grenade", "artist": "Bruno Mars", "year": "2010" },
+      { "title": "Numb", "artist": "Linkin Park", "year": "2003" },
+      { "title": "Hello", "artist": "Adele", "year": "2015" }
+    ]
+  },
+  {
+    "name": "I-V-vi-iii-IV (Canon Progression)",
+    "chords": ["D", "A", "Bm", "F#m", "G"],
+    "originalKey": "D",
+    "description": "Based on Pachelbel's Canon, used in many ballads.",
+    "songs": [
+      { "title": "Canon in D", "artist": "Johann Pachelbel", "year": "1680" },
+      { "title": "Basket Case", "artist": "Green Day", "year": "1994" },
+      { "title": "Don't Look Back in Anger", "artist": "Oasis", "year": "1995" },
+      { "title": "Memories", "artist": "Maroon 5", "year": "2019" }
+    ]
+  },
+  {
+    "name": "I-bVII-IV (Mixolydian Rock)",
+    "chords": ["A", "G", "D"],
+    "originalKey": "A",
+    "description": "A rock staple with a bluesy, laid-back feel.",
+    "songs": [
+      { "title": "Sweet Home Alabama", "artist": "Lynyrd Skynyrd", "year": "1974" },
+      { "title": "Born to Be Wild", "artist": "Steppenwolf", "year": "1968" },
+      { "title": "Hey Joe", "artist": "Jimi Hendrix", "year": "1966" },
+      { "title": "Fortunate Son", "artist": "CCR", "year": "1969" }
+    ]
+  },
+  {
+    "name": "i-bVII-bVI-V (Andalusian Cadence)",
+    "chords": ["Am", "G", "F", "E"],
+    "originalKey": "A",
+    "description": "A dramatic flamenco-influenced progression.",
+    "songs": [
+      { "title": "Hit the Road Jack", "artist": "Ray Charles", "year": "1961" },
+      { "title": "Sultans of Swing", "artist": "Dire Straits", "year": "1978" },
+      { "title": "Smooth Criminal", "artist": "Michael Jackson", "year": "1987" },
+      { "title": "Stray Cat Strut", "artist": "The Stray Cats", "year": "1981" }
+    ]
+  },
+  {
+    "name": "I-IV-vi-V",
+    "chords": ["G", "C", "Em", "D"],
+    "originalKey": "G",
+    "description": "Uplifting and energetic, common in alternative rock.",
+    "songs": [
+      { "title": "Wonderwall", "artist": "Oasis", "year": "1995" },
+      { "title": "She Will Be Loved", "artist": "Maroon 5", "year": "2002" },
+      { "title": "Hey There Delilah", "artist": "Plain White T's", "year": "2006" }
+    ]
+  },
+  {
+    "name": "i-bVI-bIII-bVII (Epic Minor)",
+    "chords": ["Em", "C", "G", "D"],
+    "originalKey": "E",
+    "description": "Minor progression with a powerful, anthem-like quality.",
+    "songs": [
+      { "title": "Zombie", "artist": "The Cranberries", "year": "1994" },
+      { "title": "Boulevard of Broken Dreams", "artist": "Green Day", "year": "2004" },
+      { "title": "Radioactive", "artist": "Imagine Dragons", "year": "2012" }
+    ]
+  },
+  {
+    "name": "I-ii-V (Jazz Turnaround)",
+    "chords": ["Cmaj7", "Dm7", "G7"],
+    "originalKey": "C",
+    "description": "A smooth jazz turnaround progression.",
+    "songs": [
+      { "title": "The Girl from Ipanema", "artist": "Antônio Carlos Jobim", "year": "1962" },
+      { "title": "Blue Bossa", "artist": "Kenny Dorham", "year": "1963" }
+    ]
+  },
+  {
+    "name": "i-iv-V (Minor Blues)",
+    "chords": ["Am", "Dm", "E7"],
+    "originalKey": "A",
+    "description": "Classic minor blues progression with emotional depth.",
+    "songs": [
+      { "title": "The Thrill Is Gone", "artist": "B.B. King", "year": "1969" },
+      { "title": "Black Magic Woman", "artist": "Fleetwood Mac", "year": "1968" }
+    ]
+  },
+  {
+    "name": "I-V-IV (Country/Folk)",
+    "chords": ["G", "D", "C"],
+    "originalKey": "G",
+    "description": "Simple and timeless, used in countless country and folk songs.",
+    "songs": [
+      { "title": "Knockin' on Heaven's Door", "artist": "Bob Dylan", "year": "1973" },
+      { "title": "Free Fallin'", "artist": "Tom Petty", "year": "1989" },
+      { "title": "Bad Moon Rising", "artist": "CCR", "year": "1969" }
+    ]
+  },
+  {
+    "name": "I-iii-IV-V (Optimistic Pop)",
+    "chords": ["C", "Em", "F", "G"],
+    "originalKey": "C",
+    "description": "Bright and uplifting progression common in feel-good songs.",
+    "songs": [
+      { "title": "Here Comes the Sun", "artist": "The Beatles", "year": "1969" },
+      { "title": "More Than Words", "artist": "Extreme", "year": "1990" }
+    ]
+  },
+  {
+    "name": "i-III-VII-IV (Dorian Mode)",
+    "chords": ["Am", "C", "G", "D"],
+    "originalKey": "A",
+    "description": "A modal progression with a mysterious, floating quality.",
+    "songs": [
+      { "title": "Mad World", "artist": "Tears for Fears", "year": "1982" },
+      { "title": "Pumped Up Kicks", "artist": "Foster The People", "year": "2010" }
+    ]
+  },
+  {
+    "name": "I-IV (Two Chord Jam)",
+    "chords": ["A", "D"],
+    "originalKey": "A",
+    "description": "The simplest progression - perfect for beginners and jamming.",
+    "songs": [
+      { "title": "Achy Breaky Heart", "artist": "Billy Ray Cyrus", "year": "1992" },
+      { "title": "Something in the Way", "artist": "Nirvana", "year": "1991" }
+    ]
+  },
+  {
+    "name": "I-vi-ii-V (Jazz Standard Turnaround)",
+    "chords": ["C", "Am", "Dm7", "G7"],
+    "originalKey": "C",
+    "description": "Classic jazz turnaround found in standards.",
+    "songs": [
+      { "title": "I Got Rhythm", "artist": "George Gershwin", "year": "1930" },
+      { "title": "Heart and Soul", "artist": "Hoagy Carmichael", "year": "1938" }
+    ]
+  },
+  {
+    "name": "i-bVI-bIII-bVII (Epic Cinematic)",
+    "chords": ["Am", "F", "G"],
+    "originalKey": "A",
+    "description": "Dramatic and cinematic, common in film scores and power ballads.",
+    "songs": [
+      { "title": "All Along the Watchtower", "artist": "Bob Dylan", "year": "1967" },
+      { "title": "Stairway to Heaven", "artist": "Led Zeppelin", "year": "1971" }
+    ]
+  },
+  {
+    "name": "I-V-vi-IV in G (Pop in G)",
+    "chords": ["G", "D", "Em", "C"],
+    "originalKey": "G",
+    "description": "The pop progression in the key of G - very guitar friendly.",
+    "songs": [
+      { "title": "Someone Like You", "artist": "Adele", "year": "2011" },
+      { "title": "Let Her Go", "artist": "Passenger", "year": "2012" },
+      { "title": "Photograph", "artist": "Ed Sheeran", "year": "2014" }
+    ]
+  },
+  {
+    "name": "I-IV-I-V (Simple Rock)",
+    "chords": ["E", "A", "E", "B"],
+    "originalKey": "E",
+    "description": "Essential rock progression, great for power chords.",
+    "songs": [
+      { "title": "Gloria", "artist": "Them", "year": "1964" },
+      { "title": "Louie Louie", "artist": "The Kingsmen", "year": "1963" }
+    ]
+  },
+  {
+    "name": "vi-V-IV-V (Modern Minor)",
+    "chords": ["Am", "G", "F", "G"],
+    "originalKey": "C",
+    "description": "Modern pop progression starting on the minor chord.",
+    "songs": [
+      { "title": "Thinking Out Loud", "artist": "Ed Sheeran", "year": "2014" }
+    ]
+  },
+  {
+    "name": "I-bVII-IV-I (Lydian Rock)",
+    "chords": ["G", "F", "C", "G"],
+    "originalKey": "G",
+    "description": "Rock progression with a bright, triumphant quality.",
+    "songs": [
+      { "title": "Man on the Moon", "artist": "R.E.M.", "year": "1992" },
+      { "title": "Dreams", "artist": "Fleetwood Mac", "year": "1977" }
+    ]
+  },
+  {
+    "name": "i-iv-bVII-bIII (Minor Epic)",
+    "chords": ["Em", "Am", "D", "G"],
+    "originalKey": "E",
+    "description": "Epic minor progression with a sense of journey.",
+    "songs": [
+      { "title": "Wicked Game", "artist": "Chris Isaak", "year": "1989" },
+      { "title": "House of the Rising Sun", "artist": "The Animals", "year": "1964" }
+    ]
+  },
+  {
+    "name": "12-Bar Blues (Key of E)",
+    "chords": ["E", "E", "E", "E", "A", "A", "E", "E", "B", "A", "E", "B"],
+    "originalKey": "E",
+    "description": "The complete 12-bar blues progression in E.",
+    "songs": [
+      { "title": "Johnny B. Goode", "artist": "Chuck Berry", "year": "1958" },
+      { "title": "Hound Dog", "artist": "Elvis Presley", "year": "1956" }
+    ]
+  },
+  {
+    "name": "I-ii-iii-IV (Ascending)",
+    "chords": ["C", "Dm", "Em", "F"],
+    "originalKey": "C",
+    "description": "Ascending progression that builds tension and anticipation.",
+    "songs": [
+      { "title": "Here, There and Everywhere", "artist": "The Beatles", "year": "1966" },
+      { "title": "Creep", "artist": "Radiohead", "year": "1992" }
+    ]
+  },
+  {
+    "name": "IV-I-V-vi (Axis Variant)",
+    "chords": ["F", "C", "G", "Am"],
+    "originalKey": "C",
+    "description": "Rotation of the pop progression starting on IV.",
+    "songs": [
+      { "title": "Where Is the Love", "artist": "Black Eyed Peas", "year": "2003" },
+      { "title": "Self Esteem", "artist": "The Offspring", "year": "1994" }
+    ]
+  },
+  {
+    "name": "I-III-IV-iv (Dramatic Rock)",
+    "chords": ["G", "B", "C", "Cm"],
+    "originalKey": "G",
+    "description": "A highly emotional progression using a major III and a minor iv chord.",
+    "songs": [
+      { "title": "Creep", "artist": "Radiohead", "year": "1992" },
+      { "title": "Get Free", "artist": "Lana Del Rey", "year": "2017" }
+    ]
+  }
 ]

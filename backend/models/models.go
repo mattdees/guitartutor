@@ -11,13 +11,20 @@ type Instrument struct {
 	DisplayType string   `json:"displayType"` // "fretboard" or "keyboard"
 }
 
+// FeaturedSong describes a song that uses a progression.
+type FeaturedSong struct {
+	Title  string `json:"title"`
+	Artist string `json:"artist"`
+	Year   string `json:"year,omitempty"`
+}
+
 // Progression is a named chord progression.
 type Progression struct {
-	Name        string   `json:"name"`
-	Chords      []string `json:"chords"`
-	OriginalKey string   `json:"originalKey"`
-	Description string   `json:"description"`
-	Songs       []string `json:"songs"`
+	Name        string         `json:"name"`
+	Chords      []string       `json:"chords"`
+	OriginalKey string         `json:"originalKey"`
+	Description string         `json:"description"`
+	Songs       []FeaturedSong `json:"songs"`
 }
 
 // ChordVariant is a single fingering for a chord.
