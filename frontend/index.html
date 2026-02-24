@@ -384,6 +384,8 @@
         .playback-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4); }
         .playback-btn.playing { background: linear-gradient(145deg, #ef4444, #dc2626); }
         .playback-btn.playing:hover { box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
+        .playback-btn.loop-active { background: linear-gradient(145deg, #f39c12, #d35400); }
+        .playback-btn.loop-active:hover { box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4); }
         .playback-btn.download-btn { background: linear-gradient(145deg, #6366f1, #4f46e5); min-width: unset; padding: 10px 16px; }
         .playback-btn.download-btn:hover { box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); }
         .playback-control { display: flex; align-items: center; gap: 6px; }
@@ -581,6 +583,7 @@
             <div class="playback-section" id="playbackSection">
                 <div class="playback-controls-row">
                     <button class="playback-btn" id="playBtn" onclick="togglePlayback()">▶ Play</button>
+                    <button class="playback-btn" id="loopBtn" onclick="toggleLooping()">🔁 Loop: Off</button>
                     <button class="playback-btn download-btn" onclick="downloadMidi()">⬇ MIDI</button>
                     <div class="playback-control">
                         <label class="playback-label">Tempo</label>
@@ -1036,8 +1039,16 @@
         // ── Playback ──────────────────────────────────────────────────────────
         let audioCtx = null;
         let isPlaying = false;
+        let isLooping = false;
         let scheduledNodes = [];
         let _audioUnlocked = false;
+
+        function toggleLooping() {
+            isLooping = !isLooping;
+            const btn = document.getElementById('loopBtn');
+            btn.textContent = isLooping ? '🔁 Loop: On' : '🔁 Loop: Off';
+            btn.classList.toggle('loop-active', isLooping);
+        }
 
         // iOS Safari requires AudioContext to be created+unlocked in a synchronous
         // user-gesture handler. We do it on the first touch/click anywhere on the
@@ -1619,7 +1630,7 @@
                 }
 
                 case 'pop-strum': {
-                    const strumTypes = ['down', 'down', 'up', 'down', 'up', null, null, null];
+                    const strumTypes = ['down', 'down', 'up', null, 'up', 'down', 'up', null];
                     const totalEighths = Math.floor(chordDurSec / eighthDur);
                     const curEighth = Math.min(eighthIdx, totalEighths - 1);
                     const dir = strumTypes[curEighth % strumTypes.length];
@@ -1721,11 +1732,13 @@
                 case 'rock-8th': {
                     const eighthIdxTotal = Math.floor(chordElapsed / eighthDur);
                     const eighthElapsed = chordElapsed - eighthIdxTotal * eighthDur;
+                    const dir = (eighthIdxTotal % 2 === 0) ? 'down' : 'up';
+                    const ordered = dir === 'up' ? [...nonMuted].reverse() : [...nonMuted];
                     const lit = [];
-                    for (let si = 0; si < nonMuted.length; si++) {
-                        if (eighthElapsed >= si * 0.025 && eighthElapsed < eighthDur - 0.03) lit.push(nonMuted[si]);
+                    for (let si = 0; si < ordered.length; si++) {
+                        if (eighthElapsed >= si * 0.025 && eighthElapsed < eighthDur - 0.03) lit.push(ordered[si]);
                     }
-                    return lit.length ? lit : nonMuted;
+                    return lit.length ? lit : ordered;
                 }
 
                 case 'let-it-be': {
@@ -1752,14 +1765,16 @@
                 }
 
                 case 'twist-and-shout': {
-                    const strumPattern = [true, false, true, true, false, true, true, true];
-                    if (!strumPattern[eighthIdx % 8]) return [];
+                    const strumPattern = ['down', null, 'down', 'up', null, 'down', 'up', 'down'];
+                    const dir = strumPattern[eighthIdx % 8];
+                    if (!dir) return [];
                     const eighthElapsed = chordElapsed - eighthIdx * eighthDur;
+                    const ordered = dir === 'up' ? [...nonMuted].reverse() : [...nonMuted];
                     const lit = [];
-                    for (let si = 0; si < nonMuted.length; si++) {
-                        if (eighthElapsed >= si * 0.02 && eighthElapsed < eighthDur - 0.03) lit.push(nonMuted[si]);
+                    for (let si = 0; si < ordered.length; si++) {
+                        if (eighthElapsed >= si * 0.02 && eighthElapsed < eighthDur - 0.03) lit.push(ordered[si]);
                     }
-                    return lit.length ? lit : nonMuted;
+                    return lit.length ? lit : ordered;
                 }
 
                 case 'blues-shuffle': {
@@ -1841,10 +1856,20 @@
         function animatePlaybackVisuals() {
             if (!isPlaying || !audioCtx) return;
 
-            const elapsed = audioCtx.currentTime - playbackStartTime;
             const numChords = currentTransposed.length;
-            const totalDur = numChords * playbackChordDurSec;
-            const activeIdx = elapsed < totalDur
+            const loopDuration = numChords * playbackChordDurSec;
+            
+            // Calculate elapsed time within the CURRENT loop
+            let elapsed = audioCtx.currentTime - playbackStartTime;
+            
+            // If we've passed the loop boundary but startMidiPlayback hasn't 
+            // updated playbackStartTime yet, or if we want to be safe:
+            if (isLooping) {
+                elapsed = elapsed % loopDuration;
+                if (elapsed < 0) elapsed += loopDuration;
+            }
+
+            const activeIdx = elapsed < loopDuration
                 ? Math.min(Math.floor(elapsed / playbackChordDurSec), numChords - 1)
                 : -1;
 
@@ -1899,16 +1924,17 @@
                 if (el) el.classList.toggle('sh-mh-active', elapsed >= md.startSec && elapsed < md.endSec);
             });
 
-            if (elapsed < totalDur + 0.3) {
+            if (isPlaying) {
                 timelineAnimFrame = requestAnimationFrame(animatePlaybackVisuals);
             } else {
-                // Playback finished — clean up visuals
+                // Playback stopped — clean up visuals
                 chordEls.forEach(el => el.classList.remove('chord-playing'));
                 diagramEls.forEach(el => el.classList.remove('diagram-playing'));
                 document.querySelectorAll('.playing-notes-label').forEach(l => l.textContent = '');
                 document.querySelectorAll('.string-hit').forEach(el => el.classList.remove('string-hit'));
                 document.querySelectorAll('.sh-active').forEach(el => el.classList.remove('sh-active'));
                 document.querySelectorAll('.sh-mh-active').forEach(el => el.classList.remove('sh-mh-active'));
+                timelineAnimFrame = null;
             }
         }
 
@@ -1947,42 +1973,61 @@
             isPlaying = true;
 
             try {
-                // Create + unlock AudioContext synchronously while still in the
-                // user-gesture call stack — BEFORE any await (critical for iOS Safari)
+                // Create + unlock AudioContext synchronously
                 _ensureAudioCtx();
                 _unlockAudio();
                 if (audioCtx.state === 'suspended') await audioCtx.resume();
 
                 const midiBuffer = await fetchMidiBuffer();
                 const notes = parseMidi(midiBuffer);
-                if (!isPlaying) return;
-
-                const startTime = audioCtx.currentTime + 0.1;
-                let maxEnd = 0;
-                for (const n of notes) {
-                    synthNote(audioCtx, n.note, startTime + n.start, n.duration, n.velocity);
-                    const end = n.start + n.duration;
-                    if (end > maxEnd) maxEnd = end;
-                }
-
-                // Compute timing
+                
+                // Compute timing once
                 const tempo = parseInt(document.getElementById('tempoSlider').value);
                 playbackChordDurSec = 4 * (60 / tempo); // beats * secondsPerBeat
-                playbackStartTime = startTime;
-
-                // Render sheet music
-                lastParsedNotes = notes;
-                const chordNames = currentTransposed.map(r => r.transposed);
-                renderSheetMusic(notes, chordNames, playbackChordDurSec);
-
-                // Start unified visual animation (chord tiles + diagrams + note names + sheet music)
-                animatePlaybackVisuals();
-
-                playbackTimer = setTimeout(() => { stopPlayback(); }, (maxEnd + 0.5) * 1000);
+                
+                // Initial start time
+                const startTime = audioCtx.currentTime + 0.1;
+                startMidiPlayback(notes, startTime);
             } catch (err) {
                 console.error('Playback error:', err);
                 stopPlayback();
             }
+        }
+
+        function startMidiPlayback(notes, startTime) {
+            if (!isPlaying) return;
+
+            const numChords = currentTransposed.length;
+            const loopDuration = numChords * playbackChordDurSec;
+
+            for (const n of notes) {
+                synthNote(audioCtx, n.note, startTime + n.start, n.duration, n.velocity);
+            }
+
+            playbackStartTime = startTime;
+
+            // Render/update sheet music (once per loop)
+            lastParsedNotes = notes;
+            const chordNames = currentTransposed.map(r => r.transposed);
+            renderSheetMusic(notes, chordNames, playbackChordDurSec);
+
+            // Start visual animation if not running
+            if (!timelineAnimFrame) {
+                animatePlaybackVisuals();
+            }
+
+            // Schedule next loop or stop
+            const nextStartTime = startTime + loopDuration;
+            const delayMs = (nextStartTime - audioCtx.currentTime - 0.1) * 1000;
+
+            playbackTimer = setTimeout(() => {
+                if (isLooping && isPlaying) {
+                    startMidiPlayback(notes, nextStartTime);
+                } else {
+                    // Wait for the final notes to finish before resetting UI
+                    playbackTimer = setTimeout(() => stopPlayback(), 100);
+                }
+            }, Math.max(0, delayMs));
         }
 
         function stopPlayback() {
