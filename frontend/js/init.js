@@ -1,7 +1,7 @@
 // ── Application bootstrap ─────────────────────────────────────────────────
 import { state } from './state.js';
 import { ensureAudioCtx, unlockAudio, loadSoundfont } from './audio.js';
-import { rerenderProgression, toggleSongsCollapse, pickVariantByPosition } from './render.js';
+import { rerenderProgression, toggleSongsCollapse } from './render.js';
 import { initSheetResizeObserver } from './sheet-music.js';
 import {
     refreshMidiAndSheetMusic,
