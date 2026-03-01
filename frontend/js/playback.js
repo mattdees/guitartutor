@@ -38,6 +38,27 @@ export async function fetchMidiBuffer() {
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify(body),
     });
+
+    if (!res.ok) {
+        let message = `MIDI generation failed: ${res.status} ${res.statusText}`;
+        try {
+            const contentType = res.headers.get('content-type') || '';
+            if (contentType.includes('application/json')) {
+                const data = await res.json();
+                if (data && typeof data.error === 'string' && data.error.trim()) {
+                    message += ` - ${data.error}`;
+                }
+            } else {
+                const text = await res.text();
+                if (text && text.trim()) {
+                    message += ` - ${text}`;
+                }
+            }
+        } catch (_) {
+            // Ignore parsing errors; fall back to basic status message.
+        }
+        throw new Error(message);
+    }
     return res.arrayBuffer();
 }
 
