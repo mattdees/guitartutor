@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 
@@ -101,6 +102,7 @@ func loadChordDiagrams(instrument string) (models.ChordDiagrams, error) {
 func GetInstruments(c *gin.Context) {
 	var instruments []models.Instrument
 	if err := json.Unmarshal(data.InstrumentsJSON, &instruments); err != nil {
+		log.Printf("error loading instruments: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not load instruments"})
 		return
 	}
@@ -111,6 +113,7 @@ func GetInstruments(c *gin.Context) {
 func GetProgressions(c *gin.Context) {
 	var progressions []models.Progression
 	if err := json.Unmarshal(data.ProgressionsJSON, &progressions); err != nil {
+		log.Printf("error loading progressions: %v", err)
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "could not load progressions"})
 		return
 	}

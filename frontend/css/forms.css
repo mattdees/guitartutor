@@ -1,0 +1,84 @@
+/* ── Selector container ─────────────────────────────────────────────── */
+.selector-container {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* ── Shared select base ─────────────────────────────────────────────── */
+.progression-select,
+.instrument-select,
+.key-select,
+.pos-select {
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
+}
+
+/* ── Progression select (red) ──────────────────────────────────────── */
+.progression-select {
+    border: 2px solid rgba(233, 69, 96, 0.5);
+    min-width: 300px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23e94560' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+}
+.progression-select:focus { outline: none; border-color: #e94560; box-shadow: 0 0 10px rgba(233, 69, 96, 0.3); }
+.progression-select option { background: #1a1a2e; color: #fff; padding: 10px; }
+
+/* ── Instrument select (orange) ────────────────────────────────────── */
+.instrument-select {
+    border: 2px solid rgba(243, 156, 18, 0.5);
+    min-width: 160px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23f39c12' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+}
+.instrument-select:focus { outline: none; border-color: #f39c12; box-shadow: 0 0 10px rgba(243, 156, 18, 0.3); }
+.instrument-select option { background: #1a1a2e; color: #fff; padding: 10px; }
+
+/* ── Key select (green) ─────────────────────────────────────────────── */
+.key-select {
+    border: 2px solid rgba(74, 222, 128, 0.5);
+    min-width: 100px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%234ade80' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+}
+.key-select:focus { outline: none; border-color: #4ade80; box-shadow: 0 0 10px rgba(74, 222, 128, 0.3); }
+.key-select option { background: #1a1a2e; color: #fff; padding: 10px; }
+
+.key-label { color: #4ade80; font-size: 0.85rem; margin-right: 5px; }
+.key-row { display: flex; align-items: center; gap: 8px; line-height: 1; }
+
+/* ── Position select (purple) ──────────────────────────────────────── */
+.pos-select {
+    border: 2px solid rgba(167, 139, 250, 0.5);
+    min-width: 140px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23a78bfa' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+}
+.pos-select:focus { outline: none; border-color: #a78bfa; box-shadow: 0 0 10px rgba(167, 139, 250, 0.3); }
+.pos-select option { background: #1a1a2e; color: #fff; padding: 10px; }
+
+.pos-label { color: #a78bfa; font-size: 0.85rem; margin-right: 5px; }
+.pos-row { display: flex; align-items: center; gap: 8px; line-height: 1; }
+
+/* ── Random button ──────────────────────────────────────────────────── */
+.random-btn {
+    background: linear-gradient(145deg, #e94560, #c73e54);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.random-btn:hover { transform: scale(1.05); box-shadow: 0 4px 15px rgba(233, 69, 96, 0.5); }

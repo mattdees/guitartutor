@@ -1,0 +1,43 @@
+/* ── Piano keyboard ─────────────────────────────────────────────────── */
+.piano-chord-diagram { padding: 8px 6px 6px !important; }
+.piano-keyboard { position: relative; display: flex; user-select: none; }
+
+.piano-key {
+    border: 1px solid #333;
+    border-radius: 0 0 3px 3px;
+    box-sizing: border-box;
+    position: relative;
+    flex-shrink: 0;
+}
+.piano-white { background: #e8e8e8; }
+.piano-black {
+    background: #1a1a1a;
+    position: absolute;
+    z-index: 2;
+    border-radius: 0 0 4px 4px;
+}
+.piano-white.piano-active { background: #14b8a6; }
+.piano-black.piano-active { background: #0d6e68; border: 1px solid #14b8a6; }
+
+.piano-key-label {
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 7px;
+    font-weight: bold;
+    color: #1a1a2e;
+    pointer-events: none;
+    white-space: nowrap;
+}
+.piano-black .piano-key-label { color: #e0fdf4; font-size: 6px; bottom: 3px; }
+
+/* Piano diagram playback highlighting */
+.diagram-playing .piano-white.piano-active {
+    background: #2dd4bf;
+    box-shadow: inset 0 0 8px rgba(20, 184, 166, 0.6);
+}
+.diagram-playing .piano-black.piano-active {
+    background: #14b8a6;
+    box-shadow: inset 0 0 8px rgba(20, 184, 166, 0.6);
+}

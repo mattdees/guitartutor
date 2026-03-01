@@ -1,0 +1,8 @@
+/* ── Mobile breakpoint ──────────────────────────────────────────────── */
+@media (max-width: 600px) {
+    h1 { font-size: 1.8rem; }
+    .progression-name { font-size: 1.3rem; }
+    .chord { width: 60px; height: 60px; font-size: 1.2rem; }
+    .arrow { font-size: 1.5rem; }
+    .chords-container { gap: 15px; }
+}
