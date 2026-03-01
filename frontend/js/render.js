@@ -32,9 +32,16 @@ export function pickVariantByPosition(variants, prefPos) {
 // ── Songs-section collapse toggle ─────────────────────────────────────────
 export function toggleSongsCollapse() {
     const section = document.getElementById('songsSection');
-    section.classList.toggle('collapsed');
+    if (!section) return;
+    const isCollapsed = section.classList.toggle('collapsed');
     const toggle = document.getElementById('songsToggle');
-    toggle.textContent = section.classList.contains('collapsed') ? '▶' : '▼';
+    if (toggle) {
+        toggle.textContent = isCollapsed ? '▶' : '▼';
+    }
+    const header = document.querySelector('.songs-header');
+    if (header) {
+        header.setAttribute('aria-expanded', String(!isCollapsed));
+    }
 }
 
 // ── Piano diagram renderer ────────────────────────────────────────────────
