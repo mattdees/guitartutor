@@ -3,6 +3,7 @@ package handlers
 import (
 	"bytes"
 	"encoding/binary"
+	"log"
 	"net/http"
 	"sort"
 	"strconv"
@@ -52,7 +53,11 @@ func fretsToMidi(frets []string, openMidi []int) []byte {
 		if err != nil {
 			continue
 		}
-		pitches = append(pitches, openMidi[i]+fretNum)
+		p := openMidi[i] + fretNum
+		if p < 0 || p > 127 {
+			continue
+		}
+		pitches = append(pitches, p)
 	}
 	sort.Ints(pitches)
 	// Deduplicate unison pitches
@@ -79,12 +84,44 @@ func chordToMidi(chord string, baseOctave int) []byte {
 		intervals = qualityIntervals[""] // fallback to major
 	}
 
-	baseMidi := byte(12*(baseOctave+1)) + byte(root) // C4 = 60 when baseOctave=4
-	notes := make([]byte, len(intervals))
-	for i, iv := range intervals {
-		notes[i] = baseMidi + byte(iv)
+	baseMidi := 12*(baseOctave+1) + root // C4 = 60 when baseOctave=4
+	var notes []byte
+	for _, iv := range intervals {
+		p := baseMidi + iv
+		if p >= 0 && p <= 127 {
+			notes = append(notes, byte(p))
+		}
 	}
 	return notes
+}
+
+// noteAt returns notes[i%len(notes)]. Caller must ensure notes is non-empty.
+func noteAt(notes []byte, i int) byte {
+	n := len(notes)
+	return notes[((i % n) + n) % n]
+}
+
+// lowerOctave returns note-12 (one octave down for bass lines), clamped to ≥ 0.
+func lowerOctave(note byte) byte {
+	if note < 12 {
+		return note
+	}
+	return note - 12
+}
+
+// validPatterns is the set of all supported strumming/picking pattern names.
+var validPatterns = map[string]bool{
+	"whole": true, "half": true, "quarter": true,
+	"arpeggio-up": true, "arpeggio-down": true,
+	"boom-chick": true, "pop-strum": true, "travis-picking": true,
+	"alberti-bass": true, "triplet-arpeggio": true, "pop-stabs": true,
+	"bossa-nova": true, "reggae-skank": true, "funk-16th": true,
+	"jazz-swing": true, "rock-8th": true,
+	"let-it-be": true, "stand-by-me": true, "creep-arpeggio": true,
+	"twist-and-shout": true, "blues-shuffle": true, "sweet-home-alabama": true,
+	"stairway-arpeggio": true, "hotel-california": true, "wonderwall-strum": true,
+	"blackbird-pick": true, "palm-mute-8th": true, "off-beat-8th": true,
+	"country-alt-bass": true, "pima-arpeggio": true, "four-on-the-floor": true,
 }
 
 // ── SMF (Standard MIDI File) writer ─────────────────────────────────────────
@@ -156,6 +193,9 @@ func buildTrack(req MidiRequest) []byte {
 		if len(notes) == 0 {
 			notes = chordToMidi(chordName, req.Octave)
 		}
+		if len(notes) == 0 {
+			continue // unrecognised chord — skip rather than panic
+		}
 		switch req.Pattern {
 
 		case "half":
@@ -218,7 +258,7 @@ func buildTrack(req MidiRequest) []byte {
 
 		case "boom-chick":
 			// Beat 1: bass note (root, octave below), Beats 2-4: upper chord
-			bassNote := notes[0] - 12
+			bassNote := lowerOctave(notes[0])
 			upperNotes := notes[1:]
 			if len(upperNotes) == 0 {
 				upperNotes = notes
@@ -392,7 +432,7 @@ func buildTrack(req MidiRequest) []byte {
 				d := uint32(0)
 				// Bass on 1 and 3 (eighth 0 and 4)
 				if ei%4 == 0 {
-					bassNote := notes[0] - 12
+					bassNote := lowerOctave(notes[0])
 					trk = append(trk, noteOnEvent(d, 0, bassNote, 100)...)
 					trk = append(trk, noteOffEvent(eighthTicks, 0, bassNote)...)
 					d = 0
@@ -509,6 +549,7 @@ func buildTrack(req MidiRequest) []byte {
 
 		case "let-it-be":
 			// Piano ballad style: Quarters on 1, 2, 3, 4 with a subtle octaved root pulse
+			lowRoot := lowerOctave(notes[0])
 			for beat := 0; beat < req.Beats; beat++ {
 				// Play chord
 				for _, n := range notes {
@@ -516,18 +557,25 @@ func buildTrack(req MidiRequest) []byte {
 				}
 				// Beat 1 and 3: add a lower octave root for depth
 				if beat%2 == 0 {
-					trk = append(trk, noteOnEvent(0, 0, notes[0]-12, 100)...)
-				}
-				// Release all
-				trk = append(trk, noteOffEvent(beatTicks, 0, notes[0]-12)...)
-				for _, n := range notes {
-					trk = append(trk, noteOffEvent(0, 0, n)...)
+					trk = append(trk, noteOnEvent(0, 0, lowRoot, 100)...)
+					trk = append(trk, noteOffEvent(beatTicks, 0, lowRoot)...)
+					for _, n := range notes {
+						trk = append(trk, noteOffEvent(0, 0, n)...)
+					}
+				} else {
+					for j, n := range notes {
+						d := uint32(0)
+						if j == 0 {
+							d = beatTicks
+						}
+						trk = append(trk, noteOffEvent(d, 0, n)...)
+					}
 				}
 			}
 
 		case "stand-by-me":
 			// Classic 50s bass line + backbeat stabs
-			bassNote := notes[0] - 12
+			bassNote := lowerOctave(notes[0])
 			eighthTicks := beatTicks / 2
 			// Pattern (8 eighths): Bass(1), ., Bass(2-and), ., Stab(3), ., Stab(4), .
 			pattern := []int{1, 0, 1, 0, 2, 0, 2, 0} // 1=Bass, 2=Stab
@@ -639,7 +687,7 @@ func buildTrack(req MidiRequest) []byte {
 					n = bassNote
 				case 2, 4, 5, 6, 7: // Upper
 					n = notes[len(notes)-1] // High note
-					if ei > 4 {
+					if ei > 4 && len(notes) >= 2 {
 						n = notes[len(notes)-2] // alternate
 					}
 					vel = 90
@@ -655,12 +703,17 @@ func buildTrack(req MidiRequest) []byte {
 				var n byte
 				switch ei % 8 {
 				case 0: n = notes[0] // Bass
-				case 1: n = notes[1]
-				case 2: n = notes[2]
+				case 1: n = noteAt(notes, 1)
+				case 2: n = noteAt(notes, 2)
 				case 3: n = notes[len(notes)-1]
-				case 4: n = notes[len(notes)-2]
-				case 5: n = notes[1]
-				case 6: n = notes[2]
+				case 4:
+					if len(notes) >= 2 {
+						n = notes[len(notes)-2]
+					} else {
+						n = notes[0]
+					}
+				case 5: n = noteAt(notes, 1)
+				case 6: n = noteAt(notes, 2)
 				case 7: n = notes[0]
 				}
 				trk = append(trk, noteOnEvent(0, 0, n, 100)...)
@@ -770,12 +823,12 @@ func buildTrack(req MidiRequest) []byte {
 			for beat := 0; beat < 4; beat++ {
 				if beat == 0 {
 					// Root bass
-					trk = append(trk, noteOnEvent(0, 0, bassRoot-12, 110)...)
-					trk = append(trk, noteOffEvent(beatTicks, 0, bassRoot-12)...)
+					trk = append(trk, noteOnEvent(0, 0, lowerOctave(bassRoot), 110)...)
+					trk = append(trk, noteOffEvent(beatTicks, 0, lowerOctave(bassRoot))...)
 				} else if beat == 2 {
 					// Fifth bass
-					trk = append(trk, noteOnEvent(0, 0, bassFifth-12, 110)...)
-					trk = append(trk, noteOffEvent(beatTicks, 0, bassFifth-12)...)
+					trk = append(trk, noteOnEvent(0, 0, lowerOctave(bassFifth), 110)...)
+					trk = append(trk, noteOffEvent(beatTicks, 0, lowerOctave(bassFifth))...)
 				} else {
 					// Strum
 					for _, n := range notes {
@@ -865,11 +918,24 @@ func GenerateMidi(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	// Defaults
-	if req.Tempo <= 0 {
+
+	// Validate required fields
+	if len(req.Chords) == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "chords must not be empty"})
+		return
+	}
+	for _, m := range req.OpenMidi {
+		if m < 0 || m > 127 {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "openMidi values must be in range 0–127"})
+			return
+		}
+	}
+
+	// Apply defaults
+	if req.Tempo <= 0 || req.Tempo > 300 {
 		req.Tempo = 120
 	}
-	if req.Octave < 2 || req.Octave > 6 {
+	if req.Octave < 0 || req.Octave > 8 {
 		req.Octave = 4
 	}
 	if req.Beats <= 0 {
@@ -879,7 +945,16 @@ func GenerateMidi(c *gin.Context) {
 		req.Pattern = "quarter"
 	}
 
+	// Validate pattern name
+	if !validPatterns[req.Pattern] {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "unknown pattern: " + req.Pattern})
+		return
+	}
+
 	midi := buildMidi(req)
 
+	log.Printf("midi: generated %d bytes for %d chords pattern=%s tempo=%d", len(midi), len(req.Chords), req.Pattern, req.Tempo)
+
+	c.Header("Content-Disposition", "attachment; filename=\"progression.mid\"")
 	c.Data(http.StatusOK, "audio/midi", midi)
 }

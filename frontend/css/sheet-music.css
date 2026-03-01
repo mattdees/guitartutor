@@ -1,0 +1,44 @@
+/* ── Sheet music section ────────────────────────────────────────────── */
+.sheet-music-section {
+    margin-top: 20px;
+    padding: 16px 12px;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-sizing: border-box;
+    width: 100%;
+}
+.sheet-music-title {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+    text-align: left;
+}
+.sheet-music-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 0 4px;
+}
+.sheet-music-section svg { display: block; overflow: visible; }
+
+/* ── Staff / note colours (SVG presentation attrs have specificity 0, CSS wins) */
+.sh-note-group .sh-notehead            { fill: #7a8fa8; }
+.sh-note-group .sh-notehead-open       { fill: none; stroke: #7a8fa8; stroke-width: 1.5px; }
+.sh-note-group .sh-stem                { stroke: #7a8fa8; }
+.sh-note-group .sh-ledger              { stroke: #3d4d63; }
+.sh-note-group .sh-accidental          { fill: #6b7280; }
+
+/* Active (currently sounding) note */
+.sh-note-group.sh-active .sh-notehead  { fill: #14b8a6; filter: drop-shadow(0 0 4px rgba(20,184,166,0.8)); }
+.sh-note-group.sh-active .sh-notehead-open { stroke: #14b8a6; filter: drop-shadow(0 0 4px rgba(20,184,166,0.8)); }
+.sh-note-group.sh-active .sh-stem      { stroke: #14b8a6; }
+.sh-note-group.sh-active .sh-ledger    { stroke: #14b8a6; }
+.sh-note-group.sh-active .sh-accidental{ fill: #14b8a6; }
+
+/* Active measure highlight */
+.sh-mh { fill: transparent; }
+.sh-mh.sh-mh-active { fill: rgba(20, 184, 166, 0.10); }

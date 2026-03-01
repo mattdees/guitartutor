@@ -1,0 +1,76 @@
+/* ── Playback section container ─────────────────────────────────────── */
+.playback-section {
+    margin: 20px 0;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.playback-controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* ── Playback buttons ───────────────────────────────────────────────── */
+.playback-btn {
+    background: linear-gradient(145deg, #f39c12, #d35400);
+    color: white;
+    border: none;
+    padding: 10px 22px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 90px;
+}
+.playback-btn:hover { transform: scale(1.05); box-shadow: 0 4px 12px rgba(243, 156, 18, 0.4); }
+.playback-btn.playing { background: linear-gradient(145deg, #ef4444, #dc2626); }
+.playback-btn.playing:hover { box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
+.playback-btn.loop-active { background: linear-gradient(145deg, #14b8a6, #0d9488); }
+.playback-btn.loop-active:hover { box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4); }
+.playback-btn.download-btn { background: linear-gradient(145deg, #6366f1, #4f46e5); min-width: unset; padding: 10px 16px; }
+.playback-btn.download-btn:hover { box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4); }
+
+/* ── Playback control row helpers ───────────────────────────────────── */
+.playback-control { display: flex; align-items: center; gap: 6px; }
+.playback-label { font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* ── Tempo slider ───────────────────────────────────────────────────── */
+.tempo-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    outline: none;
+}
+.tempo-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #14b8a6;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.tempo-value { font-size: 0.85rem; color: #14b8a6; min-width: 30px; }
+
+/* ── Pattern / tone / octave dropdowns ─────────────────────────────── */
+.playback-select {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+    font-family: 'Poppins', sans-serif;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    cursor: pointer;
+}
+.playback-select option { background: #1a1a2e; color: #fff; }
+.playback-select optgroup { background: #1a1a2e; color: #e94560; font-weight: bold; font-style: normal; }

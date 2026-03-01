@@ -14,4 +14,5 @@ RUN apk add --no-cache ca-certificates
 WORKDIR /app
 COPY --from=builder /app/guitartutor .
 EXPOSE 8080
+USER nobody
 CMD ["./guitartutor"]
