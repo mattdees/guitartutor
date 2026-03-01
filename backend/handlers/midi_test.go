@@ -208,10 +208,10 @@ func TestLowerOctave(t *testing.T) {
 
 // ── buildMidi smoke tests ─────────────────────────────────────────────────
 
-// validMidiHeader checks the first 14 bytes of a MIDI file are a valid MThd.
+// validMidiHeader checks the first 18 bytes of a MIDI file are a valid MThd/MTrk.
 func validMidiHeader(t *testing.T, midi []byte) {
 	t.Helper()
-	if len(midi) < 14 {
+	if len(midi) < 18 {
 		t.Fatalf("MIDI too short: %d bytes", len(midi))
 	}
 	if string(midi[0:4]) != "MThd" {
