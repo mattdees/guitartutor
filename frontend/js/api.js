@@ -2,7 +2,7 @@
 // Pure functions — fetch data from the backend, return parsed JSON.
 // No state mutations; callers are responsible for updating state.
 
-async function apiFetch(url, options = {}) {
+export async function apiFetch(url, options = {}) {
     const res = await fetch(url, options);
     if (!res.ok) {
         const err = await res.json().catch(() => ({ error: res.statusText }));
