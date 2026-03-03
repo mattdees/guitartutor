@@ -1,0 +1,357 @@
+/* ── Page navigation pills ───────────────────────────────────────────── */
+.page-nav {
+    display: flex;
+    justify-content: flex-start;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+.page-nav-btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #888;
+    padding: 5px 16px;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    letter-spacing: 0.02em;
+}
+.page-nav-btn:hover { color: #ccc; border-color: rgba(255, 255, 255, 0.3); }
+.page-nav-btn.active {
+    background: linear-gradient(145deg, #e94560, #c73e54);
+    border-color: transparent;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* ── Dictionary card ─────────────────────────────────────────────────── */
+.dictionary-card {
+    background: rgba(255, 255, 255, 0.07);
+    border-radius: 20px;
+    padding: 32px 24px 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    .dictionary-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+}
+
+/* ── Two-column layout: chord sidebar (left) + main content (right) ──── */
+.dict-layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+.dict-sidebar {
+    flex-shrink: 0;
+    width: 150px;
+    position: sticky;
+    top: 20px;
+}
+.dict-main {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ── Chord list (left sidebar) ───────────────────────────────────────── */
+.dict-chord-list {
+    display: flex;
+    flex-direction: column;
+    max-height: 72vh;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+.dict-chord-list::-webkit-scrollbar { width: 4px; }
+.dict-chord-list::-webkit-scrollbar-track { background: transparent; }
+.dict-chord-list::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.18); border-radius: 2px; }
+.dict-chord-list::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.32); }
+
+.dict-chord-item {
+    display: block;
+    width: 100%;
+    padding: 5px 10px;
+    border-radius: 7px;
+    border: none;
+    background: transparent;
+    color: #888;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.82rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.14s, color 0.14s;
+    white-space: nowrap;
+}
+.dict-chord-item:hover { background: rgba(255, 255, 255, 0.07); color: #ccc; }
+.dict-chord-item.active {
+    background: rgba(233, 69, 96, 0.18);
+    color: #e94560;
+    font-weight: 600;
+}
+
+/* ── Main controls row (instrument filter) ───────────────────────────── */
+.dict-main-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+/* ── Instrument filter dropdown ──────────────────────────────────────── */
+.dict-instr-filter {
+    position: relative;
+    display: inline-block;
+}
+.dict-instr-btn {
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    color: #ccc;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+.dict-instr-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #fff;
+}
+.dict-instr-panel {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    background: #1a1a2e;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: 8px 12px;
+    min-width: 170px;
+    z-index: 100;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+.dict-instr-panel[hidden] { display: none; }
+.dict-instr-check {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 2px;
+    cursor: pointer;
+    color: #ccc;
+    font-size: 0.85rem;
+    transition: color 0.14s;
+    user-select: none;
+}
+.dict-instr-check:hover { color: #fff; }
+.dict-instr-check input[type=checkbox] {
+    accent-color: #e94560;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+/* ── Chord name heading ───────────────────────────────────────────────── */
+.dict-chord-name-display {
+    text-align: center;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: #e94560;
+    margin-bottom: 20px;
+    min-height: 2.8rem;
+    line-height: 1.15;
+}
+
+/* ── Empty-state placeholder ─────────────────────────────────────────── */
+.dict-placeholder-msg {
+    text-align: center;
+    color: #555;
+    font-size: 0.9rem;
+    padding: 32px 0;
+    margin: 0;
+}
+
+/* ── Instrument card grid — auto-wraps when columns don't fit ────────── */
+/* gap:1px + container background creates hairline dividers between cards */
+.dict-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px;
+    background: rgba(255, 255, 255, 0.09);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+/* Piano card: always occupies its own full row so the wide keyboard never
+   overflows into adjacent cards. The diagram area scrolls horizontally if
+   the viewport is narrower than the keyboard itself. */
+.dict-instr-card[data-instr="piano"] {
+    grid-column: 1 / -1;
+}
+.dict-instr-card[data-instr="piano"] .dict-card-diagram {
+    overflow-x: auto;
+    justify-content: center;
+}
+
+/* ── Single instrument card ──────────────────────────────────────────── */
+.dict-instr-card {
+    display: flex;
+    flex-direction: column;
+    background: rgba(12, 16, 32, 0.7);
+}
+
+/* Card header row */
+.dict-card-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 14px 12px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    text-align: center;
+}
+.dict-col-icon { font-size: 1.4rem; line-height: 1; }
+.dict-col-name {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.13em;
+    color: #888;
+}
+
+/* Card variant tabs row */
+.dict-card-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+    align-content: flex-start;
+    padding: 10px 8px 6px;
+    min-height: 42px;
+}
+.dict-variant-tab {
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    color: #777;
+    font-size: 0.67rem;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    white-space: nowrap;
+    transition: color 0.14s, border-color 0.14s, background 0.14s;
+}
+.dict-variant-tab:hover { color: #ccc; border-color: rgba(255, 255, 255, 0.28); }
+.dict-variant-tab.active {
+    background: rgba(233, 69, 96, 0.18);
+    border-color: rgba(233, 69, 96, 0.7);
+    color: #e94560;
+    font-weight: 600;
+}
+
+/* Card diagram row */
+.dict-card-diagram {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 10px 10px 6px;
+}
+
+/* Card sheet music row */
+.dict-card-sheet {
+    padding: 8px 10px 20px;
+    min-height: 100px;
+}
+
+/* ── Empty cell (no data for this instrument) ────────────────────────── */
+.dict-empty-msg {
+    color: #444;
+    font-size: 0.85rem;
+    display: block;
+    text-align: center;
+    padding: 24px 16px;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────── */
+.dict-footer {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+.dict-footer-notes {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #e94560;
+    letter-spacing: 0.1em;
+    text-align: center;
+}
+
+/* ── Chord pill link (progression view) ──────────────────────────────── */
+.chord.chord-link { cursor: pointer; }
+.chord.chord-link::after {
+    content: '↗';
+    position: absolute;
+    top: 5px;
+    right: 7px;
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.35);
+    line-height: 1;
+    pointer-events: none;
+}
+.chord.chord-link:hover::after { color: rgba(255, 255, 255, 0.7); }
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+/* Cards already wrap automatically via auto-fit. These breakpoints only
+   adjust the sidebar layout and chord list pill style on narrow screens. */
+@media (max-width: 900px) {
+    .dict-layout {
+        flex-direction: column;
+    }
+    .dict-sidebar {
+        width: 100%;
+        position: static;
+    }
+    .dict-chord-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        max-height: 200px;
+        overflow-y: auto;
+        gap: 3px;
+        padding: 8px;
+    }
+    .dict-chord-item {
+        width: auto;
+        flex: 0 0 auto;
+        padding: 4px 10px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 20px;
+        font-size: 0.78rem;
+        text-align: center;
+    }
+    .dict-instr-panel {
+        right: auto;
+        left: 0;
+    }
+}
+@media (max-width: 700px) {
+    .dictionary-card { padding: 20px 10px 28px; }
+    .dict-chord-name-display { font-size: 1.8rem; }
+    .dict-card-header { padding: 10px 6px 8px; }
+    .dict-card-tabs,
+    .dict-card-diagram,
+    .dict-card-sheet { padding-left: 6px; padding-right: 6px; }
+    .dict-cards-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+}

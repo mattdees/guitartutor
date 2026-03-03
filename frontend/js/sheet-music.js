@@ -298,6 +298,116 @@ export function renderSheetMusic(notes, chords, chordDurSec) {
     container.innerHTML = svgParts.join('\n');
 }
 
+// ── SVG text escaping ─────────────────────────────────────────────────────
+function _escSvg(str) {
+    return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// ── Static single-chord renderer (no state side-effects) ─────────────────
+// Renders a grand staff with whole notes into any provided container element.
+export function renderSheetMusicStatic(notes, chordName, containerEl) {
+    if (!containerEl) return;
+    if (!notes || !notes.length) {
+        containerEl.innerHTML = '<div style="color:#888;font-size:12px;padding:20px;text-align:center;">No notes to display</div>';
+        return;
+    }
+
+    const STAFF_LINE_SPACING = 11;
+    const HALF_STEP_PX       = STAFF_LINE_SPACING / 2;
+    const CLEF_W             = 44;
+    const NOTE_HEAD_W        = 8;
+    const NOTE_HEAD_H        = 5;
+
+    const containerW  = containerEl.clientWidth || 300;
+    const MEAS_W      = Math.max(140, containerW - CLEF_W - 20);
+
+    const TREBLE_BOT  = 56;
+    const STAFF_GAP   = 45;
+    const BASS_BOT    = TREBLE_BOT + 4 * STAFF_LINE_SPACING + STAFF_GAP;
+
+    const svgW  = CLEF_W + MEAS_W + 16;
+    const svgH  = BASS_BOT + 28;
+
+    const trbY  = TREBLE_BOT;
+    const basY  = BASS_BOT;
+    const trtY  = trbY - 4 * STAFF_LINE_SPACING;
+    const batY  = basY - 4 * STAFF_LINE_SPACING;
+    const startX = CLEF_W;
+    const endX   = startX + MEAS_W;
+    const groupX = startX + MEAS_W / 2;
+
+    const svgParts = [];
+    svgParts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${svgW}" height="${svgH}" style="display:block;margin:0 auto;">`);
+
+    // Staff lines
+    for (let l = 0; l < 5; l++) {
+        const ly = trbY - l * STAFF_LINE_SPACING;
+        svgParts.push(`<line x1="0" y1="${ly}" x2="${endX}" y2="${ly}" stroke="#3d4d63" stroke-width="1"/>`);
+    }
+    for (let l = 0; l < 5; l++) {
+        const ly = basY - l * STAFF_LINE_SPACING;
+        svgParts.push(`<line x1="0" y1="${ly}" x2="${endX}" y2="${ly}" stroke="#3d4d63" stroke-width="1"/>`);
+    }
+
+    // Clefs
+    svgParts.push(`<text x="2" y="${trbY + 6}" font-family="'Times New Roman',Georgia,serif" font-size="56" fill="#506070">&#x1D11E;</text>`);
+    svgParts.push(`<text x="2" y="${basY - 14}" font-family="'Times New Roman',Georgia,serif" font-size="44" fill="#506070">&#x1D122;</text>`);
+
+    // Opening barlines
+    svgParts.push(`<line x1="0" y1="${trtY}" x2="0" y2="${basY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+    svgParts.push(`<line x1="${startX}" y1="${trtY}" x2="${startX}" y2="${trbY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+    svgParts.push(`<line x1="${startX}" y1="${batY}" x2="${startX}" y2="${basY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+
+    // Chord name label
+    svgParts.push(`<text x="${groupX}" y="12" text-anchor="middle" font-family="'Poppins',sans-serif" font-size="10" font-weight="600" fill="#e94560">${_escSvg(chordName)}</text>`);
+
+    // Whole notes
+    notes.forEach(n => {
+        const nd          = _midiToStaffStep(n.note);
+        const staffBottom = nd.clef === 'treble' ? trbY : basY;
+        const noteY       = staffBottom - nd.step * HALF_STEP_PX;
+
+        svgParts.push(`<g class="sh-note-group">`);
+
+        // Ledger lines below
+        if (nd.step <= -2) {
+            for (let i = 1; i <= Math.floor(-nd.step / 2); i++) {
+                const ly = staffBottom + i * 2 * HALF_STEP_PX;
+                svgParts.push(`<line x1="${groupX - NOTE_HEAD_W - 4}" y1="${ly}" x2="${groupX + NOTE_HEAD_W + 4}" y2="${ly}" class="sh-ledger"/>`);
+            }
+        }
+        // Ledger lines above
+        if (nd.step >= 10) {
+            for (let i = 1; i <= Math.floor((nd.step - 8) / 2); i++) {
+                const ly = staffBottom - (8 + i * 2) * HALF_STEP_PX;
+                svgParts.push(`<line x1="${groupX - NOTE_HEAD_W - 4}" y1="${ly}" x2="${groupX + NOTE_HEAD_W + 4}" y2="${ly}" class="sh-ledger"/>`);
+            }
+        }
+
+        // Open note head (whole note)
+        svgParts.push(`<ellipse cx="${groupX}" cy="${noteY}" rx="${NOTE_HEAD_W}" ry="${NOTE_HEAD_H}" class="sh-notehead sh-notehead-open"/>`);
+
+        // Accidental
+        if (_SM_SHARP[n.note % 12]) {
+            svgParts.push(`<text x="${groupX - NOTE_HEAD_W - 5}" y="${noteY + 4}" font-family="serif" font-size="10" class="sh-accidental">#</text>`);
+        }
+
+        svgParts.push(`</g>`);
+    });
+
+    // Double barline at end
+    svgParts.push(`<line x1="${endX - 4}" y1="${trtY}" x2="${endX - 4}" y2="${basY}" stroke="#3d4d63" stroke-width="3.5"/>`);
+    svgParts.push(`<line x1="${endX - 9}" y1="${trtY}" x2="${endX - 9}" y2="${basY}" stroke="#3d4d63" stroke-width="1.5"/>`);
+
+    svgParts.push('</svg>');
+    containerEl.innerHTML = svgParts.join('\n');
+}
+
 // ── ResizeObserver for responsive sheet re-renders ────────────────────────
 export function initSheetResizeObserver() {
     let _observer = null;

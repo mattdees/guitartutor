@@ -41,4 +41,9 @@ export const state = {
     lastSheetNotes:   [],
     lastSheetChords:  [],
     lastSheetDur:     0,
+
+    // ── Dictionary state ──
+    currentPage:        'progression', // 'progression' | 'dictionary'
+    dictSelectedChord:  '',
+    dictVariantByInstr: {},            // instrKey → current variant index
 };

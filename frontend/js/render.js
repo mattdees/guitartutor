@@ -76,16 +76,18 @@ export function renderPianoChordDiagram(diagram, chordIdx) {
 }
 
 // ── Fretboard diagram renderer ────────────────────────────────────────────
-export function renderChordDiagram(diagram, chordIdx) {
-    if (state.currentInstrument && state.currentInstrument.displayType === 'keyboard') {
+// instrument param overrides state.currentInstrument (for all-instruments table view)
+export function renderChordDiagram(diagram, chordIdx, instrument = null) {
+    const instr = instrument || state.currentInstrument;
+    if (instr && instr.displayType === 'keyboard') {
         return renderPianoChordDiagram(diagram, chordIdx);
     }
     if (!diagram) {
         return '<div class="chord-diagram"><div style="color:#888;font-size:12px;padding:20px;">No diagram<br/>available</div></div>';
     }
 
-    const stringCount = state.currentInstrument.strings;
-    const stringNames = state.currentInstrument.stringNames;
+    const stringCount = instr.strings;
+    const stringNames = instr.stringNames;
     const stringWidth = 18;
     const nutWidth    = stringCount * stringWidth;
 
@@ -200,7 +202,10 @@ export function rerenderProgression() {
         const wrapper = document.createElement('div');
         wrapper.className = 'chord-wrapper';
         wrapper.innerHTML = `
-            <div class="chord">
+            <div class="chord chord-link"
+                 data-chord="${chord}"
+                 title="Open ${chord} in Dictionary"
+                 aria-label="${chord} — open in dictionary">
                 <span class="chord-name">${chord}</span>
                 ${variantBtnHtml}
                 ${variantMenuHtml}

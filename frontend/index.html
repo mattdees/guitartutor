@@ -12,14 +12,20 @@
     <link rel="stylesheet" href="css/playback.css">
     <link rel="stylesheet" href="css/sheet-music.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/dictionary.css">
     <script src="https://cdn.jsdelivr.net/npm/soundfont-player@0.12.0/dist/soundfont-player.min.js"></script>
     <script type="module" src="js/init.js"></script>
 </head>
 <body>
     <div class="container">
+        <nav class="page-nav" aria-label="Page navigation">
+            <button class="page-nav-btn active" id="navProgression">Chord Progressions</button>
+            <button class="page-nav-btn" id="navDictionary">Chord Dictionary</button>
+        </nav>
+
         <div class="guitar-icon" id="instrumentIcon">🎸</div>
-        <h1>Chord Progressions</h1>
-        <p class="subtitle">Select an instrument and progression</p>
+        <h1 id="pageTitle">Chord Progressions</h1>
+        <p class="subtitle" id="pageSubtitle">Select an instrument and progression</p>
 
         <div class="selector-container">
             <select class="instrument-select" id="instrumentSelect" aria-label="Instrument"></select>
@@ -185,6 +191,26 @@
                 <button class="playback-btn" id="playBtn" onclick="togglePlayback()" aria-label="Play or stop">▶ Play</button>
                 <button class="playback-btn" id="loopBtn" onclick="toggleLooping()" aria-label="Toggle looping">🔁 Loop: Off</button>
                 <button class="playback-btn download-btn" onclick="downloadMidi()" aria-label="Download MIDI">⬇ MIDI</button>
+            </div>
+        </div>
+
+        <div class="dictionary-card" id="dictionarySection" style="display:none">
+            <div class="dict-layout">
+                <aside class="dict-sidebar" aria-label="Chord list">
+                    <div class="dict-chord-list" id="dictChordList"></div>
+                </aside>
+                <div class="dict-main">
+                    <div class="dict-main-controls">
+                        <div class="dict-instr-filter" id="dictInstrFilter">
+                            <button class="dict-instr-btn" id="dictInstrBtn">All Instruments ▾</button>
+                            <div class="dict-instr-panel" id="dictInstrPanel" hidden></div>
+                        </div>
+                    </div>
+                    <div class="dict-chord-name-display" id="dictChordNameDisplay"></div>
+                    <div id="dictTable">
+                        <p class="dict-placeholder-msg">Select a chord to see fingerings across all instruments</p>
+                    </div>
+                </div>
             </div>
         </div>
 
