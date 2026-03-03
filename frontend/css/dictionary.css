@@ -189,16 +189,19 @@
     background: rgba(255, 255, 255, 0.09);
     border: 1px solid rgba(255, 255, 255, 0.09);
     border-radius: 14px;
-    overflow-x: auto;
-    overflow-y: hidden;
+    overflow: hidden;
 }
 
-/* Piano card: never narrower than the keyboard (15 × 22px + 20px padding) */
+/* Piano card: always occupies its own full row so the wide keyboard never
+   overflows into adjacent cards. The diagram area scrolls horizontally if
+   the viewport is narrower than the keyboard itself. */
 .dict-instr-card[data-instr="piano"] {
-    min-width: 350px;
+    grid-column: 1 / -1;
 }
 .dict-instr-card[data-instr="piano"] .dict-card-diagram {
     overflow-x: auto;
+    justify-content: flex-start;
+    padding-left: 16px;
 }
 
 /* ── Single instrument card ──────────────────────────────────────────── */
