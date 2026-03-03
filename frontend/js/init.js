@@ -70,11 +70,12 @@ export async function displayProgression(index, updateKeySelector = true) {
     await refreshTransposeAndDiagrams();
 }
 
-export function showRandomProgression() {
+export async function showRandomProgression() {
     if (!state.currentProgressions.length) return;
     state.currentChordVariants = {};
     const idx = Math.floor(Math.random() * state.currentProgressions.length);
-    return displayProgression(idx, true);
+    await displayProgression(idx, true);
+    updateHash();
 }
 
 // ── Chord variant pickers ──────────────────────────────────────────────────
@@ -102,9 +103,9 @@ async function applyHashedState() {
     if (page === 'dictionary') {
         const chord = parts[1] ? decodeURIComponent(parts[1]) : '';
         if (chord) {
-            await openChordInDictionary(chord);
+            await openChordInDictionary(chord, true);
         } else {
-            navigateTo('dictionary');
+            navigateTo('dictionary', true);
         }
         return true;
     }
@@ -130,8 +131,11 @@ async function applyHashedState() {
         }
         if (!isNaN(progIdx) && progIdx >= 0 && progIdx < state.currentProgressions.length) {
             await displayProgression(progIdx, !key /* respect hashed key */);
+        } else {
+            // Fallback when progIdx is missing or invalid: show a random progression
+            await showRandomProgression();
         }
-        navigateTo('progression');
+        navigateTo('progression', true);
         return true;
     }
 
@@ -286,12 +290,14 @@ async function init() {
     });
 
     // Keyboard: browser back/forward navigates via hash
-    window.addEventListener('hashchange', async () => {
+    const _onHashNav = async () => {
         await applyHashedState();
         if (state.currentPage === 'progression') {
             await refreshMidiAndSheetMusic();
         }
-    });
+    };
+    window.addEventListener('hashchange', _onHashNav);
+    window.addEventListener('popstate',   _onHashNav);
 
     // Sheet music resize observer
     initSheetResizeObserver();
@@ -301,7 +307,7 @@ async function init() {
     if (!hasHash) {
         await showRandomProgression();
         await refreshMidiAndSheetMusic();
-        updateHash();
+        updateHash(true);
     } else if (state.currentPage === 'progression') {
         await refreshMidiAndSheetMusic();
     }

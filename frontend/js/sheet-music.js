@@ -372,6 +372,8 @@ export function renderSheetMusicStatic(notes, chordName, containerEl) {
         const staffBottom = nd.clef === 'treble' ? trbY : basY;
         const noteY       = staffBottom - nd.step * HALF_STEP_PX;
 
+        svgParts.push(`<g class="sh-note-group">`);
+
         // Ledger lines below
         if (nd.step <= -2) {
             for (let i = 1; i <= Math.floor(-nd.step / 2); i++) {
@@ -394,6 +396,8 @@ export function renderSheetMusicStatic(notes, chordName, containerEl) {
         if (_SM_SHARP[n.note % 12]) {
             svgParts.push(`<text x="${groupX - NOTE_HEAD_W - 5}" y="${noteY + 4}" font-family="serif" font-size="10" class="sh-accidental">#</text>`);
         }
+
+        svgParts.push(`</g>`);
     });
 
     // Double barline at end

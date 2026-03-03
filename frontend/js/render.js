@@ -205,7 +205,6 @@ export function rerenderProgression() {
             <div class="chord chord-link"
                  data-chord="${chord}"
                  title="Open ${chord} in Dictionary"
-                 role="button" tabindex="0"
                  aria-label="${chord} — open in dictionary">
                 <span class="chord-name">${chord}</span>
                 ${variantBtnHtml}

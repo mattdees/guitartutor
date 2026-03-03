@@ -277,9 +277,13 @@ export async function renderDictionary() {
 
         const headerEl = document.createElement('div');
         headerEl.className = 'dict-card-header';
-        headerEl.innerHTML =
-            `<span class="dict-col-icon">${instr.icon || ''}</span>`
-          + `<span class="dict-col-name">${instr.name}</span>`;
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'dict-col-icon';
+        iconSpan.textContent = instr.icon || '';
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'dict-col-name';
+        nameSpan.textContent = instr.name;
+        headerEl.append(iconSpan, nameSpan);
 
         const tabsEl  = document.createElement('div');
         tabsEl.className = 'dict-card-tabs';
@@ -323,7 +327,7 @@ export async function renderDictionary() {
 }
 
 // ── Hash routing ──────────────────────────────────────────────────────────
-export function updateHash() {
+export function updateHash(replace = false) {
     let hash = '';
     if (state.currentPage === 'dictionary') {
         hash = 'dictionary';
@@ -334,11 +338,15 @@ export function updateHash() {
         if (state.currentKey)        hash += '/' + encodeURIComponent(state.currentKey);
         if (state.currentIndex >= 0) hash += '/' + state.currentIndex;
     }
-    history.replaceState(null, '', '#' + hash);
+    if (replace) {
+        history.replaceState(null, '', '#' + hash);
+    } else {
+        history.pushState(null, '', '#' + hash);
+    }
 }
 
 // ── Navigation ────────────────────────────────────────────────────────────
-export function navigateTo(page) {
+export function navigateTo(page, replace = false) {
     state.currentPage = page;
 
     const progressionCard   = document.querySelector('.progression-card');
@@ -367,22 +375,22 @@ export function navigateTo(page) {
         if (title)    title.textContent    = 'Chord Progressions';
         if (subtitle) subtitle.textContent = 'Select an instrument and progression';
     }
-    updateHash();
+    updateHash(replace);
 }
 
 // ── Open from progression chord pills ─────────────────────────────────────
-export async function openChordInDictionary(chordName) {
+export async function openChordInDictionary(chordName, replace = false) {
     state.dictSelectedChord  = chordName;
     state.dictVariantByInstr = {};
 
-    navigateTo('dictionary');
+    navigateTo('dictionary', replace);
 
     if (!_initDone) await _lazyInit();
 
     _setActiveChordInList(chordName);
 
     await renderDictionary();
-    updateHash();
+    updateHash(replace);
 }
 
 // ── Instrument change (no-op: all instruments always shown) ───────────────
